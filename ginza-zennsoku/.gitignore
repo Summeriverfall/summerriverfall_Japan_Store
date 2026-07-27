@@ -1,0 +1,7 @@
+node_modules/
+package-lock.json
+source/
+source-images/
+*.tmp.webp
+.DS_Store
+Thumbs.db
