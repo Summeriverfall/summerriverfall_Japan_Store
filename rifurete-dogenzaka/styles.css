@@ -1,4 +1,4 @@
-/* ============================================================
+﻿/* ============================================================
    RIRASUMA Miyamasusaka — Shibuya massage & relaxation
    Palette: charcoal / dusty rose / soft stone / champagne gold
    (warm spa template shared with Flora SPA base)
@@ -863,10 +863,21 @@ ul { list-style: none; }
 }
 .landing-ctas {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-items: stretch;
   justify-content: center;
   gap: 0.8rem;
   margin-bottom: 1.6rem;
+  width: 100%;
+  max-width: 22rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+.landing-ctas .btn {
+  width: 100%;
+  box-sizing: border-box;
+  justify-content: center;
 }
 .landing-meta {
   display: flex;
@@ -941,14 +952,14 @@ ul { list-style: none; }
     font-size: 0.8rem;
   }
   .landing-ctas {
-    flex-direction: row;
-    gap: 1rem;
+    flex-direction: column;
+    gap: 0.9rem;
     margin-bottom: 1.8rem;
     width: 100%;
+    max-width: 26rem;
   }
   .landing-ctas .btn {
-    flex: 1 1 0;
-    width: auto;
+    width: 100%;
     min-width: 0;
     padding: 1.1rem 1.6rem;
     font-size: 0.86rem;
@@ -1061,8 +1072,8 @@ ul { list-style: none; }
     width: 100%;
     justify-content: center;
   }
-  .landing-ctas { flex-direction: column; align-items: center; }
-  .landing-ctas .btn { width: auto; }
+  .landing-ctas { flex-direction: column; align-items: stretch; }
+  .landing-ctas .btn { width: 100%; }
 }
 
 @media (max-width: 380px) {
