@@ -258,10 +258,10 @@
         { value: 'Bodywork 90 min', dur: 90, price: 9680, en: '90 min', jp: '90分', cn: '90分钟' }
       ]},
       { label: { en: 'Shiatsu + Foot', jp: '指圧＋足ツボ', cn: '指压＋足疗' }, items: [
-        { value: 'Shiatsu 30 + Foot 30', dur: 60, price: 7150, en: '30＋30', jp: '30＋30', cn: '30＋30' },
-        { value: 'Shiatsu 40 + Foot 40', dur: 80, price: 8800, en: '40＋40', jp: '40＋40', cn: '40＋40' },
-        { value: 'Shiatsu 45 + Foot 45', dur: 90, price: 9680, en: '45＋45', jp: '45＋45', cn: '45＋45' },
-        { value: 'Shiatsu 60 + Foot 60', dur: 120, price: 12100, en: '60＋60', jp: '60＋60', cn: '60＋60' }
+        { value: 'Shiatsu 30 + Foot 30', dur: 60, price: 7150, en: 'Shiatsu + Foot', jp: '指圧＋足ツボ', cn: '指压＋足疗' },
+        { value: 'Shiatsu 40 + Foot 40', dur: 80, price: 8800, en: 'Shiatsu + Foot', jp: '指圧＋足ツボ', cn: '指压＋足疗' },
+        { value: 'Shiatsu 45 + Foot 45', dur: 90, price: 9680, en: 'Shiatsu + Foot', jp: '指圧＋足ツボ', cn: '指压＋足疗' },
+        { value: 'Shiatsu 60 + Foot 60', dur: 120, price: 12100, en: 'Shiatsu + Foot', jp: '指圧＋足ツボ', cn: '指压＋足疗' }
       ]},
       { label: { en: 'Options', jp: 'オプション', cn: '加项' }, items: [
         { value: 'Extra 15 min Body or Foot', dur: 15, price: 2200, en: 'Extra Body or Foot', jp: '整体または足ツボ延長', cn: '整体或足疗加时' },
@@ -273,9 +273,9 @@
         { value: 'Aroma 90 min', dur: 90, price: 11800, en: 'Essential Oil Massage', jp: 'アロマ', cn: '精油按摩' },
         { value: 'Foot Herbal + Aroma 105 min', dur: 105, price: 11800, en: 'Foot Herbal + Aroma', jp: '足裏漢方＋アロマ', cn: '足底漢方＋精油' },
         { value: 'Aroma 120 min', dur: 120, price: 15800, en: 'Essential Oil Massage', jp: 'アロマ', cn: '精油按摩' },
-        { value: 'Foot 50 + Aroma 50', dur: 100, price: 12800, en: 'Foot 50 + Aroma 50', jp: '足ツボ50＋アロマ50', cn: '足疗50＋精油50' },
-        { value: 'Face 30 + Aroma 60', dur: 90, price: 11800, en: 'Face 30 + Aroma 60', jp: 'フェイス30＋アロマ60', cn: '面部30＋精油60' },
-        { value: 'Head 20 + Aroma 70', dur: 90, price: 12100, en: 'Head 20 + Aroma 70', jp: 'ヘッド20＋アロマ70', cn: '头疗20＋精油70' }
+        { value: 'Foot 50 + Aroma 50', dur: 100, price: 12800, en: 'Foot 50 + Aroma 50 min', jp: '足ツボ50分＋アロマ50分', cn: '足疗50分钟＋精油50分钟' },
+        { value: 'Face 30 + Aroma 60', dur: 90, price: 11800, en: 'Face 30 + Aroma 60 min', jp: 'フェイス30分＋アロマ60分', cn: '面部30分钟＋精油60分钟' },
+        { value: 'Head 20 + Aroma 70', dur: 90, price: 12100, en: 'Head 20 + Aroma 70 min', jp: 'ヘッド20分＋アロマ70分', cn: '头疗20分钟＋精油70分钟' }
       ]},
       { label: { en: 'Other', jp: 'その他', cn: '其他' }, items: [
         { value: 'Hot Stone 30 min', dur: 30, price: 4500, en: 'Hot Stone', jp: 'ホットストーン', cn: '热石' },
@@ -359,7 +359,10 @@
         g.items.forEach(function(it){
           var sel = it.value === selectedValue ? ' selected' : '';
           var name = it[currentLang];
-          var isShort = /^(30|40|45|60|90|120)\s*(min|分|分钟)$/.test(name.trim()) || /^\d+＋\d+$/.test(name.trim());
+          // 纯时长名、或「数字＋数字」组合名：不再追加总时长；项目名（如指压＋足疗）仍追加总分钟
+          var isShort = /^(30|40|45|60|90|120)\s*(min|分|分钟)$/.test(name.trim())
+            || /^\d+\s*(min|分|分钟)?\s*[+＋]\s*\d+/.test(name.trim())
+            || (/\d+\s*(min|分|分钟)/i.test(name) && /[+＋]/.test(name));
           var label = (isShort || !it.dur)
             ? name + ' — ¥' + it.price.toLocaleString()
             : name + ' ' + durLabel(it.dur) + ' — ¥' + it.price.toLocaleString();
