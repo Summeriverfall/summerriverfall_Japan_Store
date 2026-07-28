@@ -258,10 +258,10 @@
         { value: 'Bodywork 90 min', dur: 90, price: 9680, en: '90 min', jp: '90分', cn: '90分钟' }
       ]},
       { label: { en: 'Shiatsu + Foot', jp: '指圧＋足ツボ', cn: '指压＋足疗' }, items: [
-        { value: 'Shiatsu 30 + Foot 30', dur: 60, price: 7150, en: 'Shiatsu + Foot', jp: '指圧＋足ツボ', cn: '指压＋足疗' },
-        { value: 'Shiatsu 40 + Foot 40', dur: 80, price: 8800, en: 'Shiatsu + Foot', jp: '指圧＋足ツボ', cn: '指压＋足疗' },
-        { value: 'Shiatsu 45 + Foot 45', dur: 90, price: 9680, en: 'Shiatsu + Foot', jp: '指圧＋足ツボ', cn: '指压＋足疗' },
-        { value: 'Shiatsu 60 + Foot 60', dur: 120, price: 12100, en: 'Shiatsu + Foot', jp: '指圧＋足ツボ', cn: '指压＋足疗' }
+        { value: 'Shiatsu 30 + Foot 30', dur: 60, price: 7150, en: 'Shiatsu Foot Package 60 min', jp: '指圧足ツボコース60分', cn: '指压足疗套餐60分钟' },
+        { value: 'Shiatsu 40 + Foot 40', dur: 80, price: 8800, en: 'Shiatsu Foot Package 80 min', jp: '指圧足ツボコース80分', cn: '指压足疗套餐80分钟' },
+        { value: 'Shiatsu 45 + Foot 45', dur: 90, price: 9680, en: 'Shiatsu Foot Package 90 min', jp: '指圧足ツボコース90分', cn: '指压足疗套餐90分钟' },
+        { value: 'Shiatsu 60 + Foot 60', dur: 120, price: 12100, en: 'Shiatsu Foot Package 120 min', jp: '指圧足ツボコース120分', cn: '指压足疗套餐120分钟' }
       ]},
       { label: { en: 'Options', jp: 'オプション', cn: '加项' }, items: [
         { value: 'Extra 15 min Body or Foot', dur: 15, price: 2200, en: 'Extra Body or Foot', jp: '整体または足ツボ延長', cn: '整体或足疗加时' },
@@ -359,10 +359,11 @@
         g.items.forEach(function(it){
           var sel = it.value === selectedValue ? ' selected' : '';
           var name = it[currentLang];
-          // 纯时长名、或「数字＋数字」组合名：不再追加总时长；项目名（如指压＋足疗）仍追加总分钟
+          // 纯时长名、数字组合名、或名称末尾已带时长：不再追加总时长
           var isShort = /^(30|40|45|60|90|120)\s*(min|分|分钟)$/.test(name.trim())
             || /^\d+\s*(min|分|分钟)?\s*[+＋]\s*\d+/.test(name.trim())
-            || (/\d+\s*(min|分|分钟)/i.test(name) && /[+＋]/.test(name));
+            || (/\d+\s*(min|分|分钟)/i.test(name) && /[+＋]/.test(name))
+            || /\d+\s*(min|分|分钟)\s*$/i.test(name.trim());
           var label = (isShort || !it.dur)
             ? name + ' — ¥' + it.price.toLocaleString()
             : name + ' ' + durLabel(it.dur) + ' — ¥' + it.price.toLocaleString();
