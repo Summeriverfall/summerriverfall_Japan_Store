@@ -1,0 +1,7 @@
+{
+  "_comment": "Archive only. Live WhatsApp number is hard-coded in booking.html as WHATSAPP_NUMBER. Changing this file alone does not change the booking page.",
+  "use": "primary",
+  "primary": "85290744644",
+  "shop_phone_display": "+81 3-6419-7188",
+  "shop_phone_tel": "+81364197188"
+}

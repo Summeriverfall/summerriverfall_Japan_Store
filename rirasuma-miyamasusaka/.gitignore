@@ -1,0 +1,9 @@
+node_modules/
+package-lock.json
+package.json
+source/
+source-images/
+process-images.js
+gen-lang-pages.js
+.DS_Store
+*.log
