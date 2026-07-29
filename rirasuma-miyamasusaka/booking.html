@@ -378,14 +378,14 @@
     }
 
     function pad2(n){ return n<10 ? '0'+n : ''+n; }
-    // Hours 10:00–05:00 overnight; booking slots 10:00–04:00 in 5-min steps (10..23 then 00..04)
+    // Hours 10:00–05:00 overnight; booking slots 10:00–04:00 in 30-min steps (10..23 then 00..04)
     function buildTimeOptions(selectedValue){
       var html = '<option value="">' + t('selectTime') + '</option>';
       var hours = [];
       for (var h = 10; h <= 23; h++) hours.push(h);
       for (var h2 = 0; h2 <= 4; h2++) hours.push(h2);
       hours.forEach(function(h){
-        for (var m = 0; m < 60; m += 5) {
+        for (var m = 0; m < 60; m += 30) {
           if (h === 4 && m > 0) break;
           var v = pad2(h) + ':' + pad2(m);
           html += '<option value="'+v+'"'+(v===selectedValue?' selected':'')+'>'+v+'</option>';
@@ -492,7 +492,7 @@
     function isTimeInHours(ts){
       if (!ts) return false;
       var p = ts.split(':'); var h = parseInt(p[0],10), m = parseInt(p[1],10);
-      if (isNaN(h) || isNaN(m) || m % 5 !== 0) return false;
+      if (isNaN(h) || isNaN(m) || m % 30 !== 0) return false;
       if (h >= 10 && h <= 23) return true;
       if (h >= 0 && h < 4) return true;
       if (h === 4 && m === 0) return true;
