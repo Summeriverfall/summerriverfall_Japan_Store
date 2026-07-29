@@ -434,7 +434,7 @@ ul { list-style: none; }
 .opt-row:hover { background: rgba(166,123,109,0.04); }
 .opt-choice {
   cursor: pointer;
-  grid-template-columns: 1.35rem minmax(0, 1fr) 7rem;
+  grid-template-columns: 1.35rem minmax(0, 1fr) 10rem;
   margin: 0;
 }
 .opt-choice input {
@@ -489,6 +489,21 @@ ul { list-style: none; }
   text-align: right;
   justify-self: stretch;
   font-variant-numeric: tabular-nums;
+  display: inline-flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items: baseline;
+  gap: 0.35rem 0.45rem;
+}
+.opt-price-was {
+  font-size: 0.78rem;
+  font-weight: 400;
+  color: var(--ink-soft);
+  text-decoration: line-through;
+  opacity: 0.75;
+}
+.opt-price-now {
+  color: var(--brand);
 }
 .opt-book {
   display: inline-flex;

@@ -215,68 +215,20 @@
     var currentLang = 'en';
 
         var serviceInfo = {
-      'Aroma Lymph 30 min': 2900,
-      'Aroma Lymph 45 min': 4000,
-      'Aroma Lymph 60 min': 5380,
-      'Aroma Lymph 75 min': 6450,
-      'Aroma Lymph 90 min': 7650,
-      'Aroma Lymph 120 min': 9900,
-      'Foot Reflexology 30 min': 2500,
-      'Foot Reflexology 45 min': 3800,
-      'Foot Reflexology 60 min': 5000,
-      'Body Shiatsu 30 min': 2500,
-      'Body Shiatsu 60 min': 4380,
-      'Body Shiatsu 90 min': 6380,
-      'Body Shiatsu 120 min': 8380,
-      'Set A Foot+Shiatsu 60 min': 4380,
-      'Set B Foot+Shiatsu+Head 70 min': 4980,
-      'Set C Foot+Shiatsu 75 min': 5380,
-      'Set A2 Aroma+Foot 60 min': 5380,
-      'Set D2 Aroma+Head+Foot 90 min': 6800,
-      'Hyper Knife 1 Area 10 min': 2200,
-      'Hyper Knife 2 Areas 20 min': 4400,
-      'Hyper Knife 3 Areas 30 min': 6600,
-      'Hyper Knife 4 Areas 40 min': 8800,
-      'Hyper Knife Face 60 min': 6980,
-      'Dry Head Spa 50 min': 3500
+      'Special Menu 30 min': 4000,
+      'Special Menu 60 min': 8000,
+      'Special Menu 90 min': 12000,
+      'Special Menu 120 min': 16000,
+      'Special Menu 180 min': 24000
     };
 
         var serviceGroups = [
-      { label: { en: 'Aroma Lymph', jp: 'アロマリンパ', cn: '精油淋巴' }, items: [
-        { value: 'Aroma Lymph 30 min', dur: 30, price: 2900, en: 'Aroma Lymph (upper/lower)', jp: 'アロマリンパ（上半身or下半身）', cn: '精油淋巴（上半身或下半身）' },
-        { value: 'Aroma Lymph 45 min', dur: 45, price: 4000, en: 'Aroma Lymph (upper/lower)', jp: 'アロマリンパ（上半身or下半身）', cn: '精油淋巴（上半身或下半身）' },
-        { value: 'Aroma Lymph 60 min', dur: 60, price: 5380, en: 'Aroma Lymph (full back)', jp: 'アロマリンパ（背面全身）', cn: '精油淋巴（背面全身）' },
-        { value: 'Aroma Lymph 75 min', dur: 75, price: 6450, en: 'Aroma Lymph (back + head/abdomen)', jp: 'アロマリンパ（背面＋頭or腹）', cn: '精油淋巴（背面＋头或腹）' },
-        { value: 'Aroma Lymph 90 min', dur: 90, price: 7650, en: 'Aroma Lymph (back + knees to soles)', jp: 'アロマリンパ（背面＋膝〜足裏）', cn: '精油淋巴（背面＋膝至足底）' },
-        { value: 'Aroma Lymph 120 min', dur: 120, price: 9900, en: 'Aroma Lymph (back + full front)', jp: 'アロマリンパ（背面＋正面全身）', cn: '精油淋巴（背面＋正面全身）' }
-      ]},
-      { label: { en: 'Foot Reflexology', jp: '足裏リフレ', cn: '足底反射' }, items: [
-        { value: 'Foot Reflexology 30 min', dur: 30, price: 2500, en: 'Foot Reflexology', jp: '足裏', cn: '足底反射' },
-        { value: 'Foot Reflexology 45 min', dur: 45, price: 3800, en: 'Foot Reflexology', jp: '足裏', cn: '足底反射' },
-        { value: 'Foot Reflexology 60 min', dur: 60, price: 5000, en: 'Foot Reflexology', jp: '足裏', cn: '足底反射' }
-      ]},
-      { label: { en: 'Taiwanese Shiatsu', jp: '台湾式指圧', cn: '台湾指压' }, items: [
-        { value: 'Body Shiatsu 30 min', dur: 30, price: 2500, en: 'Taiwanese Shiatsu', jp: '台湾式指圧', cn: '台湾指压' },
-        { value: 'Body Shiatsu 60 min', dur: 60, price: 4380, en: 'Taiwanese Shiatsu', jp: '台湾式指圧', cn: '台湾指压' },
-        { value: 'Body Shiatsu 90 min', dur: 90, price: 6380, en: 'Taiwanese Shiatsu', jp: '台湾式指圧', cn: '台湾指压' },
-        { value: 'Body Shiatsu 120 min', dur: 120, price: 8380, en: 'Taiwanese Shiatsu', jp: '台湾式指圧', cn: '台湾指压' }
-      ]},
-      { label: { en: 'Set Courses', jp: 'セットコース', cn: '套餐课程' }, items: [
-        { value: 'Set A Foot+Shiatsu 60 min', dur: 60, price: 4380, en: 'Set A Foot + Shiatsu', jp: 'セットA 足裏＋指圧', cn: '套餐A 足底＋指压' },
-        { value: 'Set B Foot+Shiatsu+Head 70 min', dur: 70, price: 4980, en: 'Set B Foot + Shiatsu + Head', jp: 'セットB 足裏＋指圧＋頭', cn: '套餐B 足底＋指压＋头' },
-        { value: 'Set C Foot+Shiatsu 75 min', dur: 75, price: 5380, en: 'Set C Foot + Shiatsu', jp: 'セットC 足裏＋指圧', cn: '套餐C 足底＋指压' },
-        { value: 'Set A2 Aroma+Foot 60 min', dur: 60, price: 5380, en: 'Set A2 Aroma + Foot', jp: 'セットA2 アロマ＋足裏', cn: '套餐A2 淋巴＋足底' },
-        { value: 'Set D2 Aroma+Head+Foot 90 min', dur: 90, price: 6800, en: 'Set D2 Aroma + Head + Foot', jp: 'セットD2 アロマ＋ヘッド＆足ツボ', cn: '套餐D2 淋巴＋头＆足' }
-      ]},
-      { label: { en: 'Hyper Knife', jp: 'ハイパーナイフ', cn: 'Hyper Knife' }, items: [
-        { value: 'Hyper Knife 1 Area 10 min', dur: 10, price: 2200, en: 'Hyper Knife (1 area)', jp: 'ハイパーナイフ（一部位）', cn: 'Hyper Knife（一部位）' },
-        { value: 'Hyper Knife 2 Areas 20 min', dur: 20, price: 4400, en: 'Hyper Knife (2 areas)', jp: 'ハイパーナイフ（二部位）', cn: 'Hyper Knife（二部位）' },
-        { value: 'Hyper Knife 3 Areas 30 min', dur: 30, price: 6600, en: 'Hyper Knife (3 areas)', jp: 'ハイパーナイフ（三部位）', cn: 'Hyper Knife（三部位）' },
-        { value: 'Hyper Knife 4 Areas 40 min', dur: 40, price: 8800, en: 'Hyper Knife (4 areas)', jp: 'ハイパーナイフ（四部位）', cn: 'Hyper Knife（四部位）' },
-        { value: 'Hyper Knife Face 60 min', dur: 60, price: 6980, en: 'Hyper Knife Face', jp: 'ハイパーナイフ徹底小顔', cn: 'Hyper Knife 小脸' }
-      ]},
-      { label: { en: 'Dry Head Spa', jp: 'ドライヘッドスパ', cn: '干式头部SPA' }, items: [
-        { value: 'Dry Head Spa 50 min', dur: 50, price: 3500, en: 'Dry Head Spa', jp: 'ドライヘッドスパ', cn: '干式头部SPA' }
+      { label: { en: 'Special Menu', jp: 'スペシャルメニュー', cn: '特惠菜单' }, items: [
+        { value: 'Special Menu 30 min', dur: 30, price: 4000, en: 'Special 30 min (any treatments)', jp: 'スペシャル 30分（店内メニュー自由選択）', cn: '特惠 30分钟（店内项目任选）' },
+        { value: 'Special Menu 60 min', dur: 60, price: 8000, en: 'Special 60 min (any treatments)', jp: 'スペシャル 60分（店内メニュー自由選択）', cn: '特惠 60分钟（店内项目任选）' },
+        { value: 'Special Menu 90 min', dur: 90, price: 12000, en: 'Special 90 min (any treatments)', jp: 'スペシャル 90分（店内メニュー自由選択）', cn: '特惠 90分钟（店内项目任选）' },
+        { value: 'Special Menu 120 min', dur: 120, price: 16000, en: 'Special 120 min (any treatments)', jp: 'スペシャル 120分（店内メニュー自由選択）', cn: '特惠 120分钟（店内项目任选）' },
+        { value: 'Special Menu 180 min', dur: 180, price: 24000, en: 'Special 180 min (any treatments)', jp: 'スペシャル 180分（店内メニュー自由選択）', cn: '特惠 180分钟（店内项目任选）' }
       ]}
     ];
 
@@ -314,7 +266,7 @@
         samePackageText:'全員同じコースを選択', additionalServicesTitle:'追加ゲストのコース（異なる場合）',
         submitButton:'送信して WhatsApp を開く', redirecting:'移動中…',
         previewTitle:'WhatsApp メッセージプレビュー', previewHint:'送信内容を確認するため、上記の必須項目をすべてご記入ください。',
-        paymentNote:'ご来店後・施術前にお支払いください。シーツ代¥200別途。<br>毎日 11:00〜翌5:00 · 東京都渋谷区道玄坂1-19-13 トップヒル並木8階',
+        paymentNote:'ご来店後・施術前にお支払いください。シーツ代（税込¥200）は別途頂戴いたします。<br>毎日 11:00〜翌5:00 · 東京都渋谷区道玄坂1-19-13 トップヒル並木8階',
         guestUnit: function(n){ return n + '名'; },
         waIntro:'こんにちは、リフレーテ道玄坂本店のご予約を希望します。\n\n',
         waName:'お名前', waDate:'日付', waTime:'時間', waGuests:'人数',
