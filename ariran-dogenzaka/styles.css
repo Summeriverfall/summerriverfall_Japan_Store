@@ -355,7 +355,7 @@ ul { list-style: none; }
 
 .features {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 1.4rem;
 }
 .feature {
@@ -480,6 +480,12 @@ ul { list-style: none; }
   font-weight: 500;
   min-width: 0;
   text-wrap: balance;
+  line-break: strict;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+.u-nowrap {
+  white-space: nowrap;
 }
 .opt-price {
   font-family: var(--font-display);
@@ -489,13 +495,16 @@ ul { list-style: none; }
   text-align: right;
   justify-self: stretch;
   font-variant-numeric: tabular-nums;
-  display: inline-flex;
-  flex-wrap: wrap;
-  justify-content: flex-end;
+  display: grid;
+  grid-template-columns: minmax(4.75rem, max-content) minmax(4.25rem, max-content);
+  justify-content: end;
   align-items: baseline;
-  gap: 0.35rem 0.45rem;
+  column-gap: 0.45rem;
+  row-gap: 0.15rem;
 }
 .opt-price-was {
+  grid-column: 1;
+  justify-self: end;
   font-size: 0.78rem;
   font-weight: 400;
   color: var(--ink-soft);
@@ -503,6 +512,14 @@ ul { list-style: none; }
   opacity: 0.75;
 }
 .opt-price-now {
+  grid-column: 2;
+  justify-self: end;
+  color: var(--brand);
+}
+.opt-price-solo {
+  /* Align with pre-discount (was) column, not the discounted now column */
+  grid-column: 1;
+  justify-self: end;
   color: var(--brand);
 }
 .opt-book {
@@ -1063,6 +1080,7 @@ ul { list-style: none; }
     grid-area: price;
     text-align: left;
     justify-self: start;
+    justify-content: start;
     min-width: 6.5rem;
   }
   .opt-row:not(.opt-choice) .opt-book { grid-area: book; justify-self: end; }
@@ -1079,6 +1097,7 @@ ul { list-style: none; }
     grid-area: price;
     text-align: left;
     justify-self: start;
+    justify-content: start;
     min-width: 6.5rem;
   }
   .opt-group-foot {
