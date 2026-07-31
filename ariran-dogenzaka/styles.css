@@ -557,6 +557,8 @@ ul { list-style: none; }
   color: color-mix(in srgb, var(--ink) 42%, var(--ink-soft));
   line-height: 1.5;
   letter-spacing: 0;
+  white-space: normal;
+  overflow-wrap: break-word;
   text-wrap: balance;
 }
 .opt-desc {
@@ -565,11 +567,13 @@ ul { list-style: none; }
   font-size: 0.84rem;
   font-weight: 400;
   color: var(--ink-soft);
-  line-height: 1.4;
+  line-height: 1.45;
   letter-spacing: 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  white-space: normal;
+  overflow: visible;
+  text-overflow: unset;
+  overflow-wrap: break-word;
+  text-wrap: pretty;
 }
 .u-nowrap {
   white-space: nowrap;
