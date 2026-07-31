@@ -242,10 +242,28 @@
     };
 
             var serviceGroups = [
-      { label: { en: 'Foot Massage', jp: '足裏マッサージ', cn: '足底按摩' }, items: [
-        { value: 'Foot 30 min', dur: 30, price: 2000, en: 'Foot 30 min', jp: '足裏 30分', cn: '足底 30分' },
-        { value: 'Foot 45 min', dur: 45, price: 3000, en: 'Foot 45 min', jp: '足裏 45分', cn: '足底 45分' },
-        { value: 'Foot 60 min', dur: 60, price: 4000, en: 'Foot 60 min', jp: '足裏 60分', cn: '足底 60分' }
+      { label: { en: 'Full Courses', jp: 'フルコース', cn: '全套课程' }, items: [
+        { value: 'King Course 90 min', dur: 90, price: 7000, en: 'King Course 90 min', jp: '王様コース 90分', cn: '王様课程 90分' },
+        { value: 'Queen Course 90 min', dur: 90, price: 8050, en: 'Queen Course 90 min', jp: '女王コース 90分', cn: '女王课程 90分' },
+        { value: 'Ariran Course 1 120 min', dur: 120, price: 8750, en: 'Ariran Course 1 120 min', jp: '阿里郎① 120分', cn: '阿里郎① 120分' },
+        { value: 'Ariran Course 2 180 min', dur: 180, price: 15450, en: 'Ariran Course 2 180 min', jp: '阿里郎② 180分', cn: '阿里郎② 180分' }
+      ]},
+      { label: { en: 'Luxury & Bliss 90 min', jp: '贅沢至福90分', cn: '奢华至福90分' }, items: [
+        { value: 'Luxury Foot45+Aroma45 90 min', dur: 90, price: 6600, en: 'Foot 45min + Aroma 45min', jp: '足裏45分＋アロマ45分', cn: '足底45分＋精油45分' },
+        { value: 'Luxury Foot30+Aroma60 90 min', dur: 90, price: 6600, en: 'Foot 30min + Aroma 60min', jp: '足裏30分＋アロマ60分', cn: '足底30分＋精油60分' },
+        { value: 'Bliss Foot30+Body60 90 min', dur: 90, price: 5400, en: 'Foot 30min + Body 60min', jp: '足裏30分＋整体60分', cn: '足底30分＋整体60分' },
+        { value: 'Bliss Foot45+Body45 90 min', dur: 90, price: 5400, en: 'Foot 45min + Body 45min', jp: '足裏45分＋整体45分', cn: '足底45分＋整体45分' },
+        { value: 'Bliss Foot60+Body30 90 min', dur: 90, price: 5400, en: 'Foot 60min + Body 30min', jp: '足裏60分＋整体30分', cn: '足底60分＋整体30分' }
+      ]},
+      { label: { en: 'Special 75 min', jp: '特別75分', cn: '特别75分' }, items: [
+        { value: 'Special Foot30+Body45 75 min', dur: 75, price: 4900, en: 'Foot 30min + Body 45min', jp: '足裏30分＋整体45分', cn: '足底30分＋整体45分' },
+        { value: 'Special Foot45+Body30 75 min', dur: 75, price: 4900, en: 'Foot 45min + Body 30min', jp: '足裏45分＋整体30分', cn: '足底45分＋整体30分' },
+        { value: 'Special Body+Aroma+Head 75 min', dur: 75, price: 5400, en: 'Body+Aroma+head 75 min', jp: '整体＋アロマ＋頭・手 75分', cn: '整体＋精油＋头・手 75分' }
+      ]},
+      { label: { en: 'Trial 60 min', jp: 'お試し60分', cn: '体验60分' }, items: [
+        { value: 'Trial Foot+Aroma 60 min', dur: 60, price: 3900, en: 'Foot+Aroma 60 min', jp: '足裏＋アロマ 60分', cn: '足底＋精油 60分' },
+        { value: 'Trial Foot+Body 60 min', dur: 60, price: 3900, en: 'Foot+Bodywork 60 min', jp: '足裏＋整体 60分', cn: '足底＋整体 60分' },
+        { value: 'Trial Foot+Option 60 min', dur: 60, price: 3900, en: 'Foot+option15 60 min', jp: '足裏＋オプション15 60分', cn: '足底＋选项15 60分' }
       ]},
       { label: { en: 'Aroma Oil', jp: 'アロマオイル', cn: '精油按摩' }, items: [
         { value: 'Aroma 30 min', dur: 30, price: 2700, en: 'Aroma 30 min (upper/lower)', jp: 'アロマ 30分（上or下）', cn: '精油 30分（上或下）' },
@@ -257,30 +275,10 @@
         { value: 'Bodywork 30 min', dur: 30, price: 3000, en: 'Bodywork 30 min', jp: '整体 30分', cn: '整体 30分' },
         { value: 'Bodywork 60 min', dur: 60, price: 3900, en: 'Bodywork 60 min', jp: '整体 60分', cn: '整体 60分' }
       ]},
-      { label: { en: 'Trial 60 min', jp: 'お試し60分', cn: '体验60分' }, items: [
-        { value: 'Trial Foot+Aroma 60 min', dur: 60, price: 3900, en: 'Foot+Aroma 60 min', jp: '足裏＋アロマ 60分', cn: '足底＋精油 60分' },
-        { value: 'Trial Foot+Body 60 min', dur: 60, price: 3900, en: 'Foot+Bodywork 60 min', jp: '足裏＋整体 60分', cn: '足底＋整体 60分' },
-        { value: 'Trial Foot+Option 60 min', dur: 60, price: 3900, en: 'Foot+option15 60 min', jp: '足裏＋オプション15 60分', cn: '足底＋选项15 60分' }
-      ]},
-      { label: { en: 'Special 75 min', jp: '特別75分', cn: '特别75分' }, items: [
-        { value: 'Special Foot30+Body45 75 min', dur: 75, price: 4900, en: 'Foot 30min + Body 45min', jp: '足裏30分＋整体45分', cn: '足底30分＋整体45分' },
-        { value: 'Special Foot45+Body30 75 min', dur: 75, price: 4900, en: 'Foot 45min + Body 30min', jp: '足裏45分＋整体30分', cn: '足底45分＋整体30分' },
-        { value: 'Special Body+Aroma+Head 75 min', dur: 75, price: 5400, en: 'Body+Aroma+head 75 min', jp: '整体＋アロマ＋頭・手 75分', cn: '整体＋精油＋头・手 75分' }
-      ]},
-      { label: { en: 'Bliss 90 min', jp: '至福90分', cn: '至福90分' }, items: [
-        { value: 'Bliss Foot30+Body60 90 min', dur: 90, price: 5400, en: 'Foot 30min + Body 60min', jp: '足裏30分＋整体60分', cn: '足底30分＋整体60分' },
-        { value: 'Bliss Foot45+Body45 90 min', dur: 90, price: 5400, en: 'Foot 45min + Body 45min', jp: '足裏45分＋整体45分', cn: '足底45分＋整体45分' },
-        { value: 'Bliss Foot60+Body30 90 min', dur: 90, price: 5400, en: 'Foot 60min + Body 30min', jp: '足裏60分＋整体30分', cn: '足底60分＋整体30分' }
-      ]},
-      { label: { en: 'Luxury 90 min', jp: '贅沢90分', cn: '奢华90分' }, items: [
-        { value: 'Luxury Foot45+Aroma45 90 min', dur: 90, price: 6600, en: 'Foot 45min + Aroma 45min', jp: '足裏45分＋アロマ45分', cn: '足底45分＋精油45分' },
-        { value: 'Luxury Foot30+Aroma60 90 min', dur: 90, price: 6600, en: 'Foot 30min + Aroma 60min', jp: '足裏30分＋アロマ60分', cn: '足底30分＋精油60分' }
-      ]},
-      { label: { en: 'Full Courses', jp: 'フルコース', cn: '全套课程' }, items: [
-        { value: 'King Course 90 min', dur: 90, price: 7000, en: 'King Course 90 min', jp: '王様コース 90分', cn: '王様课程 90分' },
-        { value: 'Queen Course 90 min', dur: 90, price: 8050, en: 'Queen Course 90 min', jp: '女王コース 90分', cn: '女王课程 90分' },
-        { value: 'Ariran Course 1 120 min', dur: 120, price: 8750, en: 'Ariran Course 1 120 min', jp: '阿里郎① 120分', cn: '阿里郎① 120分' },
-        { value: 'Ariran Course 2 180 min', dur: 180, price: 15450, en: 'Ariran Course 2 180 min', jp: '阿里郎② 180分', cn: '阿里郎② 180分' }
+      { label: { en: 'Foot Massage', jp: '足裏マッサージ', cn: '足底按摩' }, items: [
+        { value: 'Foot 30 min', dur: 30, price: 2000, en: 'Foot 30 min', jp: '足裏 30分', cn: '足底 30分' },
+        { value: 'Foot 45 min', dur: 45, price: 3000, en: 'Foot 45 min', jp: '足裏 45分', cn: '足底 45分' },
+        { value: 'Foot 60 min', dur: 60, price: 4000, en: 'Foot 60 min', jp: '足裏 60分', cn: '足底 60分' }
       ]}
     ];
 
