@@ -301,7 +301,7 @@
         waIntro:'Hello, I would like to make a reservation at Ariran Relaxation Shibuya Dogenzaka (阿里郎リラクゼーション渋谷道玄坂店).\n\n',
         waName:'Name', waDate:'Date', waTime:'Time', waGuests:'Number of Guests',
         waGuestCourse: function(n){ return 'Guest ' + n + ' Course'; },
-        waSameCourse:'All guests choose the same course', waTotal:'Total',
+        waSameCourse:'All guests choose the same course', waSheet:'Sheet fee', waTotal:'Total',
         dateLocale:'en-US' },
       jp: { htmlLang:'ja', title:'ご予約 — 阿里郎(アリラン) リラクゼーション渋谷道玄坂店', backLink:'ホームに戻る', brandBadge:'ご予約',
         bookingSubtitle:'以下のフォームにご記入のうえ、ご予約ください',
@@ -321,7 +321,7 @@
         waIntro:'こんにちは、阿里郎(アリラン) リラクゼーション渋谷道玄坂店のご予約を希望します。\n\n',
         waName:'お名前', waDate:'日付', waTime:'時間', waGuests:'人数',
         waGuestCourse: function(n){ return 'ゲスト' + n + ' コース'; },
-        waSameCourse:'全員同じコース', waTotal:'合計',
+        waSameCourse:'全員同じコース', waSheet:'シーツ代', waTotal:'合計',
         dateLocale:'ja-JP' },
       cn: { htmlLang:'zh-CN', title:'预约 — Ariran 阿里郎(アリラン) リラクゼーション渋谷道玄坂店', backLink:'返回首页', brandBadge:'在线预约',
         bookingSubtitle:'请填写以下信息完成预约',
@@ -341,7 +341,7 @@
         waIntro:'您好，我想预约阿里郎(アリラン) リラクゼーション渋谷道玄坂店（Ariran）。\n\n',
         waName:'姓名', waDate:'日期', waTime:'时间', waGuests:'人数',
         waGuestCourse: function(n){ return '客人' + n + ' 项目'; },
-        waSameCourse:'所有客人都选择相同项目', waTotal:'合计',
+        waSameCourse:'所有客人都选择相同项目', waSheet:'床单费', waTotal:'合计',
         dateLocale:'zh-CN' }
     };
 
@@ -501,6 +501,13 @@
 
     function servicePrice(s){ return serviceInfo[s] || 0; }
 
+    // Shop rule: foot-only ¥200 / body or combo ¥400 (per guest)
+    function sheetFeeFor(svc){
+      if (!svc) return 0;
+      if (/^Foot\s+\d+\s*min$/i.test(String(svc).trim())) return 200;
+      return 400;
+    }
+
     function isTimeInHours(ts){
       if (!ts) return false;
       var p = ts.split(':'); var h = parseInt(p[0],10), m = parseInt(p[1],10);
@@ -550,8 +557,17 @@
       m += t('waGuestCourse')(1)+' : '+main+' (¥'+servicePrice(main).toLocaleString()+')\n';
       var same = fd.get('samePackage')==='on';
       var total = servicePrice(main);
-      if (gc>1 && same){ m += t('waSameCourse')+'\n'; total = servicePrice(main)*gc; }
-      else { for (var i=1;i<gc;i++){ var gs=fd.get('guest'+i+'Service'); if(gs&&gs.trim()){ m += t('waGuestCourse')(i+1)+' : '+gs+' (¥'+servicePrice(gs).toLocaleString()+')\n'; total += servicePrice(gs); } } }
+      var guestServices = [main];
+      if (gc>1 && same){ m += t('waSameCourse')+'\n'; total = servicePrice(main)*gc; for (var si=1;si<gc;si++) guestServices.push(main); }
+      else { for (var i=1;i<gc;i++){ var gs=fd.get('guest'+i+'Service'); if(gs&&gs.trim()){ m += t('waGuestCourse')(i+1)+' : '+gs+' (¥'+servicePrice(gs).toLocaleString()+')\n'; total += servicePrice(gs); guestServices.push(gs); } } }
+      var sheetFees = guestServices.map(sheetFeeFor);
+      var sheetTotal = sheetFees.reduce(function(a,b){ return a+b; }, 0);
+      if (sheetTotal>0){
+        var allSameSheet = sheetFees.every(function(f){ return f===sheetFees[0]; });
+        if (allSameSheet) m += t('waSheet')+': ¥'+sheetFees[0].toLocaleString()+' ×'+sheetFees.length+' (¥'+sheetTotal.toLocaleString()+')\n';
+        else m += t('waSheet')+': '+sheetFees.map(function(f){ return '¥'+f.toLocaleString(); }).join(' + ')+' (¥'+sheetTotal.toLocaleString()+')\n';
+        total += sheetTotal;
+      }
       if (total>0){ m += '\n'+t('waTotal')+': ¥'+total.toLocaleString(); }
       return m;
     }

@@ -301,7 +301,7 @@
         waIntro:'Hello, I would like to make a reservation at Rifurete Dogenzaka (リフレーテ道玄坂本店).\n\n',
         waName:'Name', waDate:'Date', waTime:'Time', waGuests:'Number of Guests',
         waGuestCourse: function(n){ return 'Guest ' + n + ' Course'; },
-        waSameCourse:'All guests choose the same course', waTotal:'Total',
+        waSameCourse:'All guests choose the same course', waSheet:'Sheet fee', waTotal:'Total',
         dateLocale:'en-US' },
       jp: { htmlLang:'ja', title:'ご予約 — リフレーテ道玄坂本店', backLink:'ホームに戻る', brandBadge:'ご予約',
         bookingSubtitle:'以下のフォームにご記入のうえ、ご予約ください',
@@ -324,7 +324,7 @@
         waIntro:'こんにちは、リフレーテ道玄坂本店のご予約を希望します。\n\n',
         waName:'お名前', waDate:'日付', waTime:'時間', waGuests:'人数',
         waGuestCourse: function(n){ return 'ゲスト' + n + ' コース'; },
-        waSameCourse:'全員同じコース', waTotal:'合計',
+        waSameCourse:'全員同じコース', waSheet:'シーツ代', waTotal:'合計',
         dateLocale:'ja-JP' },
       cn: { htmlLang:'zh-CN', title:'预约 — Rifurete リフレーテ道玄坂本店', backLink:'返回首页', brandBadge:'在线预约',
         bookingSubtitle:'请填写以下信息完成预约',
@@ -347,7 +347,7 @@
         waIntro:'您好，我想预约リフレーテ道玄坂本店（Rifurete）。\n\n',
         waName:'姓名', waDate:'日期', waTime:'时间', waGuests:'人数',
         waGuestCourse: function(n){ return '客人' + n + ' 项目'; },
-        waSameCourse:'所有客人都选择相同项目', waTotal:'合计',
+        waSameCourse:'所有客人都选择相同项目', waSheet:'床单费', waTotal:'合计',
         dateLocale:'zh-CN' }
     };
 
@@ -607,8 +607,12 @@
       if (pickLabels.length){ m += t('waPicks')+': '+pickLabels.join(' · ')+'\n'; }
       var same = fd.get('samePackage')==='on';
       var total = servicePrice(main);
-      if (gc>1 && same){ m += t('waSameCourse')+'\n'; total = servicePrice(main)*gc; }
-      else { for (var i=1;i<gc;i++){ var gs=fd.get('guest'+i+'Service'); if(gs&&gs.trim()){ m += t('waGuestCourse')(i+1)+' : '+gs+' (¥'+servicePrice(gs).toLocaleString()+')\n'; total += servicePrice(gs); } } }
+      var guestCountForSheet = 1;
+      if (gc>1 && same){ m += t('waSameCourse')+'\n'; total = servicePrice(main)*gc; guestCountForSheet = gc; }
+      else { guestCountForSheet = 1; for (var i=1;i<gc;i++){ var gs=fd.get('guest'+i+'Service'); if(gs&&gs.trim()){ m += t('waGuestCourse')(i+1)+' : '+gs+' (¥'+servicePrice(gs).toLocaleString()+')\n'; total += servicePrice(gs); guestCountForSheet++; } } }
+      var SHEET_FEE = 200;
+      var sheetTotal = SHEET_FEE * guestCountForSheet;
+      if (sheetTotal>0){ m += t('waSheet')+': ¥'+SHEET_FEE.toLocaleString()+' ×'+guestCountForSheet+' (¥'+sheetTotal.toLocaleString()+')\n'; total += sheetTotal; }
       if (total>0){ m += '\n'+t('waTotal')+': ¥'+total.toLocaleString(); }
       return m;
     }
