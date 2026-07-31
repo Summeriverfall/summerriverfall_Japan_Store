@@ -550,6 +550,15 @@ ul { list-style: none; }
   line-height: 1.35;
   text-wrap: balance;
 }
+.opt-choice.has-soft-name .opt-name {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 0.9rem;
+  color: color-mix(in srgb, var(--ink) 42%, var(--ink-soft));
+  line-height: 1.5;
+  letter-spacing: 0;
+  text-wrap: balance;
+}
 .opt-desc {
   display: block;
   max-width: 100%;
