@@ -54,7 +54,7 @@
             <h2 class="section-title">リフレーテ<br>道玄坂本店</h2>
             <div class="gold-rule"></div>
             <p>リフレーテ道玄坂本店では、アロマオイルトリートメント・足つぼリフレ・台湾式指圧・ヘッドスパ・日本製先進スリミングマシンをご用意しております。</p>
-            <p>全メニュー完全個室。日本語・中国語・英語対応。毎日11:00〜翌5:00・年中無休。</p>
+            <p>全メニュー完全個室。毎日11:00〜翌5:00・年中無休。</p>
           </div>
           <div class="about-media">
             <img src="../assets/images/about.webp" alt="リフレーテ道玄坂本店 受付" loading="lazy">
@@ -62,24 +62,25 @@
         </div>
         <div class="features">
           <div class="feature">
-            <svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="14" rx="1.5"/><path d="M8 5v14M16 5v14"/></svg>
-            <h3>完全個室</h3>
-            <p>全メニュー完全個室で落ち着いて施術を受けられます。</p>
+            <span class="feature-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3.5c3.5 4.2 6 7.4 6 10.5a6 6 0 0 1-12 0c0-3.1 2.5-6.3 6-10.5z"/></svg></span>
+            <div class="feature-copy">
+              <h3>ボディ＆リンパ</h3>
+              <p>アロマオイル・台湾式指圧・足つぼリフレで、日々の疲れをほぐせます。</p>
+            </div>
           </div>
           <div class="feature">
-            <svg viewBox="0 0 24 24"><path d="M12 3.5c3.5 4.2 6 7.4 6 10.5a6 6 0 0 1-12 0c0-3.1 2.5-6.3 6-10.5z"/></svg>
-            <h3>ボディ＆リンパ</h3>
-            <p>アロマオイルトリートメント・台湾式指圧・足つぼリフレで日々の疲れを癒します。</p>
+            <span class="feature-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="14" rx="1.5"/><path d="M8 5v14M16 5v14"/></svg></span>
+            <div class="feature-copy">
+              <h3>渋谷道玄坂すぐ</h3>
+              <p>渋谷駅徒歩約<span class="u-nowrap">4分</span>。お買い物や食事のあとにも立ち寄りやすい立地です。</p>
+            </div>
           </div>
           <div class="feature">
-            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="7.5"/><path d="M12 8.5v4l2.5 1.5"/></svg>
-            <h3>翌5時まで営業</h3>
-            <p>毎日11:00〜翌5:00。お買い物やお仕事帰りにもお気軽にご利用ください。</p>
-          </div>
-          <div class="feature">
-            <svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h10"/></svg>
-            <h3>多言語対応</h3>
-            <p>日本語・中国語・英語でご案内します。</p>
+            <span class="feature-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="7.5"/><path d="M12 8.5v4l2.5 1.5"/></svg></span>
+            <div class="feature-copy">
+              <h3>深夜まで営業</h3>
+              <p>仕事帰りや遅い時間でも利用しやすく、ゆっくり休んでから帰れます。</p>
+            </div>
           </div>
         </div>
       </div>
@@ -93,51 +94,143 @@
           <p class="section-lead">表示価格は税込のスペシャル料金です。シーツ代（税込¥200）は別途頂戴いたします。</p>
         </header>
 
-        <p class="section-lead" style="margin:1.2rem 0 0.4rem;font-size:0.85rem;opacity:0.85;">全メニュー、シーツ代（税込¥200）を別途頂戴いたします。</p>
-
         <div class="menu-group">
-          <article class="opt-group" data-opt-select>
+          <article class="opt-group" data-opt-select data-menu-flex>
             <div class="opt-group-head">
               <div>
                 <div class="ogh-name">スペシャルメニュー</div>
-                <span class="opt-sub">時間制の特別価格です。時間内はアロマオイルトリートメント・足つぼリフレ・台湾式指圧・ヘッドスパ・日本製先進スリミングマシンなど、店内の施術を自由にお選びいただけます（下記は一例）。</span>
+                <span class="opt-sub">時間制の特別価格です。おすすめ組み合わせで予約するか、時間内でアロマオイルトリートメント・足つぼリフレ・台湾式指圧・ヘッドスパ・スリミングマシンなどを自由にお選びいただけます。</span>
               </div>
             </div>
 
-            <label class="opt-row opt-choice">
+            <label class="menu-mode-toggle">
+              <input type="checkbox" class="js-package-mode" checked>
+              <span class="menu-mode-toggle__box" aria-hidden="true"></span>
+              <span class="menu-mode-toggle__copy">
+                <strong>おすすめ組み合わせで予約</strong>
+                <small>チェックを外すと、時間内で施術を自由に選べます。</small>
+              </span>
+            </label>
+
+            <div class="menu-panel is-active" data-panel="package">
+              <p class="menu-panel-label">おすすめ組み合わせ</p>
+              <label class="opt-row opt-choice">
               <input type="radio" name="opt-special-jp" value="Special Menu 30 min" checked>
               <span class="opt-radio" aria-hidden="true"></span>
               <span class="opt-duration">30分 · 例：肩・首・頭 または ふくらはぎ・足裏</span>
-              <span class="opt-price"><span class="opt-price-was">¥5,250</span><span class="opt-price-now">¥4,000</span></span>
+              <span class="opt-price"><span class="opt-price-solo">¥4,000</span></span>
             </label>
 
-            <label class="opt-row opt-choice">
+              <label class="opt-row opt-choice">
               <input type="radio" name="opt-special-jp" value="Special Menu 60 min">
               <span class="opt-radio" aria-hidden="true"></span>
               <span class="opt-duration">60分 · 例：背面全身＋足裏 または 正面全身＋足裏</span>
-              <span class="opt-price"><span class="opt-price-was">¥10,500</span><span class="opt-price-now">¥8,000</span></span>
+              <span class="opt-price"><span class="opt-price-solo">¥8,000</span></span>
             </label>
 
-            <label class="opt-row opt-choice">
+              <label class="opt-row opt-choice">
               <input type="radio" name="opt-special-jp" value="Special Menu 90 min">
               <span class="opt-radio" aria-hidden="true"></span>
               <span class="opt-duration">90分 · 例：背面全身・ヘッドスパ・足裏</span>
-              <span class="opt-price"><span class="opt-price-was">¥15,750</span><span class="opt-price-now">¥12,000</span></span>
+              <span class="opt-price"><span class="opt-price-solo">¥12,000</span></span>
             </label>
 
-            <label class="opt-row opt-choice">
+              <label class="opt-row opt-choice">
               <input type="radio" name="opt-special-jp" value="Special Menu 120 min">
               <span class="opt-radio" aria-hidden="true"></span>
               <span class="opt-duration">120分 · 例：背面＋正面全身・ヘッドスパ・足裏</span>
-              <span class="opt-price"><span class="opt-price-was">¥21,000</span><span class="opt-price-now">¥16,000</span></span>
+              <span class="opt-price"><span class="opt-price-solo">¥16,000</span></span>
             </label>
 
-            <label class="opt-row opt-choice">
+              <label class="opt-row opt-choice">
               <input type="radio" name="opt-special-jp" value="Special Menu 180 min">
               <span class="opt-radio" aria-hidden="true"></span>
               <span class="opt-duration">180分 · 例：背面＋正面・ヘッド・足裏・小顔・小腹スリム</span>
-              <span class="opt-price"><span class="opt-price-was">¥31,500</span><span class="opt-price-now">¥24,000</span></span>
+              <span class="opt-price"><span class="opt-price-solo">¥24,000</span></span>
             </label>
+            </div>
+
+            <div class="menu-panel" data-panel="custom" hidden>
+              <p class="menu-panel-label">時間を選ぶ</p>
+              <label class="opt-row opt-choice">
+              <input type="radio" name="opt-special-jp-custom" value="Special Menu 30 min" checked>
+              <span class="opt-radio" aria-hidden="true"></span>
+              <span class="opt-duration"><span class="u-nowrap">30分</span></span>
+              <span class="opt-price"><span class="opt-price-solo">¥4,000</span></span>
+            </label>
+
+              <label class="opt-row opt-choice">
+              <input type="radio" name="opt-special-jp-custom" value="Special Menu 60 min">
+              <span class="opt-radio" aria-hidden="true"></span>
+              <span class="opt-duration"><span class="u-nowrap">60分</span></span>
+              <span class="opt-price"><span class="opt-price-solo">¥8,000</span></span>
+            </label>
+
+              <label class="opt-row opt-choice">
+              <input type="radio" name="opt-special-jp-custom" value="Special Menu 90 min">
+              <span class="opt-radio" aria-hidden="true"></span>
+              <span class="opt-duration"><span class="u-nowrap">90分</span></span>
+              <span class="opt-price"><span class="opt-price-solo">¥12,000</span></span>
+            </label>
+
+              <label class="opt-row opt-choice">
+              <input type="radio" name="opt-special-jp-custom" value="Special Menu 120 min">
+              <span class="opt-radio" aria-hidden="true"></span>
+              <span class="opt-duration"><span class="u-nowrap">120分</span></span>
+              <span class="opt-price"><span class="opt-price-solo">¥16,000</span></span>
+            </label>
+
+              <label class="opt-row opt-choice">
+              <input type="radio" name="opt-special-jp-custom" value="Special Menu 180 min">
+              <span class="opt-radio" aria-hidden="true"></span>
+              <span class="opt-duration"><span class="u-nowrap">180分</span></span>
+              <span class="opt-price"><span class="opt-price-solo">¥24,000</span></span>
+            </label>
+              <p class="menu-panel-label">施術を選ぶ（複数可）</p>
+              <div class="menu-pick-grid">
+              <label class="menu-pick">
+                <input type="checkbox" name="menu-pick" value="aroma-lymph" data-label="アロマオイルトリートメント">
+                <span>アロマオイルトリートメント</span>
+              </label>
+              <label class="menu-pick">
+                <input type="checkbox" name="menu-pick" value="foot-reflex" data-label="足つぼリフレ">
+                <span>足つぼリフレ</span>
+              </label>
+              <label class="menu-pick">
+                <input type="checkbox" name="menu-pick" value="taiwan-shiatsu" data-label="台湾式指圧">
+                <span>台湾式指圧</span>
+              </label>
+              <label class="menu-pick">
+                <input type="checkbox" name="menu-pick" value="head-spa" data-label="ヘッドスパ">
+                <span>ヘッドスパ</span>
+              </label>
+              <label class="menu-pick">
+                <input type="checkbox" name="menu-pick" value="body-slim" data-label="スリミングマシン">
+                <span>スリミングマシン</span>
+              </label>
+              <label class="menu-pick">
+                <input type="checkbox" name="menu-pick" value="shoulder-neck" data-label="肩・首・頭">
+                <span>肩・首・頭</span>
+              </label>
+              <label class="menu-pick">
+                <input type="checkbox" name="menu-pick" value="calf-foot" data-label="ふくらはぎ・足裏">
+                <span>ふくらはぎ・足裏</span>
+              </label>
+              <label class="menu-pick">
+                <input type="checkbox" name="menu-pick" value="full-back" data-label="背面全身">
+                <span>背面全身</span>
+              </label>
+              <label class="menu-pick">
+                <input type="checkbox" name="menu-pick" value="full-front" data-label="正面全身">
+                <span>正面全身</span>
+              </label>
+              <label class="menu-pick">
+                <input type="checkbox" name="menu-pick" value="facial-slim" data-label="小顔・スリムマッサージ">
+                <span>小顔・スリムマッサージ</span>
+              </label>
+              </div>
+              <p class="menu-pick-hint">1つ以上選択してください。内容は予約フォームに反映されます。</p>
+            </div>
 
             <div class="opt-group-foot">
               <a class="opt-book opt-group-book" data-lang="jp" href="../booking.html?lang=jp&amp;service=Special%20Menu%2030%20min"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.884-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg> 予約</a>
@@ -150,7 +243,7 @@
     <section class="section" id="gallery">
       <div class="container">
         <header class="section-head center">
-          <h2 class="section-title">店内の様子</h2>
+          <h2 class="section-title">店内環境</h2>
           <div class="gold-rule"></div>
           <p class="section-lead">受付・完全個室・リフレーテ道玄坂本店の落ち着いた空間。</p>
         </header>
@@ -209,9 +302,14 @@
               <a href="https://maps.app.goo.gl/63M5zUmyfY89tqPN6" target="_blank" rel="noopener noreferrer" class="btn btn-outline">Googleマップで開く</a>
             </div>
           </div>
-          <div class="access-map">
-            <iframe title="Rifurete Dogenzaka map" src="https://www.google.com/maps?q=%E3%83%AA%E3%83%95%E3%83%AC%E3%83%BC%E3%83%86%E9%81%93%E7%8E%84%E5%9D%82%E6%9C%AC%E5%BA%97+%E6%9D%B1%E4%BA%AC%E9%83%BD%E6%B8%8B%E8%B0%B7%E5%8C%BA%E9%81%93%E7%8E%84%E5%9D%821-19-13&output=embed" allowfullscreen loading="lazy" referrerpolicy="strict-origin-when-cross-origin" style="pointer-events:none"></iframe>
-            <a class="map-overlay" href="https://maps.app.goo.gl/63M5zUmyfY89tqPN6" target="_blank" rel="noopener noreferrer" aria-label="Open Rifurete Dogenzaka in Google Maps"></a>
+          <div class="access-map-col">
+            <div class="access-storefront">
+              <img src="../assets/images/storefront.webp" alt="リフレーテ道玄坂本店のビル入口（道玄坂郵便局そば）" loading="lazy">
+            </div>
+            <div class="access-map">
+              <iframe title="Rifurete Dogenzaka map" src="https://www.google.com/maps?q=%E3%83%AA%E3%83%95%E3%83%AC%E3%83%BC%E3%83%86%E9%81%93%E7%8E%84%E5%9D%82%E6%9C%AC%E5%BA%97+%E6%9D%B1%E4%BA%AC%E9%83%BD%E6%B8%8B%E8%B0%B7%E5%8C%BA%E9%81%93%E7%8E%84%E5%9D%821-19-13&output=embed" allowfullscreen loading="lazy" referrerpolicy="strict-origin-when-cross-origin" style="pointer-events:none"></iframe>
+              <a class="map-overlay" href="https://maps.app.goo.gl/63M5zUmyfY89tqPN6" target="_blank" rel="noopener noreferrer" aria-label="Open Rifurete Dogenzaka in Google Maps"></a>
+            </div>
           </div>
         </div>
       </div>

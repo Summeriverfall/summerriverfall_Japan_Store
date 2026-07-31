@@ -104,6 +104,31 @@
     .additional-services.show { display: block; }
     .additional-services h4 { font-size: 0.85rem; font-weight: 500; color: var(--brand); margin-bottom: 1rem; }
     .guest-service-row { background: var(--stone); padding: 1rem; margin-bottom: 0.7rem; border-radius: 6px; }
+    .booking-picks {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.5rem;
+    }
+    .booking-pick {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin: 0;
+      padding: 0.65rem 0.7rem;
+      border: 1px solid var(--gold-pale);
+      border-radius: 6px;
+      background: var(--stone);
+      font-size: 0.84rem;
+      cursor: pointer;
+    }
+    .booking-pick:has(input:checked) {
+      border-color: var(--brand);
+      background: #fff;
+    }
+    .booking-pick input { accent-color: var(--brand); }
+    @media (max-width: 560px) {
+      .booking-picks { grid-template-columns: 1fr; }
+    }
     .guest-label { font-size: 0.8rem; color: var(--ink-soft); margin-bottom: 0.45rem; font-weight: 500; }
     .same-package-label { display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 0.88rem; }
     .same-package-label input { accent-color: #8f6a5c; }
@@ -171,6 +196,14 @@
           <div class="form-error" id="errorName">Please enter your name</div>
         </div>
 
+        <div class="form-group" id="picksGroup">
+          <label class="form-label" id="labelPicks">Selected treatments</label>
+          <div class="booking-picks" id="bookingPicks"></div>
+          <input type="hidden" id="picks" name="picks" value="">
+          <p class="form-hint" id="hintPicks">Optional — pick the treatments you want within your time slot.</p>
+          <div class="form-error" id="errorPicks">Please select at least one treatment</div>
+        </div>
+
         <div id="addonSection" aria-hidden="true"></div>
 
         <div class="form-group" id="samePackageGroup" style="display: none;">
@@ -232,11 +265,28 @@
       ]}
     ];
 
+    var treatmentOptions = [
+      { id: 'aroma-lymph', en: 'Aroma lymphatic', jp: 'アロマオイルトリートメント', cn: '精油淋巴' },
+      { id: 'foot-reflex', en: 'Foot reflexology', jp: '足つぼリフレ', cn: '足底反射' },
+      { id: 'taiwan-shiatsu', en: 'Taiwanese shiatsu', jp: '台湾式指圧', cn: '台湾式指压' },
+      { id: 'head-spa', en: 'Head SPA', jp: 'ヘッドスパ', cn: '头部SPA' },
+      { id: 'body-slim', en: 'Body slim machine', jp: 'スリミングマシン', cn: '瘦身仪器' },
+      { id: 'shoulder-neck', en: 'Shoulders / neck / scalp', jp: '肩・首・頭', cn: '肩颈头' },
+      { id: 'calf-foot', en: 'Calves / feet', jp: 'ふくらはぎ・足裏', cn: '小腿足底' },
+      { id: 'full-back', en: 'Full back', jp: '背面全身', cn: '背面全身' },
+      { id: 'full-front', en: 'Full front', jp: '正面全身', cn: '正面全身' },
+      { id: 'facial-slim', en: 'Facial contour & slim', jp: '小顔・スリムマッサージ', cn: '面部轮廓与瘦身按摩' }
+    ];
+    var requirePicks = false;
+
         var i18n = {
       en: { htmlLang:'en', title:'Book Appointment — Rifurete', backLink:'Back to Home', brandBadge:'Book Your Appointment',
         bookingSubtitle:'Fill in the form below to book your appointment',
         successMessage:'Your booking information has been prepared. You will be redirected to WhatsApp shortly...',
         labelService:'Course *', labelDate:'Date *', labelTime:'Time *', labelGuests:'Number of Guests *', labelName:'Name *',
+        labelPicks:'Selected treatments', hintPicks:'Optional — pick treatments within your time slot, or confirm at the salon.',
+        errorPicks:'Please select at least one treatment',
+        waPicks:'Selected treatments',
         selectCourse:'Select a course', selectTime:'Select a time', selectGuests:'Select number of guests', namePlaceholder:'Enter your name',
         hintTime:'Open daily 11:00 – 05:00<br>*booking slots 11:00–04:00, 24h clock.',
         errorService:'Please select a course', errorDate:'Please select a date', errorTime:'Please select a time',
@@ -257,6 +307,9 @@
         bookingSubtitle:'以下のフォームにご記入のうえ、ご予約ください',
         successMessage:'予約内容を作成しました。まもなく WhatsApp へ移動します…',
         labelService:'コース *', labelDate:'日付 *', labelTime:'時間 *', labelGuests:'人数 *', labelName:'お名前 *',
+        labelPicks:'ご希望の施術', hintPicks:'任意選択可。時間内の施術を選ぶか、ご来店時にご相談ください。',
+        errorPicks:'施術を1つ以上選択してください',
+        waPicks:'ご希望の施術',
         selectCourse:'コースを選択', selectTime:'時間を選択', selectGuests:'人数を選択', namePlaceholder:'お名前を入力',
         hintTime:'毎日 11:00〜翌5:00<br>*予約枠 11:00〜04:00',
         errorService:'コースを選択してください', errorDate:'日付を選択してください', errorTime:'時間を選択してください',
@@ -277,6 +330,9 @@
         bookingSubtitle:'请填写以下信息完成预约',
         successMessage:'预约信息已生成，即将跳转至 WhatsApp…',
         labelService:'项目 *', labelDate:'日期 *', labelTime:'时间 *', labelGuests:'人数 *', labelName:'姓名 *',
+        labelPicks:'自选项目', hintPicks:'可选。在所选时长内勾选项目，或到店后再与店员确认。',
+        errorPicks:'请至少选择一项护理项目',
+        waPicks:'自选项目',
         selectCourse:'请选择项目', selectTime:'请选择时间', selectGuests:'请选择人数', namePlaceholder:'请输入您的姓名',
         hintTime:'每天 11:00–次日 05:00<br>*预约时段 11:00–04:00',
         errorService:'请选择项目', errorDate:'请选择日期', errorTime:'请选择时间',
@@ -384,6 +440,9 @@
       document.getElementById('labelTime').textContent = o.labelTime;
       document.getElementById('labelGuests').textContent = o.labelGuests;
       document.getElementById('labelName').textContent = o.labelName;
+      document.getElementById('labelPicks').textContent = o.labelPicks;
+      document.getElementById('hintPicks').textContent = o.hintPicks;
+      document.getElementById('errorPicks').textContent = o.errorPicks;
       document.getElementById('hintTime').innerHTML = o.hintTime;
       document.getElementById('errorService').textContent = o.errorService;
       document.getElementById('errorDate').textContent = o.errorDate;
@@ -402,6 +461,7 @@
       document.getElementById('service').innerHTML = buildServiceOptionsHTML(sv);
       document.getElementById('guests').innerHTML = buildGuestsOptionsHTML(gv);
       document.getElementById('time').innerHTML = buildTimeOptions(tv);
+      renderBookingPicks(getSelectedPickIds());
       syncGuestsExactUI();
       document.querySelectorAll('.lang-switch button').forEach(function(b){ b.classList.toggle('active', b.getAttribute('data-lang')===lang); });
       var home = lang==='en' ? 'en/index.html' : (lang==='jp' ? 'jp/index.html' : 'cn/index.html');
@@ -409,6 +469,33 @@
       var url = new URL(window.location.href); url.searchParams.set('lang', lang); history.replaceState(null,'',url);
       updateAdditionalServices();
       updateMessagePreview();
+    }
+
+    function getSelectedPickIds(){
+      return Array.prototype.map.call(document.querySelectorAll('#bookingPicks input:checked'), function(cb){ return cb.value; });
+    }
+
+    function getSelectedPickLabels(){
+      return Array.prototype.map.call(document.querySelectorAll('#bookingPicks input:checked'), function(cb){
+        return cb.getAttribute('data-label') || cb.value;
+      });
+    }
+
+    function syncPicksHidden(){
+      document.getElementById('picks').value = getSelectedPickLabels().join(' · ');
+      return getSelectedPickIds();
+    }
+
+    function renderBookingPicks(selectedIds){
+      selectedIds = selectedIds || [];
+      var html = '';
+      treatmentOptions.forEach(function(opt){
+        var label = opt[currentLang] || opt.en;
+        var checked = selectedIds.indexOf(opt.id) !== -1 ? ' checked' : '';
+        html += '<label class="booking-pick"><input type="checkbox" value="'+opt.id+'" data-label="'+String(label).replace(/"/g,'&quot;')+'"'+checked+'> <span>'+label+'</span></label>';
+      });
+      document.getElementById('bookingPicks').innerHTML = html;
+      syncPicksHidden();
     }
 
     var dateInput = document.getElementById('date');
@@ -420,10 +507,24 @@
     });
 
     (function(){
-      var svc = new URLSearchParams(window.location.search).get('service');
+      var params = new URLSearchParams(window.location.search);
+      var svc = params.get('service');
       if (svc){ var sel=document.getElementById('service'); for(var i=0;i<sel.options.length;i++){ if(sel.options[i].value===svc){ sel.options[i].selected=true; break; } } }
+      requirePicks = params.get('mode') === 'custom';
+      var pickIds = (params.get('picks') || '').split('|').map(function(s){ return s.trim(); }).filter(Boolean);
+      renderBookingPicks(pickIds);
+      if (requirePicks) {
+        document.getElementById('hintPicks').textContent = t('hintPicks');
+        document.getElementById('picksGroup').classList.add('is-custom');
+      }
       updateMessagePreview();
     })();
+
+    document.getElementById('bookingPicks').addEventListener('change', function(){
+      syncPicksHidden();
+      if (getSelectedPickIds().length) document.getElementById('picksGroup').classList.remove('error');
+      updateMessagePreview();
+    });
 
     document.getElementById('guests').addEventListener('change', function(){
       syncGuestsExactUI();
@@ -477,6 +578,7 @@
         if (isNaN(ex) || ex < 5){ document.getElementById('guestsExactGroup').classList.add('error'); ok=false; }
       }
       if (!document.getElementById('service').value){ document.getElementById('serviceGroup').classList.add('error'); ok=false; }
+      if (requirePicks && getSelectedPickIds().length === 0){ document.getElementById('picksGroup').classList.add('error'); ok=false; }
       return ok;
     }
 
@@ -487,6 +589,7 @@
           !document.getElementById('time').value || !document.getElementById('guests').value || !document.getElementById('service').value) {
         return false;
       }
+      if (requirePicks && getSelectedPickIds().length === 0) return false;
       if (document.getElementById('guests').value === '5+') return getGuestCount() >= 5;
       return true;
     }
@@ -500,6 +603,8 @@
       m += t('waTime')+': '+time+'\n';
       m += t('waGuests')+': '+gc+'\n';
       m += t('waGuestCourse')(1)+' : '+main+' (¥'+servicePrice(main).toLocaleString()+')\n';
+      var pickLabels = getSelectedPickLabels();
+      if (pickLabels.length){ m += t('waPicks')+': '+pickLabels.join(' · ')+'\n'; }
       var same = fd.get('samePackage')==='on';
       var total = servicePrice(main);
       if (gc>1 && same){ m += t('waSameCourse')+'\n'; total = servicePrice(main)*gc; }

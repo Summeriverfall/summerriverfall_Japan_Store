@@ -95,19 +95,86 @@
       observer.observe(el);
     });
 
-  /* Opt-group: radio choice + shared book button */
+  /* Opt-group: radio choice + shared book button (+ package/custom mode) */
   document.querySelectorAll(".opt-group[data-opt-select]").forEach(function (group) {
     var book = group.querySelector(".opt-group-book");
     if (!book) return;
     var lang = book.getAttribute("data-lang") || "en";
-    function syncBook() {
-      var selected = group.querySelector('input[type="radio"]:checked');
-      if (!selected) return;
-      book.href = "../booking.html?lang=" + encodeURIComponent(lang) + "&service=" + encodeURIComponent(selected.value);
+    var modeToggle = group.querySelector(".js-package-mode");
+    var packagePanel = group.querySelector('[data-panel="package"]');
+    var customPanel = group.querySelector('[data-panel="custom"]');
+
+    function isPackageMode() {
+      return !modeToggle || modeToggle.checked;
     }
-    group.querySelectorAll('input[type="radio"]').forEach(function (radio) {
-      radio.addEventListener("change", syncBook);
+
+    function activePanel() {
+      return isPackageMode() ? packagePanel : customPanel;
+    }
+
+    function syncPanels() {
+      if (!packagePanel || !customPanel) return;
+      var pkg = isPackageMode();
+      packagePanel.hidden = !pkg;
+      customPanel.hidden = pkg;
+      packagePanel.classList.toggle("is-active", pkg);
+      customPanel.classList.toggle("is-active", !pkg);
+    }
+
+    function syncBook() {
+      var panel = activePanel() || group;
+      var selected = panel.querySelector('input[type="radio"]:checked');
+      if (!selected) {
+        selected = group.querySelector('input[type="radio"]:checked');
+      }
+      if (!selected) return;
+
+      var href = "../booking.html?lang=" + encodeURIComponent(lang) + "&service=" + encodeURIComponent(selected.value);
+      if (!isPackageMode()) {
+        var picks = [];
+        var labels = [];
+        group.querySelectorAll('input[name="menu-pick"]:checked').forEach(function (cb) {
+          picks.push(cb.value);
+          labels.push(cb.getAttribute("data-label") || cb.value);
+        });
+        href += "&mode=custom";
+        if (picks.length) {
+          href += "&picks=" + encodeURIComponent(picks.join("|"));
+          href += "&pickLabels=" + encodeURIComponent(labels.join(" · "));
+        }
+        book.classList.toggle("is-disabled", picks.length === 0);
+        if (picks.length === 0) {
+          book.setAttribute("aria-disabled", "true");
+        } else {
+          book.removeAttribute("aria-disabled");
+        }
+      } else {
+        book.classList.remove("is-disabled");
+        book.removeAttribute("aria-disabled");
+      }
+      book.href = href;
+    }
+
+    if (modeToggle) {
+      modeToggle.addEventListener("change", function () {
+        syncPanels();
+        syncBook();
+      });
+    }
+    group.querySelectorAll('input[type="radio"], input[name="menu-pick"]').forEach(function (input) {
+      input.addEventListener("change", syncBook);
     });
+    book.addEventListener("click", function (e) {
+      if (book.classList.contains("is-disabled")) {
+        e.preventDefault();
+        var hint = group.querySelector(".menu-pick-hint");
+        if (hint) {
+          hint.classList.add("is-warn");
+          window.setTimeout(function () { hint.classList.remove("is-warn"); }, 1600);
+        }
+      }
+    });
+    syncPanels();
     syncBook();
   });
 

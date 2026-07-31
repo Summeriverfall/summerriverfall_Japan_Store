@@ -740,6 +740,26 @@ ul { list-style: none; }
   gap: 0.8rem;
   margin-top: 1.8rem;
 }
+.access-map-col {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  min-width: 0;
+}
+.access-storefront {
+  width: 100%;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--gold-pale);
+  background: var(--white);
+}
+.access-storefront img {
+  width: 100%;
+  height: auto;
+  display: block;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+}
 .access-map {
   position: relative;
   border-radius: var(--radius);

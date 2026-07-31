@@ -54,7 +54,7 @@
             <h2 class="section-title">Rifurete<br>Dogenzaka Salon</h2>
             <div class="gold-rule"></div>
             <p>Rifurete Dogenzaka (リフレーテ道玄坂本店) offers Aroma Lymphatic Massage, Foot Reflexology, Taiwanese Shiatsu Massage, Head Spa and Japan's Advanced Body Slimming Technology near Shibuya Station.</p>
-            <p>Every course is in a private room. Japanese Chinese and English welcome. Open daily 11:00–05:00 year-round.</p>
+            <p>Every course is in a private room. Open daily 11:00–05:00 year-round.</p>
           </div>
           <div class="about-media">
             <img src="../assets/images/about.webp" alt="Rifurete Dogenzaka reception" loading="lazy">
@@ -62,24 +62,25 @@
         </div>
         <div class="features">
           <div class="feature">
-            <svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="14" rx="1.5"/><path d="M8 5v14M16 5v14"/></svg>
-            <h3>Private Rooms</h3>
-            <p>All courses in private rooms for a calm focused session.</p>
+            <span class="feature-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3.5c3.5 4.2 6 7.4 6 10.5a6 6 0 0 1-12 0c0-3.1 2.5-6.3 6-10.5z"/></svg></span>
+            <div class="feature-copy">
+              <h3>Body &amp; Lymph Care</h3>
+              <p>Aroma lymphatic, Taiwanese shiatsu and foot reflexology to ease everyday fatigue.</p>
+            </div>
           </div>
           <div class="feature">
-            <svg viewBox="0 0 24 24"><path d="M12 3.5c3.5 4.2 6 7.4 6 10.5a6 6 0 0 1-12 0c0-3.1 2.5-6.3 6-10.5z"/></svg>
-            <h3>Body & Lymph Care</h3>
-            <p>Aroma lymphatic massage, Taiwanese shiatsu and foot reflexology for everyday fatigue.</p>
+            <span class="feature-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="14" rx="1.5"/><path d="M8 5v14M16 5v14"/></svg></span>
+            <div class="feature-copy">
+              <h3>Right on Dogenzaka</h3>
+              <p>About <span class="u-nowrap">4 min</span> from Shibuya Station — easy to drop in after shopping or dinner.</p>
+            </div>
           </div>
           <div class="feature">
-            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="7.5"/><path d="M12 8.5v4l2.5 1.5"/></svg>
-            <h3>Open Until 05:00</h3>
-            <p>Daily 11:00–05:00 — come after shopping dinner or late nights.</p>
-          </div>
-          <div class="feature">
-            <svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h10"/></svg>
-            <h3>Multilingual Support</h3>
-            <p>Japanese Chinese and English available.</p>
+            <span class="feature-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="7.5"/><path d="M12 8.5v4l2.5 1.5"/></svg></span>
+            <div class="feature-copy">
+              <h3>Open late</h3>
+              <p>Open into the early hours, so after-work or late-night visits still work.</p>
+            </div>
           </div>
         </div>
       </div>
@@ -93,51 +94,143 @@
           <p class="section-lead">Special rates by duration, tax included. Sheet fee (¥200 tax incl.) is separate.</p>
         </header>
 
-        <p class="section-lead" style="margin:1.2rem 0 0.4rem;font-size:0.85rem;opacity:0.85;">Sheet fee (¥200 tax incl.) is charged separately for all courses.</p>
-
         <div class="menu-group">
-          <article class="opt-group" data-opt-select>
+          <article class="opt-group" data-opt-select data-menu-flex>
             <div class="opt-group-head">
               <div>
                 <div class="ogh-name">Special Menu</div>
-                <span class="opt-sub">Book by time. Within that duration, freely choose any in-salon treatments — aroma oil, foot reflexology, Taiwanese shiatsu, head spa, body slim, and more (examples below).</span>
+                <span class="opt-sub">Book by time. Within that duration you can follow a recommended combo, or pick your own treatments — aroma oil, foot reflexology, Taiwanese shiatsu, head spa, body slim, and more.</span>
               </div>
             </div>
 
-            <label class="opt-row opt-choice">
+            <label class="menu-mode-toggle">
+              <input type="checkbox" class="js-package-mode" checked>
+              <span class="menu-mode-toggle__box" aria-hidden="true"></span>
+              <span class="menu-mode-toggle__copy">
+                <strong>Use recommended package examples</strong>
+                <small>Uncheck to freely pick treatments within your time.</small>
+              </span>
+            </label>
+
+            <div class="menu-panel is-active" data-panel="package">
+              <p class="menu-panel-label">Recommended combinations</p>
+              <label class="opt-row opt-choice">
               <input type="radio" name="opt-special-en" value="Special Menu 30 min" checked>
               <span class="opt-radio" aria-hidden="true"></span>
               <span class="opt-duration">30 min · e.g. shoulders / neck / scalp or calves / feet</span>
-              <span class="opt-price"><span class="opt-price-was">¥5,250</span><span class="opt-price-now">¥4,000</span></span>
+              <span class="opt-price"><span class="opt-price-solo">¥4,000</span></span>
             </label>
 
-            <label class="opt-row opt-choice">
+              <label class="opt-row opt-choice">
               <input type="radio" name="opt-special-en" value="Special Menu 60 min">
               <span class="opt-radio" aria-hidden="true"></span>
               <span class="opt-duration">60 min · e.g. full back + feet or full front + feet</span>
-              <span class="opt-price"><span class="opt-price-was">¥10,500</span><span class="opt-price-now">¥8,000</span></span>
+              <span class="opt-price"><span class="opt-price-solo">¥8,000</span></span>
             </label>
 
-            <label class="opt-row opt-choice">
+              <label class="opt-row opt-choice">
               <input type="radio" name="opt-special-en" value="Special Menu 90 min">
               <span class="opt-radio" aria-hidden="true"></span>
               <span class="opt-duration">90 min · e.g. full back, scalp & feet</span>
-              <span class="opt-price"><span class="opt-price-was">¥15,750</span><span class="opt-price-now">¥12,000</span></span>
+              <span class="opt-price"><span class="opt-price-solo">¥12,000</span></span>
             </label>
 
-            <label class="opt-row opt-choice">
+              <label class="opt-row opt-choice">
               <input type="radio" name="opt-special-en" value="Special Menu 120 min">
               <span class="opt-radio" aria-hidden="true"></span>
               <span class="opt-duration">120 min · e.g. full back & front, scalp & feet</span>
-              <span class="opt-price"><span class="opt-price-was">¥21,000</span><span class="opt-price-now">¥16,000</span></span>
+              <span class="opt-price"><span class="opt-price-solo">¥16,000</span></span>
             </label>
 
-            <label class="opt-row opt-choice">
+              <label class="opt-row opt-choice">
               <input type="radio" name="opt-special-en" value="Special Menu 180 min">
               <span class="opt-radio" aria-hidden="true"></span>
               <span class="opt-duration">180 min · e.g. full body, scalp, feet, facial contouring & slimming massage</span>
-              <span class="opt-price"><span class="opt-price-was">¥31,500</span><span class="opt-price-now">¥24,000</span></span>
+              <span class="opt-price"><span class="opt-price-solo">¥24,000</span></span>
             </label>
+            </div>
+
+            <div class="menu-panel" data-panel="custom" hidden>
+              <p class="menu-panel-label">Choose duration</p>
+              <label class="opt-row opt-choice">
+              <input type="radio" name="opt-special-en-custom" value="Special Menu 30 min" checked>
+              <span class="opt-radio" aria-hidden="true"></span>
+              <span class="opt-duration"><span class="u-nowrap">30 min</span></span>
+              <span class="opt-price"><span class="opt-price-solo">¥4,000</span></span>
+            </label>
+
+              <label class="opt-row opt-choice">
+              <input type="radio" name="opt-special-en-custom" value="Special Menu 60 min">
+              <span class="opt-radio" aria-hidden="true"></span>
+              <span class="opt-duration"><span class="u-nowrap">60 min</span></span>
+              <span class="opt-price"><span class="opt-price-solo">¥8,000</span></span>
+            </label>
+
+              <label class="opt-row opt-choice">
+              <input type="radio" name="opt-special-en-custom" value="Special Menu 90 min">
+              <span class="opt-radio" aria-hidden="true"></span>
+              <span class="opt-duration"><span class="u-nowrap">90 min</span></span>
+              <span class="opt-price"><span class="opt-price-solo">¥12,000</span></span>
+            </label>
+
+              <label class="opt-row opt-choice">
+              <input type="radio" name="opt-special-en-custom" value="Special Menu 120 min">
+              <span class="opt-radio" aria-hidden="true"></span>
+              <span class="opt-duration"><span class="u-nowrap">120 min</span></span>
+              <span class="opt-price"><span class="opt-price-solo">¥16,000</span></span>
+            </label>
+
+              <label class="opt-row opt-choice">
+              <input type="radio" name="opt-special-en-custom" value="Special Menu 180 min">
+              <span class="opt-radio" aria-hidden="true"></span>
+              <span class="opt-duration"><span class="u-nowrap">180 min</span></span>
+              <span class="opt-price"><span class="opt-price-solo">¥24,000</span></span>
+            </label>
+              <p class="menu-panel-label">Choose treatments (multi-select)</p>
+              <div class="menu-pick-grid">
+              <label class="menu-pick">
+                <input type="checkbox" name="menu-pick" value="aroma-lymph" data-label="Aroma lymphatic">
+                <span>Aroma lymphatic</span>
+              </label>
+              <label class="menu-pick">
+                <input type="checkbox" name="menu-pick" value="foot-reflex" data-label="Foot reflexology">
+                <span>Foot reflexology</span>
+              </label>
+              <label class="menu-pick">
+                <input type="checkbox" name="menu-pick" value="taiwan-shiatsu" data-label="Taiwanese shiatsu">
+                <span>Taiwanese shiatsu</span>
+              </label>
+              <label class="menu-pick">
+                <input type="checkbox" name="menu-pick" value="head-spa" data-label="Head SPA">
+                <span>Head SPA</span>
+              </label>
+              <label class="menu-pick">
+                <input type="checkbox" name="menu-pick" value="body-slim" data-label="Body slim machine">
+                <span>Body slim machine</span>
+              </label>
+              <label class="menu-pick">
+                <input type="checkbox" name="menu-pick" value="shoulder-neck" data-label="Shoulders / neck / scalp">
+                <span>Shoulders / neck / scalp</span>
+              </label>
+              <label class="menu-pick">
+                <input type="checkbox" name="menu-pick" value="calf-foot" data-label="Calves / feet">
+                <span>Calves / feet</span>
+              </label>
+              <label class="menu-pick">
+                <input type="checkbox" name="menu-pick" value="full-back" data-label="Full back">
+                <span>Full back</span>
+              </label>
+              <label class="menu-pick">
+                <input type="checkbox" name="menu-pick" value="full-front" data-label="Full front">
+                <span>Full front</span>
+              </label>
+              <label class="menu-pick">
+                <input type="checkbox" name="menu-pick" value="facial-slim" data-label="Facial contour & slim">
+                <span>Facial contour & slim</span>
+              </label>
+              </div>
+              <p class="menu-pick-hint">Select at least one treatment. Your picks will fill the booking form.</p>
+            </div>
 
             <div class="opt-group-foot">
               <a class="opt-book opt-group-book" data-lang="en" href="../booking.html?lang=en&amp;service=Special%20Menu%2030%20min"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.884-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg> Book</a>
@@ -150,7 +243,7 @@
     <section class="section" id="gallery">
       <div class="container">
         <header class="section-head center">
-          <h2 class="section-title">Inside the Salon</h2>
+          <h2 class="section-title">Salon Interior</h2>
           <div class="gold-rule"></div>
           <p class="section-lead">Reception private rooms and the calm atmosphere of Rifurete Dogenzaka.</p>
         </header>
@@ -209,9 +302,14 @@
               <a href="https://maps.app.goo.gl/63M5zUmyfY89tqPN6" target="_blank" rel="noopener noreferrer" class="btn btn-outline">Open in Google Maps</a>
             </div>
           </div>
-          <div class="access-map">
-            <iframe title="Rifurete Dogenzaka map" src="https://www.google.com/maps?q=%E3%83%AA%E3%83%95%E3%83%AC%E3%83%BC%E3%83%86%E9%81%93%E7%8E%84%E5%9D%82%E6%9C%AC%E5%BA%97+%E6%9D%B1%E4%BA%AC%E9%83%BD%E6%B8%8B%E8%B0%B7%E5%8C%BA%E9%81%93%E7%8E%84%E5%9D%821-19-13&output=embed" allowfullscreen loading="lazy" referrerpolicy="strict-origin-when-cross-origin" style="pointer-events:none"></iframe>
-            <a class="map-overlay" href="https://maps.app.goo.gl/63M5zUmyfY89tqPN6" target="_blank" rel="noopener noreferrer" aria-label="Open Rifurete Dogenzaka in Google Maps"></a>
+          <div class="access-map-col">
+            <div class="access-storefront">
+              <img src="../assets/images/storefront.webp" alt="Rifurete Dogenzaka building entrance by the post office" loading="lazy">
+            </div>
+            <div class="access-map">
+              <iframe title="Rifurete Dogenzaka map" src="https://www.google.com/maps?q=%E3%83%AA%E3%83%95%E3%83%AC%E3%83%BC%E3%83%86%E9%81%93%E7%8E%84%E5%9D%82%E6%9C%AC%E5%BA%97+%E6%9D%B1%E4%BA%AC%E9%83%BD%E6%B8%8B%E8%B0%B7%E5%8C%BA%E9%81%93%E7%8E%84%E5%9D%821-19-13&output=embed" allowfullscreen loading="lazy" referrerpolicy="strict-origin-when-cross-origin" style="pointer-events:none"></iframe>
+              <a class="map-overlay" href="https://maps.app.goo.gl/63M5zUmyfY89tqPN6" target="_blank" rel="noopener noreferrer" aria-label="Open Rifurete Dogenzaka in Google Maps"></a>
+            </div>
           </div>
         </div>
       </div>
