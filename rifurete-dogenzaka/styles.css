@@ -270,7 +270,7 @@ ul { list-style: none; }
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(180deg, rgba(31,28,26,0.35) 0%, rgba(31,28,26,0.55) 45%, rgba(31,28,26,0.82) 100%);
+    linear-gradient(180deg, rgba(31,28,26,0.22) 0%, rgba(31,28,26,0.42) 45%, rgba(31,28,26,0.72) 100%);
 }
 .hero-content {
   position: relative;
