@@ -460,7 +460,7 @@ ul { list-style: none; }
 .opt-row:hover { background: rgba(166,123,109,0.04); }
 .opt-choice {
   cursor: pointer;
-  grid-template-columns: 1.35rem minmax(0, 1fr) 10rem;
+  grid-template-columns: 1.35rem minmax(0, 1fr) auto;
   margin: 0;
 }
 .opt-choice input {
@@ -519,34 +519,10 @@ ul { list-style: none; }
   color: var(--brand);
   white-space: nowrap;
   text-align: right;
-  justify-self: stretch;
+  justify-self: end;
+  align-self: start;
   font-variant-numeric: tabular-nums;
-  display: grid;
-  grid-template-columns: minmax(4.75rem, max-content) minmax(4.25rem, max-content);
-  justify-content: end;
-  align-items: baseline;
-  column-gap: 0.45rem;
-  row-gap: 0.15rem;
-}
-.opt-price-was {
-  grid-column: 1;
-  justify-self: end;
-  font-size: 0.78rem;
-  font-weight: 400;
-  color: var(--ink-soft);
-  text-decoration: line-through;
-  opacity: 0.75;
-}
-.opt-price-now {
-  grid-column: 2;
-  justify-self: end;
-  color: var(--brand);
-}
-.opt-price-solo {
-  /* Align with pre-discount (was) column, not the discounted now column */
-  grid-column: 1;
-  justify-self: end;
-  color: var(--brand);
+  flex-shrink: 0;
 }
 .opt-book {
   display: inline-flex;
@@ -1111,20 +1087,13 @@ ul { list-style: none; }
   }
   .opt-row:not(.opt-choice) .opt-book { grid-area: book; justify-self: end; }
   .opt-choice {
-    grid-template-columns: 1.35rem minmax(0, 1fr);
-    grid-template-areas:
-      "radio duration"
-      ". price";
-    row-gap: 0.35rem;
+    grid-template-columns: 1.35rem minmax(0, 1fr) auto;
+    column-gap: 0.65rem;
   }
-  .opt-choice .opt-radio { grid-area: radio; align-self: start; margin-top: 0.15rem; }
-  .opt-choice .opt-duration { grid-area: duration; }
+  .opt-choice .opt-radio { align-self: start; margin-top: 0.15rem; }
   .opt-choice .opt-price {
-    grid-area: price;
-    text-align: left;
-    justify-self: start;
-    justify-content: start;
-    min-width: 6.5rem;
+    text-align: right;
+    justify-self: end;
   }
   .opt-group-foot {
     justify-content: stretch;
