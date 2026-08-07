@@ -262,7 +262,7 @@ ul { list-style: none; }
   position: absolute;
   inset: 0;
   background-size: cover;
-  background-position: center;
+  background-position: center 40%;
 }
 .hero-slide::after {
   content: "";
@@ -931,9 +931,9 @@ ul { list-style: none; }
   inset: 0;
   background-color: #1a1816;
   background-image:
-    linear-gradient(165deg, rgba(31,28,26,0.58), rgba(31,28,26,0.42)),
+    linear-gradient(165deg, rgba(31,28,26,0.50), rgba(31,28,26,0.38)),
     url("assets/images/landing-bg.webp");
-  background-position: center 42%;
+  background-position: center center;
   background-size: cover;
   background-repeat: no-repeat;
 }
