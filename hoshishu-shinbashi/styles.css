@@ -931,7 +931,7 @@ ul { list-style: none; }
   inset: 0;
   background:
     linear-gradient(160deg, rgba(31,28,26,0.72), rgba(31,28,26,0.55)),
-    url("assets/images/landing-bg.webp") center / cover no-repeat;
+    url("assets/images/landing-bg.webp") 40% 42% / cover no-repeat;
 }
 .landing-inner {
   position: relative;
