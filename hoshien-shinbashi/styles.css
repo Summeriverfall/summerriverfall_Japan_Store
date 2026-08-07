@@ -262,7 +262,7 @@ ul { list-style: none; }
   position: absolute;
   inset: 0;
   background-size: cover;
-  background-position: center;
+  background-position: center 28%;
 }
 .hero-slide::after {
   content: "";

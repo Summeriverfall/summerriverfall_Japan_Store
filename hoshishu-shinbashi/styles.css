@@ -930,8 +930,8 @@ ul { list-style: none; }
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(160deg, rgba(31,28,26,0.72), rgba(31,28,26,0.55)),
-    url("assets/images/landing-bg.webp") 40% 42% / cover no-repeat;
+    linear-gradient(160deg, rgba(31,28,26,0.68), rgba(31,28,26,0.52)),
+    url("assets/images/landing-bg.webp") center 38% / cover no-repeat;
 }
 .landing-inner {
   position: relative;
