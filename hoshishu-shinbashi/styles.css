@@ -496,6 +496,9 @@ ul { list-style: none; }
 .opt-choice .opt-desc {
   grid-area: desc;
 }
+.opt-tag {
+  white-space: nowrap;
+}
 .opt-choice input {
   position: absolute;
   opacity: 0;
@@ -572,7 +575,9 @@ ul { list-style: none; }
   white-space: normal;
   overflow: visible;
   text-overflow: unset;
-  overflow-wrap: break-word;
+  overflow-wrap: normal;
+  word-break: keep-all;
+  line-break: strict;
   text-wrap: pretty;
 }
 .u-nowrap {

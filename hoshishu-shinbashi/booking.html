@@ -216,30 +216,46 @@
     var LATE_PER_30 = 500;
 
     var serviceInfo = {
-      'Trial Custom 45 min': 3800,
-      'Foot Calf Lymph 60 min': 5000,
-      'Head Spa Bodywork 70 min': 5980,
+      'Full Lymph Care 100 min': 9800,
+      'Clavicle Chest Lymph 80 min': 8200,
+      'Neck Shoulder Lymph 40 min': 4500,
+      'Neck Body Foot Combo 90 min': 8280,
+      'Special Select 120 min': 12800,
       'Head Spa Aroma Lymph 70 min': 6980,
+      'Head Spa Bodywork 70 min': 5980,
       'Shoulder Combo 75 min': 7500,
       'Strong Meridian 90 min': 8500,
-      'Full Lymph Care 100 min': 9800,
+      'Trial Custom 45 min': 3800,
+      'Foot Calf Lymph 60 min': 5000,
       'Face Body Lymph 100 min': 10800,
       'Pair Head Lymph 60 min x2': 12000,
-      'Special Select 120 min': 12800
+      'Trial Custom Coupon 45 min': 4000,
+      'Eye Shoulder Aroma Lymph 70 min': 6980,
+      'Head Hand Foot Combo 75 min': 5980,
+      'Scapula Full Lymph 90 min': 9200
     };
 
     var serviceGroups = [
-      { label: { en: 'Hot Pepper Coupons', jp: 'Hot Pepper クーポン', cn: 'Hot Pepper 优惠' }, items: [
-        { value: 'Trial Custom 45 min', dur: 45, price: 3800, en: 'Trial custom 45 min', jp: 'お試し整体 45分', cn: '体验定制整体 45分' },
-        { value: 'Foot Calf Lymph 60 min', dur: 60, price: 5000, en: 'Foot + calf lymph 60 min', jp: '足裏＋ふくらはぎ 60分', cn: '足底＋小腿淋巴 60分' },
-        { value: 'Head Spa Bodywork 70 min', dur: 70, price: 5980, en: 'Head spa + bodywork 70 min', jp: 'ヘッドスパ＋もみほぐし 70分', cn: '头部护理＋全身揉按 70分' },
-        { value: 'Head Spa Aroma Lymph 70 min', dur: 70, price: 6980, en: 'Head spa + aroma lymph 70 min', jp: 'ヘッドスパ＋アロマリンパ 70分', cn: '头部护理＋香薰淋巴 70分' },
-        { value: 'Shoulder Combo 75 min', dur: 75, price: 7500, en: 'Shoulder combo 75 min', jp: '肩こり解消コンボ 75分', cn: '肩酸解消组合 75分' },
-        { value: 'Strong Meridian 90 min', dur: 90, price: 8500, en: 'Strong meridian 90 min', jp: '強力経絡もみほぐし 90分', cn: '强力经络揉按 90分' },
-        { value: 'Full Lymph Care 100 min', dur: 100, price: 9800, en: 'Full lymph care 100 min', jp: '全身リンパ徹底ケア 100分', cn: '全身淋巴彻底护理 100分' },
-        { value: 'Face Body Lymph 100 min', dur: 100, price: 10800, en: 'Korugi + lymph 100 min', jp: '小顔コルギ＋リンパ 100分', cn: '小颜廓基＋淋巴 100分' },
-        { value: 'Pair Head Lymph 60 min x2', dur: 60, price: 12000, en: 'Pair head + lymph (2 guests) 60 min', jp: 'ペア限定 60分・2名', cn: '双人限定 60分・2人' },
-        { value: 'Special Select 120 min', dur: 120, price: 12800, en: 'Special Select 120 min', jp: 'スペシャルセレクト 120分', cn: '特别精选 120分' }
+      { label: { en: 'Coupon Courses', jp: 'クーポンメニュー', cn: '优惠券套餐' }, items: [
+        { value: 'Full Lymph Care 100 min', dur: 100, price: 9800, en: 'Full lymph care 100 min', jp: '全身リンパケア 100分', cn: '全身淋巴护理 100分' },
+        { value: 'Clavicle Chest Lymph 80 min', dur: 80, price: 8200, en: 'Clavicle relief 80 min', jp: '鎖骨すっきりケア 80分', cn: '锁骨舒缓护理 80分' },
+        { value: 'Neck Shoulder Lymph 40 min', dur: 40, price: 4500, en: 'Neck & shoulder 40 min', jp: '首肩腰ケア 40分', cn: '颈肩腰护理 40分' },
+        { value: 'Neck Body Foot Combo 90 min', dur: 90, price: 8280, en: 'Body & foot combo 90 min', jp: '肩こり＆足裏コース 90分', cn: '肩颈足部组合 90分' },
+        { value: 'Special Select 120 min', dur: 120, price: 12800, en: 'Special Select 120 min', jp: '星洲セレクト 120分', cn: '星洲特选套餐 120分' }
+      ]},
+      { label: { en: 'Other Courses', jp: 'その他メニュー', cn: '其他套餐' }, items: [
+        { value: 'Head Spa Aroma Lymph 70 min', dur: 70, price: 6980, en: 'Head + aroma lymph 70 min', jp: 'ヘッド＋アロマリンパ 70分', cn: '头部＋香薰淋巴 70分' },
+        { value: 'Head Spa Bodywork 70 min', dur: 70, price: 5980, en: 'Head + bodywork 70 min', jp: 'ヘッド＋もみほぐし 70分', cn: '头部＋全身揉按 70分' },
+        { value: 'Shoulder Combo 75 min', dur: 75, price: 7500, en: 'Shoulder combo 75 min', jp: '肩こり解消コンボ 75分', cn: '肩颈舒缓组合 75分' },
+        { value: 'Strong Meridian 90 min', dur: 90, price: 8500, en: 'Meridian course 90 min', jp: '全身経絡コース 90分', cn: '全身经络护理 90分' },
+        { value: 'Trial Custom 45 min', dur: 45, price: 3800, en: 'Trial custom 45 min', jp: 'お試し整体 45分', cn: '体验定制按摩 45分' },
+        { value: 'Foot Calf Lymph 60 min', dur: 60, price: 5000, en: 'Foot swelling relief 60 min', jp: '足むくみケア 60分', cn: '足部消水肿 60分' },
+        { value: 'Face Body Lymph 100 min', dur: 100, price: 10800, en: 'Face + body lymph 100 min', jp: '小顔＋全身リンパ 100分', cn: '小脸＋全身淋巴 100分' },
+        { value: 'Pair Head Lymph 60 min x2', dur: 60, price: 12000, en: 'Couple course 60 min ×2', jp: 'ペアコース 60分・2名', cn: '情侣双人护理 60分・2人' },
+        { value: 'Trial Custom Coupon 45 min', dur: 45, price: 4000, en: 'Trial custom 45 min', jp: 'お試し整体 45分', cn: '体验定制按摩 45分' },
+        { value: 'Eye Shoulder Aroma Lymph 70 min', dur: 70, price: 6980, en: 'Eye & shoulder 70 min', jp: '眼精疲労ケア 70分', cn: '眼肩舒缓护理 70分' },
+        { value: 'Head Hand Foot Combo 75 min', dur: 75, price: 5980, en: 'Head/hand + foot 75 min', jp: '頭手＋足裏 75分', cn: '头手足组合 75分' },
+        { value: 'Scapula Full Lymph 90 min', dur: 90, price: 9200, en: 'Scapula lymph 90 min', jp: '肩甲骨リンパ 90分', cn: '肩胛淋巴护理 90分' }
       ]}
     ];
 
