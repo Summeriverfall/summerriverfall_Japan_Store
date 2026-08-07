@@ -950,13 +950,21 @@ ul { list-style: none; }
   font-weight: 500;
   letter-spacing: 0.18em;
   text-transform: uppercase;
+  text-align: center;
+  margin: 0;
+  /* cancel trailing letter-spacing so glyphs sit on true center */
+  margin-right: -0.18em;
+  padding-left: 0;
 }
 .brand-ja {
   display: block;
-  margin-top: 0.4rem;
+  margin: 0.4rem 0 0;
+  margin-right: -0.2em;
+  padding: 0;
   font-size: 0.9rem;
   letter-spacing: 0.2em;
   color: var(--gold-pale);
+  text-align: center;
 }
 .landing-rule {
   width: 48px;
@@ -1055,9 +1063,13 @@ ul { list-style: none; }
   }
   .brand-en {
     font-size: clamp(2.8rem, 4.5vw, 3.8rem);
+    margin-right: -0.18em;
+    padding-left: 0;
   }
   .brand-ja {
     font-size: 1.05rem;
+    margin-right: -0.2em;
+    padding-left: 0;
   }
   .landing-rule {
     width: 64px;
