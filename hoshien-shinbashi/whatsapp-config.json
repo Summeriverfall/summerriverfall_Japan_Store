@@ -1,0 +1,5 @@
+{
+  "use": "center",
+  "center": "85290744644",
+  "_note": "Archive/reference only. Authoritative WhatsApp number is hard-coded in booking.html (WHATSAPP_NUMBER). Changing this file alone does not change the live booking link unless booking.html also reads it successfully."
+}

@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Book your appointment at Hoshien Shinbashi">
+  <title>Book Appointment — Hoshien</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Noto+Sans+JP:wght@300;400;500&family=Noto+Sans+SC:wght@300;400;500&family=Noto+Serif+SC:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --ink: #2a2623;
+      --ink-soft: #6e6660;
+      --brand: #8f6a5c;
+      --brand-deep: #6f5045;
+      --gold: #b89a6a;
+      --gold-pale: #e4d6c2;
+      --stone: #f3efe9;
+      --white: #ffffff;
+      --font-display: "Playfair Display", "Noto Serif SC", serif;
+      --font-body: "Noto Sans JP", "Noto Sans SC", sans-serif;
+    }
+    html[lang="zh-CN"] { --font-body: "Noto Sans SC", "Noto Sans JP", sans-serif; --font-display: "Playfair Display", "Noto Serif SC", serif; }
+    html[lang="ja"] { --font-body: "Noto Sans JP", "Noto Sans SC", sans-serif; }
+    body {
+      font-family: var(--font-body);
+      font-weight: 300;
+      background:
+        radial-gradient(circle at 12% 8%, rgba(166,123,109,0.12), transparent 42%),
+        radial-gradient(circle at 90% 92%, rgba(184,154,106,0.1), transparent 45%),
+        var(--stone);
+      color: var(--ink);
+      min-height: 100vh;
+      padding: 40px 20px;
+      -webkit-font-smoothing: antialiased;
+    }
+    .booking-container { max-width: 620px; margin: 0 auto; animation: fadeInUp 0.8s ease-out; }
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .booking-top { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 2rem; }
+    .back-link { display: inline-flex; align-items: center; gap: 8px; color: var(--ink-soft); text-decoration: none; font-size: 0.9rem; }
+    .back-link:hover { color: var(--brand); }
+    .lang-switch { display: flex; align-items: center; gap: 0.2rem; flex-shrink: 0; }
+    .lang-switch button {
+      font-size: 0.7rem; letter-spacing: 0.08em; color: var(--ink-soft); padding: 0.35rem 0.55rem;
+      border: none; background: transparent; cursor: pointer; font-family: inherit;
+    }
+    .lang-switch button:hover, .lang-switch button.active { color: var(--brand); }
+    .lang-switch button.active { border-bottom: 1px solid var(--gold); }
+    .booking-header { text-align: center; margin-bottom: 2.4rem; }
+    .brand-badge {
+      display: inline-block; border: 1px solid var(--gold); padding: 7px 18px; margin-bottom: 1.1rem;
+      font-size: 0.66rem; color: var(--brand); font-weight: 500; letter-spacing: 0.28em; text-transform: uppercase;
+    }
+    .booking-title { font-family: var(--font-display); font-size: clamp(2rem, 5vw, 2.6rem); font-weight: 500; letter-spacing: 0.08em; margin-bottom: 0.4rem; text-wrap: balance; }
+    .booking-subtitle { font-size: 0.92rem; color: var(--ink-soft); }
+    .booking-card {
+      background: var(--white); border: 1px solid var(--gold-pale); padding: 2.5rem;
+      box-shadow: 0 24px 60px rgba(42,38,35,0.08); border-radius: 6px;
+    }
+    .form-group { margin-bottom: 1.6rem; }
+    .form-label { display: block; font-size: 0.74rem; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--brand); margin-bottom: 0.5rem; }
+    .form-input, .form-select {
+      width: 100%; padding: 13px 15px; border: 1px solid var(--gold-pale); font-size: 0.92rem; font-family: inherit;
+      color: var(--ink); background: var(--stone); border-radius: 6px; transition: all 0.3s;
+    }
+    #service, .guest-service-row .form-select {
+      font-size: 0.78rem;
+      line-height: 1.35;
+      padding-right: 2rem;
+    }
+    .form-input:focus, .form-select:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px rgba(184,154,106,0.15); background: var(--white); }
+    .form-hint { font-size: 0.78rem; color: var(--ink-soft); margin-top: 0.45rem; }
+    .form-error { color: #C0392B; font-size: 0.82rem; margin-top: 0.45rem; display: none; }
+    .form-group.error .form-error { display: block; }
+    .form-group.error .form-input, .form-group.error .form-select { border-color: #C0392B; }
+    .message-preview { margin: 1.4rem 0; border: 1px solid var(--gold-pale); background: var(--stone); border-radius: 6px; }
+    .message-preview-head {
+      display: flex; align-items: center; gap: 8px; padding: 0.7rem 1rem; border-bottom: 1px solid var(--gold-pale);
+      font-size: 0.66rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--brand); font-weight: 500;
+    }
+    .message-preview-head svg { width: 16px; height: 16px; fill: #1E8E4F; flex-shrink: 0; }
+    .message-preview-body { display: none; margin: 0; padding: 1rem 1.1rem; font-family: inherit; font-size: 0.86rem; line-height: 1.65; white-space: pre-wrap; word-break: break-word; }
+    .message-preview-hint { padding: 1rem 1.1rem; font-size: 0.8rem; color: var(--ink-soft); font-style: italic; }
+    .message-preview.ready .message-preview-body { display: block; }
+    .message-preview.ready .message-preview-hint { display: none; }
+    .payment-note { font-size: 0.78rem; color: var(--ink-soft); text-align: center; margin: 1.2rem 0 0.8rem; line-height: 1.7; }
+    .submit-button {
+      width: 100%; padding: 16px; background: var(--brand); color: var(--white); border: 1px solid var(--brand);
+      font-size: 0.9rem; font-weight: 500; letter-spacing: 0.12em; font-family: inherit; cursor: pointer;
+      transition: all 0.3s; display: flex; align-items: center; justify-content: center; gap: 10px; border-radius: 6px;
+    }
+    .submit-button:hover { background: var(--brand-deep); transform: translateY(-2px); box-shadow: 0 12px 28px rgba(111,80,69,0.28); }
+    .submit-button:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+    .whatsapp-icon { width: 19px; height: 19px; display: inline-flex; }
+    .whatsapp-icon svg { width: 100%; height: 100%; fill: currentColor; }
+    .success-message {
+      display: none; background: rgba(143,106,92,0.1); border: 1px solid var(--gold); padding: 1rem;
+      margin-bottom: 1.4rem; color: var(--brand-deep); font-size: 0.92rem; text-align: center; border-radius: 6px;
+    }
+    .success-message.show { display: block; }
+    .additional-services { display: none; margin-top: 1.4rem; padding-top: 1.4rem; border-top: 1px dashed var(--gold-pale); }
+    .additional-services.show { display: block; }
+    .additional-services h4 { font-size: 0.85rem; font-weight: 500; color: var(--brand); margin-bottom: 1rem; }
+    .guest-service-row { background: var(--stone); padding: 1rem; margin-bottom: 0.7rem; border-radius: 6px; }
+    .guest-label { font-size: 0.8rem; color: var(--ink-soft); margin-bottom: 0.45rem; font-weight: 500; }
+    .same-package-label { display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 0.88rem; }
+    .same-package-label input { accent-color: #8f6a5c; }
+    #addonSection { display: none; }
+    @media (max-width: 768px) {
+      body { padding: 24px 15px; }
+      .booking-card { padding: 2rem 1.4rem; }
+      .booking-top { flex-wrap: wrap; }
+    }
+  </style>
+</head>
+<body>
+  <div class="booking-container">
+    <div class="booking-top">
+      <a href="landing.html" class="back-link" id="backLink">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span id="backLinkText">Back to Home</span>
+      </a>
+      <div class="lang-switch" role="group" aria-label="Language">
+        <button type="button" data-lang="cn">中文</button>
+        <button type="button" data-lang="en" class="active">EN</button>
+        <button type="button" data-lang="jp">日本語</button>
+      </div>
+    </div>
+
+    <div class="booking-header">
+      <div class="brand-badge" id="brandBadge">Book Your Appointment</div>
+      <h1 class="booking-title">Hoshien</h1>
+      <p class="booking-subtitle" id="bookingSubtitle">Fill in the form below to book your appointment</p>
+    </div>
+
+    <div class="booking-card">
+      <div class="success-message" id="successMessage"></div>
+      <form id="bookingForm">
+        <div class="form-group" id="serviceGroup">
+          <label for="service" class="form-label" id="labelService">Course *</label>
+          <select id="service" name="service" class="form-select" required></select>
+          <div class="form-error" id="errorService">Please select a course</div>
+        </div>
+        <div class="form-group" id="dateGroup">
+          <label for="date" class="form-label" id="labelDate">Date *</label>
+          <input type="date" id="date" name="date" class="form-input" required>
+          <div class="form-error" id="errorDate">Please select a date</div>
+        </div>
+        <div class="form-group" id="timeGroup">
+          <label for="time" class="form-label" id="labelTime">Time *</label>
+          <select id="time" name="time" class="form-select" required></select>
+          <div class="form-hint" id="hintTime">Open 24 hours daily<br>*booking slots every 30 min, 24h clock.</div>
+          <div class="form-error" id="errorTime">Please select a time</div>
+        </div>
+        <div class="form-group" id="guestsGroup">
+          <label for="guests" class="form-label" id="labelGuests">Number of Guests *</label>
+          <select id="guests" name="guests" class="form-select" required></select>
+          <div class="form-group" id="guestsExactGroup" style="display:none;margin:0.7rem 0 0;">
+            <label for="guestsExact" class="form-label" id="labelGuestsExact">Exact number *</label>
+            <input type="number" id="guestsExact" name="guestsExact" class="form-input" min="5" max="30" step="1" inputmode="numeric" placeholder="5">
+            <div class="form-error" id="errorGuestsExact">Please enter 5 or more</div>
+          </div>
+          <div class="form-error" id="errorGuests">Please select number of guests</div>
+        </div>
+        <div class="form-group" id="nameGroup">
+          <label for="name" class="form-label" id="labelName">Name *</label>
+          <input type="text" id="name" name="name" class="form-input" placeholder="Enter your name" required>
+          <div class="form-error" id="errorName">Please enter your name</div>
+        </div>
+
+        <div id="addonSection" aria-hidden="true"></div>
+
+        <div class="form-group" id="samePackageGroup" style="display: none;">
+          <label class="same-package-label">
+            <input type="checkbox" id="samePackage" name="samePackage" checked>
+            <span id="samePackageText">All guests choose the same course</span>
+          </label>
+        </div>
+
+        <div class="additional-services" id="additionalServices">
+          <h4 id="additionalServicesTitle">Additional Guests' Courses (if different)</h4>
+          <div id="additionalServicesContainer"></div>
+        </div>
+
+        <div class="message-preview" id="messagePreview">
+          <div class="message-preview-head">
+            <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.884-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+            <span id="previewTitle">WhatsApp Message Preview</span>
+          </div>
+          <pre class="message-preview-body" id="previewBody"></pre>
+          <p class="message-preview-hint" id="previewHint">Complete all required fields above to preview your message.</p>
+        </div>
+
+        <p class="payment-note" id="paymentNote">Please pay at the salon after arrival, before your treatment begins.<br>Sheet fee ¥300 · Therapist request ¥500 · Late night 0:00–8:00 ¥500 / 30 min.<br>Open 24h · 東京都港区新橋2-9-5 中銀新橋ビル 3F</p>
+
+        <button type="submit" class="submit-button" id="submitButton">
+          <span class="whatsapp-icon"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.884-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg></span>
+          <span id="submitButtonText">Submit &amp; Open WhatsApp</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    var WHATSAPP_NUMBER = '85290744644';
+    // whatsapp-config.json is archive/reference only; number above is authoritative.
+    fetch('whatsapp-config.json', { cache: 'no-store' })
+      .then(function (r) { return r.json(); })
+      .then(function (c) { var num = c && c[c.use]; if (num && /^\d{8,15}$/.test(num)) WHATSAPP_NUMBER = num; })
+      .catch(function () {});
+
+    var currentLang = 'en';
+    var SHEET_FEE = 300;
+    var LATE_PER_30 = 500;
+
+    var serviceInfo = {
+      'A Course 80 min': 9000,
+      'B Course 105 min': 11250,
+      'C Course 135 min': 14250,
+      'D Course 75 min': 10250,
+      'E Course 105 min': 14250,
+      'F Course 135 min': 18250,
+      'Reflexology 45 min': 4750,
+      'Reflexology 60 min': 6500,
+      'Reflexology 60+20 thigh': 10000,
+      'Deep Tissue 30 min': 3500,
+      'Deep Tissue 60 min': 7000,
+      'Deep Tissue 90 min': 10300,
+      'Deep Tissue 120 min': 13500
+    };
+
+    var serviceDuration = {
+      'A Course 80 min': 80,
+      'B Course 105 min': 105,
+      'C Course 135 min': 135,
+      'D Course 75 min': 75,
+      'E Course 105 min': 105,
+      'F Course 135 min': 135,
+      'Reflexology 45 min': 45,
+      'Reflexology 60 min': 60,
+      'Reflexology 60+20 thigh': 80,
+      'Deep Tissue 30 min': 30,
+      'Deep Tissue 60 min': 60,
+      'Deep Tissue 90 min': 90,
+      'Deep Tissue 120 min': 120
+    };
+
+    var serviceGroups = [
+      { label: { en: 'Combination A–C', jp: '組合せ A–C', cn: '组合套餐 A–C' }, items: [
+        { value: 'A Course 80 min', dur: 80, price: 9000, en: 'A Course 80 min (DT+Refl)', jp: 'Aコース 80分 (DT＋リフレ)', cn: 'A套餐 80分 (深层＋足底)' },
+        { value: 'B Course 105 min', dur: 105, price: 11250, en: 'B Course 105 min (DT+Refl)', jp: 'Bコース 105分 (DT＋リフレ)', cn: 'B套餐 105分 (深层＋足底)' },
+        { value: 'C Course 135 min', dur: 135, price: 14250, en: 'C Course 135 min (DT+Refl)', jp: 'Cコース 135分 (DT＋リフレ)', cn: 'C套餐 135分 (深层＋足底)' }
+      ]},
+      { label: { en: 'Combination D–F', jp: '組合せ D–F', cn: '组合套餐 D–F' }, items: [
+        { value: 'D Course 75 min', dur: 75, price: 10250, en: 'D Course 75 min (Lymph+Refl)', jp: 'Dコース 75分 (リンパ＋リフレ)', cn: 'D套餐 75分 (淋巴＋足底)' },
+        { value: 'E Course 105 min', dur: 105, price: 14250, en: 'E Course 105 min (Lymph+Refl)', jp: 'Eコース 105分 (リンパ＋リフレ)', cn: 'E套餐 105分 (淋巴＋足底)' },
+        { value: 'F Course 135 min', dur: 135, price: 18250, en: 'F Course 135 min (Lymph+Refl)', jp: 'Fコース 135分 (リンパ＋リフレ)', cn: 'F套餐 135分 (淋巴＋足底)' }
+      ]},
+      { label: { en: 'Reflexology', jp: 'リフレクソロジー', cn: '足底反射' }, items: [
+        { value: 'Reflexology 45 min', dur: 45, price: 4750, en: 'Reflexology 45 min', jp: 'リフレクソロジー 45分', cn: '足底反射 45分' },
+        { value: 'Reflexology 60 min', dur: 60, price: 6500, en: 'Reflexology 60 min', jp: 'リフレクソロジー 60分', cn: '足底反射 60分' },
+        { value: 'Reflexology 60+20 thigh', dur: 80, price: 10000, en: 'Reflexology 60+20 thigh', jp: 'リフレ 60分＋大腿20分', cn: '足底60分＋大腿20分' }
+      ]},
+      { label: { en: 'Deep Tissue', jp: 'ディープティッシュ', cn: '深层组织' }, items: [
+        { value: 'Deep Tissue 30 min', dur: 30, price: 3500, en: 'Deep Tissue 30 min', jp: 'ディープティッシュ 30分', cn: '深层组织 30分' },
+        { value: 'Deep Tissue 60 min', dur: 60, price: 7000, en: 'Deep Tissue 60 min', jp: 'ディープティッシュ 60分', cn: '深层组织 60分' },
+        { value: 'Deep Tissue 90 min', dur: 90, price: 10300, en: 'Deep Tissue 90 min', jp: 'ディープティッシュ 90分', cn: '深层组织 90分' },
+        { value: 'Deep Tissue 120 min', dur: 120, price: 13500, en: 'Deep Tissue 120 min', jp: 'ディープティッシュ 120分', cn: '深层组织 120分' }
+      ]}
+    ];
+
+    var i18n = {
+      en: { htmlLang:'en', title:'Book Appointment — Hoshien', backLink:'Back to Home', brandBadge:'Book Your Appointment',
+        bookingSubtitle:'Fill in the form below to book your appointment',
+        successMessage:'Your booking information has been prepared. You will be redirected to WhatsApp shortly...',
+        labelService:'Course *', labelDate:'Date *', labelTime:'Time *', labelGuests:'Number of Guests *', labelName:'Name *',
+        selectCourse:'Select a course', selectTime:'Select a time', selectGuests:'Select number of guests', namePlaceholder:'Enter your name',
+        hintTime:'Open 24 hours daily<br>*booking slots every 30 min, 24h clock. Late night 0:00–8:00 +¥500 / 30 min.',
+        errorService:'Please select a course', errorDate:'Please select a date', errorTime:'Please select a time',
+        errorTimeRange:'Please choose a valid time slot.',
+        errorGuests:'Please select number of guests', errorName:'Please enter your name',
+        errorGuestsExact:'Please enter 5 or more', labelGuestsExact:'Exact number *', guestPlus:'5+',
+        samePackageText:'All guests choose the same course', additionalServicesTitle:"Additional Guests' Courses (if different)",
+        submitButton:'Submit & Open WhatsApp', redirecting:'Redirecting...',
+        previewTitle:'WhatsApp Message Preview', previewHint:'Complete all required fields above to preview your message.',
+        paymentNote:'Please pay at the salon after arrival, before your treatment begins.<br>Sheet fee ¥300 · Therapist request ¥500 · Late night 0:00–8:00 ¥500 / 30 min.<br>Open 24h · 東京都港区新橋2-9-5 中銀新橋ビル 3F',
+        guestUnit: function(n){ return n + (n>1?' Guests':' Guest'); },
+        waIntro:'Hello, I would like to make a reservation at Hoshien (Shinbashi / 中銀新橋ビル 3F).\n\n',
+        waName:'Name', waDate:'Date', waTime:'Time', waGuests:'Number of Guests',
+        waGuestCourse: function(n){ return 'Guest ' + n + ' Course'; },
+        waSameCourse:'All guests choose the same course', waSheet:'Sheet fee', waLate:'Late night fee', waTotal:'Total',
+        dateLocale:'en-US' },
+      jp: { htmlLang:'ja', title:'ご予約 — Hoshien', backLink:'ホームに戻る', brandBadge:'ご予約',
+        bookingSubtitle:'以下のフォームにご記入のうえ、ご予約ください',
+        successMessage:'予約内容を作成しました。まもなく WhatsApp へ移動します…',
+        labelService:'コース *', labelDate:'日付 *', labelTime:'時間 *', labelGuests:'人数 *', labelName:'お名前 *',
+        selectCourse:'コースを選択', selectTime:'時間を選択', selectGuests:'人数を選択', namePlaceholder:'お名前を入力',
+        hintTime:'年中無休・24時間営業<br>*予約枠は30分刻み。深夜0:00–8:00は＋¥500／30分。',
+        errorService:'コースを選択してください', errorDate:'日付を選択してください', errorTime:'時間を選択してください',
+        errorTimeRange:'有効な時間を選択してください。',
+        errorGuests:'人数を選択してください', errorName:'お名前を入力してください',
+        errorGuestsExact:'5以上の人数を入力してください', labelGuestsExact:'正確な人数 *', guestPlus:'5+',
+        samePackageText:'全員同じコースを選択', additionalServicesTitle:'追加ゲストのコース（異なる場合）',
+        submitButton:'送信して WhatsApp を開く', redirecting:'移動中…',
+        previewTitle:'WhatsApp メッセージプレビュー', previewHint:'送信内容を確認するため、上記の必須項目をすべてご記入ください。',
+        paymentNote:'ご来店後・施術前にお支払いください。<br>シーツ代¥300 · 指名料¥500 · 深夜0:00–8:00 ¥500／30分。<br>24時間営業 · 東京都港区新橋2-9-5 中銀新橋ビル 3F',
+        guestUnit: function(n){ return n + '名'; },
+        waIntro:'こんにちは、Hoshien（新橋・中銀新橋ビル3F）のご予約を希望します。\n\n',
+        waName:'お名前', waDate:'日付', waTime:'時間', waGuests:'人数',
+        waGuestCourse: function(n){ return 'ゲスト' + n + ' コース'; },
+        waSameCourse:'全員同じコース', waSheet:'シーツ代', waLate:'深夜料金', waTotal:'合計',
+        dateLocale:'ja-JP' },
+      cn: { htmlLang:'zh-CN', title:'预约 — Hoshien', backLink:'返回首页', brandBadge:'在线预约',
+        bookingSubtitle:'请填写以下信息完成预约',
+        successMessage:'预约信息已生成，即将跳转至 WhatsApp…',
+        labelService:'项目 *', labelDate:'日期 *', labelTime:'时间 *', labelGuests:'人数 *', labelName:'姓名 *',
+        selectCourse:'请选择项目', selectTime:'请选择时间', selectGuests:'请选择人数', namePlaceholder:'请输入您的姓名',
+        hintTime:'全天24小时营业<br>*预约时段每30分钟一档。深夜0:00–8:00 加收¥500／30分。',
+        errorService:'请选择项目', errorDate:'请选择日期', errorTime:'请选择时间',
+        errorTimeRange:'请选择有效时间。',
+        errorGuests:'请选择人数', errorName:'请输入姓名',
+        errorGuestsExact:'请输入5人或以上', labelGuestsExact:'准确人数 *', guestPlus:'5+',
+        samePackageText:'所有客人都选择相同项目', additionalServicesTitle:'其他客人的项目（如不同）',
+        submitButton:'提交并打开 WhatsApp', redirecting:'跳转中…',
+        previewTitle:'WhatsApp 消息预览', previewHint:'请先填写上方所有必填项，即可预览消息内容。',
+        paymentNote:'请到店后、开始护理前付款。<br>床单费¥300 · 指定技师¥500 · 深夜0:00–8:00 ¥500／30分。<br>24小时营业 · 东京都港区新橋2-9-5 中銀新橋ビル 3F',
+        guestUnit: function(n){ return n + ' 人'; },
+        waIntro:'您好，我想预约 Hoshien（新橋・中銀新橋ビル 3F）。\n\n',
+        waName:'姓名', waDate:'日期', waTime:'时间', waGuests:'人数',
+        waGuestCourse: function(n){ return '客人' + n + ' 项目'; },
+        waSameCourse:'所有客人都选择相同项目', waSheet:'床单费', waLate:'深夜费', waTotal:'合计',
+        dateLocale:'zh-CN' }
+    };
+
+    function t(k){ return i18n[currentLang][k]; }
+    function buildServiceOptionsHTML(selectedValue){
+      var html = '<option value="">' + t('selectCourse') + '</option>';
+      serviceGroups.forEach(function(g){
+        html += '<optgroup label="' + g.label[currentLang] + '">';
+        g.items.forEach(function(it){
+          var sel = it.value === selectedValue ? ' selected' : '';
+          html += '<option value="' + it.value + '"' + sel + '>' + it[currentLang] + ' — ¥' + it.price.toLocaleString() + '</option>';
+        });
+        html += '</optgroup>';
+      });
+      return html;
+    }
+
+    function buildGuestsOptionsHTML(selectedValue){
+      var html = '<option value="">' + t('selectGuests') + '</option>';
+      for (var i=1;i<=4;i++){
+        var sel = String(i)===selectedValue ? ' selected' : '';
+        html += '<option value="'+i+'"'+sel+'>'+t('guestUnit')(i)+'</option>';
+      }
+      html += '<option value="5+"'+(selectedValue==='5+'?' selected':'')+'>'+t('guestPlus')+'</option>';
+      return html;
+    }
+
+    function getGuestCount(){
+      var gv = document.getElementById('guests').value;
+      if (gv === '5+') {
+        var ex = parseInt(document.getElementById('guestsExact').value, 10);
+        return (!isNaN(ex) && ex >= 5) ? ex : 0;
+      }
+      return parseInt(gv, 10) || 0;
+    }
+
+    function syncGuestsExactUI(){
+      var show = document.getElementById('guests').value === '5+';
+      var box = document.getElementById('guestsExactGroup');
+      box.style.display = show ? 'block' : 'none';
+      document.getElementById('guestsExact').required = show;
+      if (!show) {
+        document.getElementById('guestsExact').value = '';
+        box.classList.remove('error');
+      }
+    }
+
+    function pad2(n){ return n<10 ? '0'+n : ''+n; }
+    // 24h shop: slots 00:00–23:30 every 30 min
+    function buildTimeOptions(selectedValue){
+      var html = '<option value="">' + t('selectTime') + '</option>';
+      for (var h = 0; h <= 23; h++) {
+        for (var m = 0; m < 60; m += 30) {
+          var v = pad2(h) + ':' + pad2(m);
+          html += '<option value="'+v+'"'+(v===selectedValue?' selected':'')+'>'+v+'</option>';
+        }
+      }
+      return html;
+    }
+
+    function getInitialLang(){
+      var p = new URLSearchParams(window.location.search); var lang = p.get('lang');
+      if (lang==='cn'||lang==='jp'||lang==='en') return lang;
+      var ref = document.referrer;
+      if (ref.indexOf('/cn/')!==-1) return 'cn';
+      if (ref.indexOf('/jp/')!==-1) return 'jp';
+      if (ref.indexOf('/en/')!==-1) return 'en';
+      return 'en';
+    }
+
+    function applyLang(lang){
+      currentLang = lang; var o = i18n[lang];
+      var sv = document.getElementById('service').value;
+      var gv = document.getElementById('guests').value;
+      var tv = document.getElementById('time').value;
+      document.documentElement.lang = o.htmlLang;
+      document.title = o.title;
+      document.getElementById('backLinkText').textContent = o.backLink;
+      document.getElementById('brandBadge').textContent = o.brandBadge;
+      document.getElementById('bookingSubtitle').textContent = o.bookingSubtitle;
+      document.getElementById('successMessage').textContent = o.successMessage;
+      document.getElementById('labelService').textContent = o.labelService;
+      document.getElementById('labelDate').textContent = o.labelDate;
+      document.getElementById('labelTime').textContent = o.labelTime;
+      document.getElementById('labelGuests').textContent = o.labelGuests;
+      document.getElementById('labelName').textContent = o.labelName;
+      document.getElementById('hintTime').innerHTML = o.hintTime;
+      document.getElementById('errorService').textContent = o.errorService;
+      document.getElementById('errorDate').textContent = o.errorDate;
+      document.getElementById('errorTime').textContent = o.errorTime;
+      document.getElementById('errorGuests').textContent = o.errorGuests;
+      document.getElementById('errorGuestsExact').textContent = o.errorGuestsExact;
+      document.getElementById('labelGuestsExact').textContent = o.labelGuestsExact;
+      document.getElementById('errorName').textContent = o.errorName;
+      document.getElementById('name').placeholder = o.namePlaceholder;
+      document.getElementById('samePackageText').textContent = o.samePackageText;
+      document.getElementById('additionalServicesTitle').textContent = o.additionalServicesTitle;
+      document.getElementById('submitButtonText').textContent = o.submitButton;
+      document.getElementById('previewTitle').textContent = o.previewTitle;
+      document.getElementById('previewHint').textContent = o.previewHint;
+      document.getElementById('paymentNote').innerHTML = o.paymentNote;
+      document.getElementById('service').innerHTML = buildServiceOptionsHTML(sv);
+      document.getElementById('guests').innerHTML = buildGuestsOptionsHTML(gv);
+      document.getElementById('time').innerHTML = buildTimeOptions(tv);
+      syncGuestsExactUI();
+      document.querySelectorAll('.lang-switch button').forEach(function(b){ b.classList.toggle('active', b.getAttribute('data-lang')===lang); });
+      var home = lang==='en' ? 'en/index.html' : (lang==='jp' ? 'jp/index.html' : 'cn/index.html');
+      document.getElementById('backLink').setAttribute('href', home);
+      var url = new URL(window.location.href); url.searchParams.set('lang', lang); history.replaceState(null,'',url);
+      updateAdditionalServices();
+      updateMessagePreview();
+    }
+
+    var dateInput = document.getElementById('date');
+    dateInput.setAttribute('min', new Date().toISOString().split('T')[0]);
+    applyLang(getInitialLang());
+
+    document.querySelectorAll('.lang-switch button').forEach(function(btn){
+      btn.addEventListener('click', function(){ applyLang(this.getAttribute('data-lang')); });
+    });
+
+    (function(){
+      var svc = new URLSearchParams(window.location.search).get('service');
+      if (svc){ var sel=document.getElementById('service'); for(var i=0;i<sel.options.length;i++){ if(sel.options[i].value===svc){ sel.options[i].selected=true; break; } } }
+      updateMessagePreview();
+    })();
+
+    document.getElementById('guests').addEventListener('change', function(){
+      syncGuestsExactUI();
+      updateAdditionalServices();
+    });
+    document.getElementById('guestsExact').addEventListener('input', updateAdditionalServices);
+    document.getElementById('samePackage').addEventListener('change', updateAdditionalServices);
+
+    function updateAdditionalServices(){
+      syncGuestsExactUI();
+      var gc = getGuestCount();
+      var add = document.getElementById('additionalServices');
+      var cont = document.getElementById('additionalServicesContainer');
+      var spg = document.getElementById('samePackageGroup');
+      var spc = document.getElementById('samePackage');
+      var guestsVal = document.getElementById('guests').value;
+      if (!guestsVal || gc <= 1){ add.classList.remove('show'); cont.innerHTML=''; spg.style.display='none'; updateMessagePreview(); return; }
+      spg.style.display='block';
+      if (spc.checked){ add.classList.remove('show'); cont.innerHTML=''; updateMessagePreview(); return; }
+      var n = gc - 1, html='';
+      for (var i=1;i<=n;i++){
+        html += '<div class="guest-service-row"><div class="guest-label">'+t('waGuestCourse')(i+1)+'</div>' +
+                '<select name="guest'+i+'Service" class="form-select">'+buildServiceOptionsHTML('')+'</select></div>';
+      }
+      cont.innerHTML = html; add.classList.add('show'); updateMessagePreview();
+    }
+
+    function servicePrice(s){ return serviceInfo[s] || 0; }
+    function svcDuration(s){ return serviceDuration[s] || 0; }
+
+    function isLateTime(ts){
+      if (!ts) return false;
+      var h = parseInt(ts.split(':')[0], 10);
+      return !isNaN(h) && h >= 0 && h < 8;
+    }
+
+    function lateFeeFor(svc){
+      var d = svcDuration(svc);
+      if (!d) return 0;
+      return Math.ceil(d / 30) * LATE_PER_30;
+    }
+
+    function isTimeInHours(ts){
+      if (!ts) return false;
+      var p = ts.split(':'); var h = parseInt(p[0],10), m = parseInt(p[1],10);
+      if (isNaN(h) || isNaN(m) || m % 30 !== 0) return false;
+      return h >= 0 && h <= 23;
+    }
+
+    function validateForm(){
+      var ok = true;
+      document.querySelectorAll('.form-group').forEach(function(g){ g.classList.remove('error'); });
+      if (!document.getElementById('name').value.trim()){ document.getElementById('nameGroup').classList.add('error'); ok=false; }
+      if (!document.getElementById('date').value){ document.getElementById('dateGroup').classList.add('error'); ok=false; }
+      var timeVal = document.getElementById('time').value;
+      if (!timeVal){ document.getElementById('errorTime').textContent = t('errorTime'); document.getElementById('timeGroup').classList.add('error'); ok=false; }
+      else if (!isTimeInHours(timeVal)){ document.getElementById('errorTime').textContent = t('errorTimeRange'); document.getElementById('timeGroup').classList.add('error'); ok=false; }
+      if (!document.getElementById('guests').value){ document.getElementById('guestsGroup').classList.add('error'); ok=false; }
+      else if (document.getElementById('guests').value === '5+') {
+        var ex = parseInt(document.getElementById('guestsExact').value, 10);
+        if (isNaN(ex) || ex < 5){ document.getElementById('guestsExactGroup').classList.add('error'); ok=false; }
+      }
+      if (!document.getElementById('service').value){ document.getElementById('serviceGroup').classList.add('error'); ok=false; }
+      return ok;
+    }
+
+    function formatDate(ds){ var d=new Date(ds+'T00:00:00'); return d.toLocaleDateString(t('dateLocale'),{year:'numeric',month:'long',day:'numeric'}); }
+
+    function isFormComplete(){
+      if (!document.getElementById('name').value.trim() || !document.getElementById('date').value ||
+          !document.getElementById('time').value || !document.getElementById('guests').value || !document.getElementById('service').value) {
+        return false;
+      }
+      if (document.getElementById('guests').value === '5+') return getGuestCount() >= 5;
+      return true;
+    }
+
+    function buildWhatsAppMessage(fd){
+      var name=fd.get('name'), date=formatDate(fd.get('date')), time=fd.get('time');
+      var gc=getGuestCount(), main=fd.get('service');
+      var late = isLateTime(time);
+      var m = t('waIntro');
+      m += t('waName')+': '+name+'\n';
+      m += t('waDate')+': '+date+'\n';
+      m += t('waTime')+': '+time+'\n';
+      m += t('waGuests')+': '+gc+'\n';
+      m += t('waGuestCourse')(1)+' : '+main+' (¥'+servicePrice(main).toLocaleString()+')\n';
+      var same = fd.get('samePackage')==='on';
+      var total = servicePrice(main);
+      var guestServices = [main];
+      if (gc>1 && same){ m += t('waSameCourse')+'\n'; total = servicePrice(main)*gc; for (var si=1;si<gc;si++) guestServices.push(main); }
+      else { for (var i=1;i<gc;i++){ var gs=fd.get('guest'+i+'Service'); if(gs&&gs.trim()){ m += t('waGuestCourse')(i+1)+' : '+gs+' (¥'+servicePrice(gs).toLocaleString()+')\n'; total += servicePrice(gs); guestServices.push(gs); } } }
+      var sheetTotal = SHEET_FEE * guestServices.length;
+      if (sheetTotal>0){
+        m += t('waSheet')+': ¥'+SHEET_FEE.toLocaleString()+' ×'+guestServices.length+' (¥'+sheetTotal.toLocaleString()+')\n';
+        total += sheetTotal;
+      }
+      if (late){
+        var lateFees = guestServices.map(lateFeeFor);
+        var lateTotal = lateFees.reduce(function(a,b){ return a+b; }, 0);
+        if (lateTotal>0){
+          var allSameLate = lateFees.every(function(f){ return f===lateFees[0]; });
+          if (allSameLate) m += t('waLate')+': ¥'+lateFees[0].toLocaleString()+' ×'+lateFees.length+' (¥'+lateTotal.toLocaleString()+')\n';
+          else m += t('waLate')+': '+lateFees.map(function(f){ return '¥'+f.toLocaleString(); }).join(' + ')+' (¥'+lateTotal.toLocaleString()+')\n';
+          total += lateTotal;
+        }
+      }
+      if (total>0){ m += '\n'+t('waTotal')+': ¥'+total.toLocaleString(); }
+      return m;
+    }
+
+    function updateMessagePreview(){
+      var ps=document.getElementById('messagePreview'), pb=document.getElementById('previewBody');
+      if (!isFormComplete()){ ps.classList.remove('ready'); pb.textContent=''; return; }
+      pb.textContent = buildWhatsAppMessage(new FormData(document.getElementById('bookingForm')));
+      ps.classList.add('ready');
+    }
+
+    document.getElementById('bookingForm').addEventListener('submit', function(e){
+      e.preventDefault();
+      if (!validateForm()) return;
+      var msg = encodeURIComponent(buildWhatsAppMessage(new FormData(this)));
+      var url = 'https://api.whatsapp.com/send/?phone=' + WHATSAPP_NUMBER + '&text=' + msg + '&type=phone_number&app_absent=0';
+      document.getElementById('successMessage').classList.add('show');
+      document.getElementById('submitButton').disabled = true;
+      document.getElementById('submitButtonText').textContent = t('redirecting');
+      setTimeout(function(){ window.open(url,'_blank'); }, 500);
+    });
+
+    document.getElementById('bookingForm').addEventListener('input', updateMessagePreview);
+    document.getElementById('bookingForm').addEventListener('change', updateMessagePreview);
+
+    document.querySelectorAll('.form-input, .form-select').forEach(function(input){
+      input.addEventListener('blur', function(){
+        var g=this.closest('.form-group'); if(!g) return;
+        if (this.hasAttribute('required') && !this.value.trim()) g.classList.add('error'); else g.classList.remove('error');
+      });
+      input.addEventListener('input', function(){
+        var g=this.closest('.form-group'); if(g && g.classList.contains('error') && this.value.trim()) g.classList.remove('error');
+      });
+    });
+  </script>
+</body>
+</html>
