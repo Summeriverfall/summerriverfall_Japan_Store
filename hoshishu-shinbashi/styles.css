@@ -929,9 +929,13 @@ ul { list-style: none; }
 .landing-bg {
   position: absolute;
   inset: 0;
-  background:
-    linear-gradient(160deg, rgba(31,28,26,0.68), rgba(31,28,26,0.52)),
-    url("assets/images/landing-bg.webp") center 38% / cover no-repeat;
+  background-color: #1a1816;
+  background-image:
+    linear-gradient(165deg, rgba(31,28,26,0.50), rgba(31,28,26,0.38)),
+    url("assets/images/landing-bg.webp");
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 .landing-inner {
   position: relative;
@@ -947,6 +951,12 @@ ul { list-style: none; }
 }
 .landing-brand {
   margin-top: auto;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 .brand-en {
   font-family: var(--font-display);
@@ -954,13 +964,23 @@ ul { list-style: none; }
   font-weight: 500;
   letter-spacing: 0.18em;
   text-transform: uppercase;
+  text-align: center;
+  margin: 0;
+  /* cancel trailing letter-spacing so glyphs sit on true center */
+  margin-right: -0.18em;
+  padding-left: 0;
 }
 .brand-ja {
   display: block;
-  margin-top: 0.4rem;
-  font-size: 0.9rem;
-  letter-spacing: 0.2em;
+  margin: 0.45rem 0 0;
+  margin-right: -0.28em;
+  padding: 0;
+  font-size: 1.15rem;
+  font-weight: 500;
+  letter-spacing: 0.28em;
   color: var(--gold-pale);
+  text-align: center;
+  line-height: 1.2;
 }
 .landing-rule {
   width: 48px;
@@ -1059,9 +1079,13 @@ ul { list-style: none; }
   }
   .brand-en {
     font-size: clamp(2.8rem, 4.5vw, 3.8rem);
+    margin-right: -0.18em;
+    padding-left: 0;
   }
   .brand-ja {
-    font-size: 1.05rem;
+    font-size: 1.2rem;
+    margin-right: -0.28em;
+    padding-left: 0;
   }
   .landing-rule {
     width: 64px;

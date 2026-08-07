@@ -216,64 +216,46 @@
     var LATE_PER_30 = 500;
 
     var serviceInfo = {
-      'Trial Combo 80 min': 7800,
-      'Healing Combo 105 min': 9500,
-      'Fatigue Combo 135 min': 12000,
-      'Recommend Combo 75 min': 9000,
-      'Reward Combo 105 min': 12500,
-      'Ultimate Bliss Combo 135 min': 16000,
+      'A Course 80 min': 8500,
+      'B Course 105 min': 11250,
+      'C Course 135 min': 14250,
+      'D Course 75 min': 10250,
+      'E Course 105 min': 14250,
+      'F Course 135 min': 18250,
       'Foot 45 min': 4000,
-      'Foot 60 min': 5500,
-      'Foot 60+Thigh20 80 min': 8500,
+      'Foot 60 min': 5000,
+      'Foot 45+HandHead20 65 min': 5500,
       'Bodywork 30 min': 3000,
-      'Bodywork 60 min': 6000,
-      'Bodywork 90 min': 8800,
-      'Bodywork 120 min': 11500,
+      'Bodywork 60 min': 5500,
+      'Bodywork 90 min': 8000,
+      'Aroma 30 min': 4000,
       'Aroma 60 min': 8000,
-      'Aroma 90 min': 12000,
-      'Aroma 120 min': 15500,
-      'Detox Lymph 60 min': 9000,
-      'Detox Lymph 90 min': 13000,
-      'Detox Lymph 120 min': 16500,
-      'Hot Stone Lymph 60 min': 10000,
-      'Hot Stone Lymph 90 min': 14000,
-      'Hot Stone Lymph 120 min': 17500
+      'Aroma 90 min': 11500
     };
 
     var serviceGroups = [
       { label: { en: 'Value Combos', jp: 'お得な組合せ', cn: '超值组合' }, items: [
-        { value: 'Trial Combo 80 min', dur: 80, price: 7800, en: 'Trial 80 min', jp: 'お試し 80分', cn: '体验 80分' },
-        { value: 'Healing Combo 105 min', dur: 105, price: 9500, en: 'Healing 105 min', jp: '癒し 105分', cn: '疗愈 105分' },
-        { value: 'Fatigue Combo 135 min', dur: 135, price: 12000, en: 'Fatigue Relief 135 min', jp: '疲労撃退 135分', cn: '疲劳击退 135分' },
-        { value: 'Recommend Combo 75 min', dur: 75, price: 9000, en: 'Recommend 75 min', jp: 'お勧め 75分', cn: '推荐 75分' },
-        { value: 'Reward Combo 105 min', dur: 105, price: 12500, en: 'Reward 105 min', jp: 'ご褒美 105分', cn: '犒劳 105分' },
-        { value: 'Ultimate Bliss Combo 135 min', dur: 135, price: 16000, en: 'Ultimate Bliss 135 min', jp: '極上至福 135分', cn: '极上至福 135分' }
+        { value: 'A Course 80 min', dur: 80, price: 8500, en: 'A · DT + Reflexology 80 min', jp: 'A · ディープ＋リフレ 80分', cn: 'A · 深层＋足底 80 min' },
+        { value: 'B Course 105 min', dur: 105, price: 11250, en: 'B · DT + Reflexology 105 min', jp: 'B · ディープ＋リフレ 105分', cn: 'B · 深层＋足底 105 min' },
+        { value: 'C Course 135 min', dur: 135, price: 14250, en: 'C · DT + Reflexology 135 min', jp: 'C · ディープ＋リフレ 135分', cn: 'C · 深层＋足底 135 min' },
+        { value: 'D Course 75 min', dur: 75, price: 10250, en: 'D · Lymph + Reflexology 75 min', jp: 'D · リンパ＋リフレ 75分', cn: 'D · 淋巴＋足底 75 min' },
+        { value: 'E Course 105 min', dur: 105, price: 14250, en: 'E · Lymph + Reflexology 105 min', jp: 'E · リンパ＋リフレ 105分', cn: 'E · 淋巴＋足底 105 min' },
+        { value: 'F Course 135 min', dur: 135, price: 18250, en: 'F · Lymph + Reflexology 135 min', jp: 'F · リンパ＋リフレ 135分', cn: 'F · 淋巴＋足底 135 min' }
       ]},
-      { label: { en: 'Foot Reflexology', jp: '足裏・リフレ', cn: '足底・反射' }, items: [
-        { value: 'Foot 45 min', dur: 45, price: 4000, en: 'Foot 45 min', jp: '足裏 45分', cn: '足底 45分' },
-        { value: 'Foot 60 min', dur: 60, price: 5500, en: 'Foot 60 min', jp: '足裏 60分', cn: '足底 60分' },
-        { value: 'Foot 60+Thigh20 80 min', dur: 80, price: 8500, en: 'Foot 60 + thighs 20', jp: '足裏60＋太もも20', cn: '足底60＋大腿20' }
+      { label: { en: 'Foot Massage', jp: '足裏', cn: '足底' }, items: [
+        { value: 'Foot 45 min', dur: 45, price: 4000, en: 'Foot 45 min', jp: '足裏 45分', cn: '足底 45 min' },
+        { value: 'Foot 60 min', dur: 60, price: 5000, en: 'Foot 60 min', jp: '足裏 60分', cn: '足底 60 min' },
+        { value: 'Foot 45+HandHead20 65 min', dur: 65, price: 5500, en: '65 min · foot 45 + hand/head 20', jp: '65分 · 足裏45＋ハンド／ヘッド20', cn: '65 min · 足底45＋手／头20' }
       ]},
-      { label: { en: 'Bodywork', jp: '揉みほぐし整体', cn: '揉按整体' }, items: [
-        { value: 'Bodywork 30 min', dur: 30, price: 3000, en: 'Bodywork 30 min', jp: '整体 30分', cn: '整体 30分' },
-        { value: 'Bodywork 60 min', dur: 60, price: 6000, en: 'Bodywork 60 min', jp: '整体 60分', cn: '整体 60分' },
-        { value: 'Bodywork 90 min', dur: 90, price: 8800, en: 'Bodywork 90 min', jp: '整体 90分', cn: '整体 90分' },
-        { value: 'Bodywork 120 min', dur: 120, price: 11500, en: 'Bodywork 120 min', jp: '整体 120分', cn: '整体 120分' }
+      { label: { en: 'Body Massage', jp: '整体', cn: '整体' }, items: [
+        { value: 'Bodywork 30 min', dur: 30, price: 3000, en: 'Body 30 min', jp: '整体 30分', cn: '整体 30 min' },
+        { value: 'Bodywork 60 min', dur: 60, price: 5500, en: 'Body 60 min', jp: '整体 60分', cn: '整体 60 min' },
+        { value: 'Bodywork 90 min', dur: 90, price: 8000, en: 'Body 90 min', jp: '整体 90分', cn: '整体 90 min' }
       ]},
       { label: { en: 'Aroma Oil', jp: 'アロマオイル', cn: '精油' }, items: [
-        { value: 'Aroma 60 min', dur: 60, price: 8000, en: 'Aroma 60 min', jp: 'アロマ 60分', cn: '精油 60分' },
-        { value: 'Aroma 90 min', dur: 90, price: 12000, en: 'Aroma 90 min', jp: 'アロマ 90分', cn: '精油 90分' },
-        { value: 'Aroma 120 min', dur: 120, price: 15500, en: 'Aroma 120 min', jp: 'アロマ 120分', cn: '精油 120分' }
-      ]},
-      { label: { en: 'Detox Lymph', jp: 'デトックスリンパ', cn: '排毒淋巴' }, items: [
-        { value: 'Detox Lymph 60 min', dur: 60, price: 9000, en: 'Detox Lymph 60 min', jp: 'デトックスリンパ 60分', cn: '排毒淋巴 60分' },
-        { value: 'Detox Lymph 90 min', dur: 90, price: 13000, en: 'Detox Lymph 90 min', jp: 'デトックスリンパ 90分', cn: '排毒淋巴 90分' },
-        { value: 'Detox Lymph 120 min', dur: 120, price: 16500, en: 'Detox Lymph 120 min', jp: 'デトックスリンパ 120分', cn: '排毒淋巴 120分' }
-      ]},
-      { label: { en: 'Hot Stone Lymph', jp: '温石極上リンパ', cn: '温石极上淋巴' }, items: [
-        { value: 'Hot Stone Lymph 60 min', dur: 60, price: 10000, en: 'Hot Stone Lymph 60 min', jp: '温石リンパ 60分', cn: '温石淋巴 60分' },
-        { value: 'Hot Stone Lymph 90 min', dur: 90, price: 14000, en: 'Hot Stone Lymph 90 min', jp: '温石リンパ 90分', cn: '温石淋巴 90分' },
-        { value: 'Hot Stone Lymph 120 min', dur: 120, price: 17500, en: 'Hot Stone Lymph 120 min', jp: '温石リンパ 120分', cn: '温石淋巴 120分' }
+        { value: 'Aroma 30 min', dur: 30, price: 4000, en: 'Aroma 30 min', jp: 'アロマ 30分', cn: '精油 30 min' },
+        { value: 'Aroma 60 min', dur: 60, price: 8000, en: 'Aroma 60 min', jp: 'アロマ 60分', cn: '精油 60 min' },
+        { value: 'Aroma 90 min', dur: 90, price: 11500, en: 'Aroma 90 min', jp: 'アロマ 90分', cn: '精油 90 min' }
       ]}
     ];
 
