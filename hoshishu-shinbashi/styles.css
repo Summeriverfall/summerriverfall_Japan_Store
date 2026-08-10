@@ -306,7 +306,10 @@ ul { list-style: none; }
   color: rgba(255,255,255,0.82);
   max-width: 520px;
   margin-bottom: 1.8rem;
-  text-wrap: balance;
+  /* 不均分换行：自然填满行；防断词即可 */
+  text-wrap: wrap;
+  overflow-wrap: normal;
+  word-break: normal;
 }
 .hero-cta { display: flex; flex-wrap: wrap; gap: 0.9rem; }
 .hero-scroll {
@@ -465,6 +468,20 @@ ul { list-style: none; }
   padding: 1rem 1.3rem;
   border-top: 1px solid rgba(228,214,194,0.55);
   transition: background 0.25s;
+}
+.options-group .opt-row {
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+.options-group {
+  margin-top: 2rem;
+  margin-bottom: 0;
+}
+.sheet-note {
+  margin: 0.55rem 0 0;
+  font-size: 0.85rem;
+  opacity: 0.85;
+  text-align: center;
+  line-height: 1.55;
 }
 .opt-row:first-child { border-top: none; }
 .opt-row:hover { background: rgba(166,123,109,0.04); }
@@ -1263,6 +1280,21 @@ ul { list-style: none; }
     min-width: 6.5rem;
   }
   .opt-row:not(.opt-choice) .opt-book { grid-area: book; justify-self: end; }
+  /* 可选加项：名与价尽量同一行 */
+  .options-group .opt-row:not(.opt-choice) {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas: none;
+    row-gap: 0.35rem;
+  }
+  .options-group .opt-row:not(.opt-choice) .opt-name,
+  .options-group .opt-row:not(.opt-choice) .opt-price {
+    grid-area: auto;
+  }
+  .options-group .opt-row:not(.opt-choice) .opt-price {
+    text-align: right;
+    justify-self: end;
+    min-width: 0;
+  }
   .opt-choice {
     grid-template-columns: 1.35rem minmax(0, 1fr) max-content;
     column-gap: 0.55rem;
