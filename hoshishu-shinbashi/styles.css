@@ -480,7 +480,7 @@ ul { list-style: none; }
   margin: 0.55rem 0 0;
   font-size: 0.85rem;
   opacity: 0.85;
-  text-align: center;
+  text-align: left;
   line-height: 1.55;
 }
 .opt-row:first-child { border-top: none; }
