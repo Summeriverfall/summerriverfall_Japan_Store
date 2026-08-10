@@ -1206,6 +1206,7 @@ ul { list-style: none; }
     grid-template-columns: 1fr;
   }
   .menu-card { grid-template-columns: 110px 1fr; }
+  .hero-slide { background-position: 28% center; }
   .hero-content { padding-bottom: 4rem; }
   .hero-scroll { display: none; }
 }
