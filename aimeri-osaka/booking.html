@@ -220,25 +220,12 @@
       'Head Bath + Back Massage 90 min': 9800,
       'Head Bath + Foot Reflexology 90 min': 9800,
       'Facial + Head Bath + Premium Head Spa 90 min': 11600,
-      'Dry Head Spa Trial 10 min': 1500,
-      'Dry Head Spa Trial 30 min': 3000,
-      'Concern-based Facial New 70 min': 3800,
       'Concern-based Facial Popular 70 min': 5600,
-      'Decollete Small-face + Plaster Pack New 90 min': 6500,
       'Decollete Small-face + Plaster Pack 90 min': 7500,
-      'Photo Facial New 90 min': 8500,
       'Photo Facial 90 min': 12000,
-      'Upper Body Oil Women 60 min': 6500,
-      'Lower Body Oil Women 60 min': 6500,
-      'Full Body Oil Women Trial 60 min': 7000,
-      'Full Body Oil Women Recommended 90 min': 9500,
-      'Full Body Oil Women Luxury 120 min': 12000,
-      'Full Body Oil Men Trial 60 min': 8000,
-      'Full Body Oil Men Recommended 90 min': 11000,
-      'Full Body Oil Men Luxury 120 min': 14000,
-      'Back Scrub Exfoliation Pack New 70 min': 6600,
-      'Back Scrub Exfoliation Pack 70 min': 8600,
-      'S-Part Hair Removal 1 area': 2000
+      'Full Body Oil Trial 60 min': 8000,
+      'Full Body Oil Recommended 90 min': 11000,
+      'Full Body Oil Luxury 120 min': 14000
     };
 
     var serviceGroups = [
@@ -246,34 +233,17 @@
         { value: 'Head Bath + Premium Head Spa 60 min', dur: 60, price: 6800, en: 'Head Bath + Premium Head Spa 60 min', jp: '頭浸浴＋極上ヘッドスパ 60分', cn: '头浸浴＋极致头疗 60分钟' },
         { value: 'Head Bath + Back Massage 90 min', dur: 90, price: 9800, en: 'Head Bath + Back Massage 90 min', jp: '頭浸浴＋背中マッサージ 90分', cn: '头浸浴＋背部按摩 90分钟' },
         { value: 'Head Bath + Foot Reflexology 90 min', dur: 90, price: 9800, en: 'Head Bath + Foot Reflexology 90 min', jp: '頭浸浴＋足つぼ 90分', cn: '头浸浴＋足底反射 90分钟' },
-        { value: 'Facial + Head Bath + Premium Head Spa 90 min', dur: 90, price: 11600, en: 'Facial + Head Bath + Head Spa 90 min', jp: 'フェイシャル＋頭浸浴＋極上ヘッドスパ 90分', cn: '面部＋头浸浴＋极致头疗 90分钟' },
-        { value: 'Dry Head Spa Trial 10 min', dur: 10, price: 1500, en: 'Dry Head Spa Trial 10 min', jp: 'ドライヘッドスパお試し 10分', cn: '干式头疗体验 10分钟' },
-        { value: 'Dry Head Spa Trial 30 min', dur: 30, price: 3000, en: 'Dry Head Spa Trial 30 min', jp: 'ドライヘッドスパお試し 30分', cn: '干式头疗体验 30分钟' }
+        { value: 'Facial + Head Bath + Premium Head Spa 90 min', dur: 90, price: 11600, en: 'Facial + Head Bath + Head Spa 90 min', jp: 'フェイシャル＋頭浸浴＋極上ヘッドスパ 90分', cn: '面部护理＋头浸浴＋极致头疗 90分钟' }
       ]},
       { label: { en: 'Facial', jp: 'フェイシャル', cn: '面部护理' }, items: [
-        { value: 'Concern-based Facial New 70 min', dur: 70, price: 3800, en: 'Concern-based Facial (New) 70 min', jp: 'お悩み別フェイシャル（新規）70分', cn: '按肤质定制面部（新客）70分钟' },
-        { value: 'Concern-based Facial Popular 70 min', dur: 70, price: 5600, en: 'Concern-based Facial 70 min', jp: 'お悩み別フェイシャル 70分', cn: '按肤质定制面部 70分钟' },
-        { value: 'Decollete Small-face + Plaster Pack New 90 min', dur: 90, price: 6500, en: 'Small-face + Plaster Pack (New) 90 min', jp: '小顔矯正＋石膏パック（新規）90分', cn: '小颜矫正＋石膏膜（新客）90分钟' },
-        { value: 'Decollete Small-face + Plaster Pack 90 min', dur: 90, price: 7500, en: 'Small-face + Plaster Pack 90 min', jp: '小顔矯正＋石膏パック 90分', cn: '小颜矫正＋石膏膜 90分钟' },
-        { value: 'Photo Facial New 90 min', dur: 90, price: 8500, en: 'Photo Facial (New) 90 min', jp: 'フォト美顔（新規）90分', cn: '光子嫩肤（新客）90分钟' },
+        { value: 'Concern-based Facial Popular 70 min', dur: 70, price: 5600, en: 'Concern-based Facial (Popular No.1) 70 min', jp: 'お悩み別本格フェイシャル（人気No.1）70分', cn: '按肤质定制面部护理（人气No.1）70分钟' },
+        { value: 'Decollete Small-face + Plaster Pack 90 min', dur: 90, price: 7500, en: 'Décolleté Small-face + Plaster Pack 90 min', jp: 'デコルテ＆小顔矯正＋小顔石膏パック 90分', cn: '肩颈锁骨＆小颜矫正＋石膏膜 90分钟' },
         { value: 'Photo Facial 90 min', dur: 90, price: 12000, en: 'Photo Facial 90 min', jp: 'フォト美顔 90分', cn: '光子嫩肤 90分钟' }
       ]},
-      { label: { en: 'Oil Massage · Women', jp: 'オイルマッサージ・女性', cn: '精油按摩・女性' }, items: [
-        { value: 'Upper Body Oil Women 60 min', dur: 60, price: 6500, en: 'Upper Body Oil (Women) 60 min', jp: '上半身オイル（女性）60分', cn: '上半身精油（女性）60分钟' },
-        { value: 'Lower Body Oil Women 60 min', dur: 60, price: 6500, en: 'Lower Body Oil (Women) 60 min', jp: '下半身オイル（女性）60分', cn: '下半身精油（女性）60分钟' },
-        { value: 'Full Body Oil Women Trial 60 min', dur: 60, price: 7000, en: 'Full Body Oil Trial (Women) 60 min', jp: '全身オイルお試し（女性）60分', cn: '全身精油体验（女性）60分钟' },
-        { value: 'Full Body Oil Women Recommended 90 min', dur: 90, price: 9500, en: 'Full Body Oil Recommended (Women) 90 min', jp: '全身オイルおすすめ（女性）90分', cn: '全身精油推荐（女性）90分钟' },
-        { value: 'Full Body Oil Women Luxury 120 min', dur: 120, price: 12000, en: 'Full Body Oil Luxury (Women) 120 min', jp: '全身オイル贅沢（女性）120分', cn: '全身精油奢华（女性）120分钟' }
-      ]},
-      { label: { en: 'Oil Massage · Men', jp: 'オイルマッサージ・男性', cn: '精油按摩・男性' }, items: [
-        { value: 'Full Body Oil Men Trial 60 min', dur: 60, price: 8000, en: 'Full Body Oil Trial (Men) 60 min', jp: '全身オイルお試し（男性）60分', cn: '全身精油体验（男性）60分钟' },
-        { value: 'Full Body Oil Men Recommended 90 min', dur: 90, price: 11000, en: 'Full Body Oil Recommended (Men) 90 min', jp: '全身オイルおすすめ（男性）90分', cn: '全身精油推荐（男性）90分钟' },
-        { value: 'Full Body Oil Men Luxury 120 min', dur: 120, price: 14000, en: 'Full Body Oil Luxury (Men) 120 min', jp: '全身オイル贅沢（男性）120分', cn: '全身精油奢华（男性）120分钟' }
-      ]},
-      { label: { en: 'Back · Hair Removal', jp: '背中・脱毛', cn: '背部・脱毛' }, items: [
-        { value: 'Back Scrub Exfoliation Pack New 70 min', dur: 70, price: 6600, en: 'Back Scrub Pack (New) 70 min', jp: '背中スクラブパック（新規）70分', cn: '背部磨砂面膜（新客）70分钟' },
-        { value: 'Back Scrub Exfoliation Pack 70 min', dur: 70, price: 8600, en: 'Back Scrub Pack 70 min', jp: '背中スクラブパック 70分', cn: '背部磨砂面膜 70分钟' },
-        { value: 'S-Part Hair Removal 1 area', dur: 30, price: 2000, en: 'S-Part Hair Removal 1 area', jp: 'Sパーツ脱毛 1箇所', cn: 'S部位脱毛 1处' }
+      { label: { en: 'Oil Massage', jp: 'オイルマッサージ', cn: '精油按摩' }, items: [
+        { value: 'Full Body Oil Trial 60 min', dur: 60, price: 8000, en: 'Full Body Oil (Trial) 60 min', jp: '全身オイルマッサージ（お試し）60分', cn: '全身精油按摩（体验）60分钟' },
+        { value: 'Full Body Oil Recommended 90 min', dur: 90, price: 11000, en: 'Full Body Oil (Recommended) 90 min', jp: '全身オイルマッサージ（おすすめ）90分', cn: '全身精油按摩（推荐）90分钟' },
+        { value: 'Full Body Oil Luxury 120 min', dur: 120, price: 14000, en: 'Full Body Oil (Luxury) 120 min', jp: '全身オイルマッサージ（贅沢）120分', cn: '全身精油按摩（奢华）120分钟' }
       ]}
     ];
 
