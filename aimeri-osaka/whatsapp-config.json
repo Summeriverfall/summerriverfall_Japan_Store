@@ -1,0 +1,7 @@
+{
+  "use": "center",
+  "center": "85290744644",
+  "_note": "Runtime WhatsApp number is hard-coded in booking.html (85290744644). This file is archive/reference only unless booking.js is wired to fetch it.",
+  "shop_phone": "0364324939",
+  "shop_phone_display": "03-6432-4939"
+}
