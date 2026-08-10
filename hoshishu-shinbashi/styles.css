@@ -961,12 +961,26 @@ ul { list-style: none; }
   position: absolute;
   inset: 0;
   background-color: #1a1816;
-  background-image:
-    linear-gradient(165deg, rgba(31,28,26,0.55), rgba(31,28,26,0.40)),
-    url("assets/images/landing-bg.webp");
+  overflow: hidden;
+}
+.landing-bg::before {
+  content: "";
+  position: absolute;
+  /* extend past edges so blur doesn't show hard crop */
+  inset: -16px;
+  background-image: url("assets/images/landing-bg.webp");
   background-position: center 38%;
   background-size: cover;
   background-repeat: no-repeat;
+  filter: blur(5px) brightness(0.72);
+  transform: scale(1.04);
+}
+.landing-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(165deg, rgba(24,22,20,0.42), rgba(24,22,20,0.30));
+  pointer-events: none;
 }
 .landing-inner {
   position: relative;
