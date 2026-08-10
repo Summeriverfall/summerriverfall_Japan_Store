@@ -193,7 +193,7 @@
           <p class="message-preview-hint" id="previewHint">Complete all required fields above to preview your message.</p>
         </div>
 
-        <p class="payment-note" id="paymentNote">Please pay at the salon after arrival, before your treatment begins.<br>Sheet fee ¥300 · Therapist request ¥500 · Late night 0:00–8:00 ¥500 / 30 min.<br>Open 24h · 東京都港区新橋2-9-5 中銀新橋ビル 3F</p>
+        <p class="payment-note" id="paymentNote">Please pay at the salon after arrival, before your treatment begins.<br>Sheet fee ¥300 · Late night 0:00–8:00 ¥500 / 30 min · Card +8%.<br>Open 24h · 東京都港区新橋2-9-5 中銀新橋ビル 3F</p>
 
         <button type="submit" class="submit-button" id="submitButton">
           <span class="whatsapp-icon"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.884-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg></span>
@@ -216,58 +216,141 @@
     var LATE_PER_30 = 500;
 
     var serviceInfo = {
-      'A Course 80 min': 9000,
-      'B Course 105 min': 11250,
-      'C Course 135 min': 14250,
-      'D Course 75 min': 10250,
-      'E Course 105 min': 14250,
-      'F Course 135 min': 18250,
-      'Reflexology 45 min': 4750,
-      'Reflexology 60 min': 6500,
-      'Reflexology 60+20 thigh': 10000,
-      'Deep Tissue 30 min': 3500,
-      'Deep Tissue 60 min': 7000,
-      'Deep Tissue 90 min': 10300,
-      'Deep Tissue 120 min': 13500
+      'Sleep Head Spa Bodywork 70 min': 5980,
+      'Sleep Head Spa Bodywork Foot 75 min': 5980,
+      'Sleep Head Spa Lymph 70 min': 6980,
+      'Full Body Aroma Lymph 100 min': 9800,
+      'Head Spa Seitai Foot 90 min': 8280,
+      'Pair Lymph Head Spa 60 min': 12000,
+      'Taiwan Foot Calf 60 min': 5000,
+      'Shoulder Carbon Head 45 min': 4980,
+      'Upper Body Aroma Lymph 45 min': 4200,
+      'Upper Aroma Foot 75 min': 7500,
+      'Eye Fatigue Seitai 120 min': 10800,
+      'Taiwan Step Bodywork 60 min': 5200,
+      'Facial Care 30 min': 3500,
+      'Korugi Neck 45 min': 4980,
+      'Eye Fatigue Korugi 30 min': 4000,
+      'Korugi Neck Decollete 60 min': 6200,
+      'Korugi Lymph 90 min': 9100,
+      'Sleep Head Spa 20 min': 2000,
+      'Head Upper Body 60 min': 6200,
+      'Collarbone Arm Lymph 60 min': 6500,
+      'Scapula Lymph 60 min': 6500,
+      'Head Spa Full Lymph 120 min': 12800,
+      'Eye Fatigue Lymph Arm 130 min': 12800,
+      'Warm Detox Head Intestine 90 min': 9500,
+      'Hot Stone Aroma Foot 120 min': 12980,
+      'Head Intestine Lymph 110 min': 12800,
+      'Full Detox Aroma Belly 130 min': 12980,
+      'Hand Massage 20 min': 2000,
+      'Full Body Relax 30 min': 3000,
+      'Seitai Focus 60 min': 5800,
+      'Salt Hip Leg 30 min': 3000,
+      'Stomach Massage 30 min': 3500,
+      'Lymph Treatment 30 min': 3500,
+      'Diet Aroma Lymph 30 min': 4000,
+      'Chinese Aroma Oil 90 min': 11000,
+      'Chinese Aroma Oil 120 min': 13500,
+      'Special Set C 105 min': 10500,
+      'Special Set D 135 min': 14500,
+      'Foot Exfoliation 20 min': 1500,
+      'Back Exfoliation 20 min': 1500
     };
 
     var serviceDuration = {
-      'A Course 80 min': 80,
-      'B Course 105 min': 105,
-      'C Course 135 min': 135,
-      'D Course 75 min': 75,
-      'E Course 105 min': 105,
-      'F Course 135 min': 135,
-      'Reflexology 45 min': 45,
-      'Reflexology 60 min': 60,
-      'Reflexology 60+20 thigh': 80,
-      'Deep Tissue 30 min': 30,
-      'Deep Tissue 60 min': 60,
-      'Deep Tissue 90 min': 90,
-      'Deep Tissue 120 min': 120
+      'Sleep Head Spa Bodywork 70 min': 70,
+      'Sleep Head Spa Bodywork Foot 75 min': 75,
+      'Sleep Head Spa Lymph 70 min': 70,
+      'Full Body Aroma Lymph 100 min': 100,
+      'Head Spa Seitai Foot 90 min': 90,
+      'Pair Lymph Head Spa 60 min': 60,
+      'Taiwan Foot Calf 60 min': 60,
+      'Shoulder Carbon Head 45 min': 45,
+      'Upper Body Aroma Lymph 45 min': 45,
+      'Upper Aroma Foot 75 min': 75,
+      'Eye Fatigue Seitai 120 min': 120,
+      'Taiwan Step Bodywork 60 min': 60,
+      'Facial Care 30 min': 30,
+      'Korugi Neck 45 min': 45,
+      'Eye Fatigue Korugi 30 min': 30,
+      'Korugi Neck Decollete 60 min': 60,
+      'Korugi Lymph 90 min': 90,
+      'Sleep Head Spa 20 min': 20,
+      'Head Upper Body 60 min': 60,
+      'Collarbone Arm Lymph 60 min': 60,
+      'Scapula Lymph 60 min': 60,
+      'Head Spa Full Lymph 120 min': 120,
+      'Eye Fatigue Lymph Arm 130 min': 130,
+      'Warm Detox Head Intestine 90 min': 90,
+      'Hot Stone Aroma Foot 120 min': 120,
+      'Head Intestine Lymph 110 min': 110,
+      'Full Detox Aroma Belly 130 min': 130,
+      'Hand Massage 20 min': 20,
+      'Full Body Relax 30 min': 30,
+      'Seitai Focus 60 min': 60,
+      'Salt Hip Leg 30 min': 30,
+      'Stomach Massage 30 min': 30,
+      'Lymph Treatment 30 min': 30,
+      'Diet Aroma Lymph 30 min': 30,
+      'Chinese Aroma Oil 90 min': 90,
+      'Chinese Aroma Oil 120 min': 120,
+      'Special Set C 105 min': 105,
+      'Special Set D 135 min': 135,
+      'Foot Exfoliation 20 min': 20,
+      'Back Exfoliation 20 min': 20
     };
 
     var serviceGroups = [
-      { label: { en: 'Combination A–C', jp: '組合せ A–C', cn: '组合套餐 A–C' }, items: [
-        { value: 'A Course 80 min', dur: 80, price: 9000, en: 'A Course 80 min (DT+Refl)', jp: 'Aコース 80分 (DT＋リフレ)', cn: 'A套餐 80分 (深层＋足底)' },
-        { value: 'B Course 105 min', dur: 105, price: 11250, en: 'B Course 105 min (DT+Refl)', jp: 'Bコース 105分 (DT＋リフレ)', cn: 'B套餐 105分 (深层＋足底)' },
-        { value: 'C Course 135 min', dur: 135, price: 14250, en: 'C Course 135 min (DT+Refl)', jp: 'Cコース 135分 (DT＋リフレ)', cn: 'C套餐 135分 (深层＋足底)' }
+      { label: { en: 'Popular coupons', jp: '人気クーポン', cn: '人气优惠' }, items: [
+        { value: 'Sleep Head Spa Bodywork 70 min', dur: 70, price: 5980, en: 'Deep-sleep head spa + full-body kneading (Signature technique · 70 min)', jp: '熟睡ヘッドスパ＋全身もみほぐし（独自手技 · 70分）', cn: '熟睡头疗＋全身推拿（独创手法 · 70分钟）' },
+        { value: 'Sleep Head Spa Bodywork Foot 75 min', dur: 75, price: 5980, en: 'Deep-sleep head spa + kneading + soles (Signature technique · 75 min)', jp: '熟睡ヘッドスパ＋全身もみほぐし＋足裏（独自手技 · 75分）', cn: '熟睡头疗＋全身推拿＋足底（独创手法 · 75分钟）' },
+        { value: 'Sleep Head Spa Lymph 70 min', dur: 70, price: 6980, en: 'Deep-sleep head spa + full-body lymph (Popular No.1 · 70 min)', jp: '熟睡ヘッドスパ＆全身リンパ（人気No.1 · 70分）', cn: '熟睡头疗＆全身淋巴（人气No.1 · 70分钟）' },
+        { value: 'Full Body Aroma Lymph 100 min', dur: 100, price: 9800, en: 'Neck–shoulders–head to soles aroma lymph (Top repeater rate · 100 min)', jp: '首肩頭～足裏まで全身アロマリンパ（リピ率NO.1 · 100分）', cn: '颈肩头～足底 全身精油淋巴（回头率No.1 · 100分钟）' },
+        { value: 'Head Spa Seitai Foot 90 min', dur: 90, price: 8280, en: 'Head spa & seitai 60 + soles 30 (Total 90 min)', jp: 'ヘッドスパ＆整体60分＋足裏30分（計90分）', cn: '头疗＆整体60分＋足底30分（合计90分钟）' },
+        { value: 'Pair Lymph Head Spa 60 min', dur: 60, price: 12000, en: 'Pair: full-body lymph + head spa (2 guests) (60 min · ¥12,000 for 2)', jp: '【ペア割】全身リンパ＋熟睡ヘッドスパ（2名）（60分 · 2名で¥12,000）', cn: '【双人折】全身淋巴＋熟睡头疗（2人）（60分钟 · 2人共¥12,000）' },
+        { value: 'Taiwan Foot Calf 60 min', dur: 60, price: 5000, en: 'Taiwanese-style foot massage + calves (Classic · 60 min)', jp: '本格台湾式 足裏マッサージ＋ふくらはぎ（定番 · 60分）', cn: '正宗台式 足底按摩＋小腿（经典 · 60分钟）' },
+        { value: 'Shoulder Carbon Head 45 min', dur: 45, price: 4980, en: 'Shoulders + carbonated foam dry head (45 min)', jp: '肩こり＋炭酸泡ドライヘッド（45分）', cn: '肩颈＋碳酸泡干式头疗（45分钟）' },
+        { value: 'Upper Body Aroma Lymph 45 min', dur: 45, price: 4200, en: 'Upper-body aroma: neck/shoulders/back/waist (45 min)', jp: '上半身アロマオイル 首肩＋背中＋腰リンパ（45分）', cn: '上半身精油 颈肩＋背＋腰淋巴（45分钟）' },
+        { value: 'Upper Aroma Foot 75 min', dur: 75, price: 7500, en: 'Upper aroma lymph 45 + soles 30 (Total 75 min)', jp: '上半身アロマリンパ45分＋足裏30分（計75分）', cn: '上半身精油淋巴45分＋足底30分（合计75分钟）' },
+        { value: 'Eye Fatigue Seitai 120 min', dur: 120, price: 10800, en: 'Eye strain & swelling: head spa & seitai (120 min)', jp: '眼精疲労＆むくみ解消 ヘッドスパ＆整体（120分）', cn: '眼疲劳＆浮肿 头疗＆整体（120分钟）' },
+        { value: 'Taiwan Step Bodywork 60 min', dur: 60, price: 5200, en: 'Taiwanese-style stepping full-body kneading (Limited · 60 min)', jp: '台湾式 足踏み 全身もみほぐし（期間限定 · 60分）', cn: '台式踩背 全身推拿（限时 · 60分钟）' },
+        { value: 'Facial Care 30 min', dur: 30, price: 3500, en: 'Facial care (algae mask) (30 min)', jp: 'フェイシャルケア（藻パック）（30分）', cn: '面部护理（海藻面膜）（30分钟）' }
       ]},
-      { label: { en: 'Combination D–F', jp: '組合せ D–F', cn: '组合套餐 D–F' }, items: [
-        { value: 'D Course 75 min', dur: 75, price: 10250, en: 'D Course 75 min (Lymph+Refl)', jp: 'Dコース 75分 (リンパ＋リフレ)', cn: 'D套餐 75分 (淋巴＋足底)' },
-        { value: 'E Course 105 min', dur: 105, price: 14250, en: 'E Course 105 min (Lymph+Refl)', jp: 'Eコース 105分 (リンパ＋リフレ)', cn: 'E套餐 105分 (淋巴＋足底)' },
-        { value: 'F Course 135 min', dur: 135, price: 18250, en: 'F Course 135 min (Lymph+Refl)', jp: 'Fコース 135分 (リンパ＋リフレ)', cn: 'F套餐 135分 (淋巴＋足底)' }
+      { label: { en: 'Small face & head', jp: '小顔・ヘッド', cn: '小脸・头疗' }, items: [
+        { value: 'Korugi Neck 45 min', dur: 45, price: 4980, en: 'Small-face korugi 30 + neck/shoulders 15 (Total 45 min)', jp: '小顔コルギ30分＋肩首集中15分（計45分）', cn: '小脸骨气30分＋肩颈集中15分（合计45分钟）' },
+        { value: 'Eye Fatigue Korugi 30 min', dur: 30, price: 4000, en: 'Eye-fatigue care · small-face korugi (30 min)', jp: '目の疲労ケア 小顔コルギ（30分）', cn: '眼疲劳护理 小脸骨气（30分钟）' },
+        { value: 'Korugi Neck Decollete 60 min', dur: 60, price: 6200, en: 'Small-face korugi + neck/shoulders/décolleté (Popular with men · 60 min)', jp: '小顔コルギ＋首肩デコルテ（男性にも人気 · 60分）', cn: '小脸骨气＋颈肩胸（男士也欢迎 · 60分钟）' },
+        { value: 'Korugi Lymph 90 min', dur: 90, price: 9100, en: 'Small-face korugi 30 + full-body lymph 60 (Total 90 min)', jp: '小顔コルギ30分＋全身リンパ60分（計90分）', cn: '小脸骨气30分＋全身淋巴60分（合计90分钟）' },
+        { value: 'Sleep Head Spa 20 min', dur: 20, price: 2000, en: 'Deep-sleep head spa massage (20 min)', jp: '熟睡ヘッドスパマッサージ（20分）', cn: '熟睡头疗按摩（20分钟）' },
+        { value: 'Head Upper Body 60 min', dur: 60, price: 6200, en: 'Head spa + eyes + décolleté to waist (60 min)', jp: '熟睡ヘッドスパ＋目元＋デコルテ〜首肩腰（60分）', cn: '熟睡头疗＋眼周＋颈胸～腰（60分钟）' },
+        { value: 'Collarbone Arm Lymph 60 min', dur: 60, price: 6500, en: 'Head + collarbone/décolleté + arm lymph (60 min)', jp: 'ヘッドスパ＋肩周り〜デコルテ＋手腕リンパ（60分）', cn: '头疗＋肩～胸＋手臂淋巴（60分钟）' }
       ]},
-      { label: { en: 'Reflexology', jp: 'リフレクソロジー', cn: '足底反射' }, items: [
-        { value: 'Reflexology 45 min', dur: 45, price: 4750, en: 'Reflexology 45 min', jp: 'リフレクソロジー 45分', cn: '足底反射 45分' },
-        { value: 'Reflexology 60 min', dur: 60, price: 6500, en: 'Reflexology 60 min', jp: 'リフレクソロジー 60分', cn: '足底反射 60分' },
-        { value: 'Reflexology 60+20 thigh', dur: 80, price: 10000, en: 'Reflexology 60+20 thigh', jp: 'リフレ 60分＋大腿20分', cn: '足底60分＋大腿20分' }
+      { label: { en: 'Lymph & hot stone', jp: 'リンパ・温石', cn: '淋巴・温石' }, items: [
+        { value: 'Scapula Lymph 60 min', dur: 60, price: 6500, en: 'Shoulder-blade focus + full-body lymph (60 min)', jp: '肩甲骨＋全身リンパマッサージ（60分）', cn: '肩胛＋全身淋巴按摩（60分钟）' },
+        { value: 'Head Spa Full Lymph 120 min', dur: 120, price: 12800, en: 'Head spa & full-body lymph (120 min)', jp: 'ヘッドスパ＆全身リンパマッサージ（120分）', cn: '头疗＆全身淋巴按摩（120分钟）' },
+        { value: 'Eye Fatigue Lymph Arm 130 min', dur: 130, price: 12800, en: 'Head spa + full lymph + arms (130 min)', jp: 'ヘッドスパ＋全身リンパ＋腕（130分）', cn: '头疗＋全身淋巴＋手臂（130分钟）' },
+        { value: 'Warm Detox Head Intestine 90 min', dur: 90, price: 9500, en: 'Head spa + intestinal therapy + hot-stone lymph (90 min)', jp: 'ヘッドスパ＋腸セラピー＋全身温石リンパ（90分）', cn: '头疗＋肠道护理＋全身温石淋巴（90分钟）' },
+        { value: 'Hot Stone Aroma Foot 120 min', dur: 120, price: 12980, en: 'Hot-stone full-body aroma lymph + soles (120 min)', jp: '温石全身アロマリンパ＋足裏（120分）', cn: '温石全身精油淋巴＋足底（120分钟）' },
+        { value: 'Head Intestine Lymph 110 min', dur: 110, price: 12800, en: 'Deep-sleep head + intestine + full lymph (110 min)', jp: '熟睡ヘッドスパ＋腸セラピー＋全身リンパ（110分）', cn: '熟睡头疗＋肠道＋全身淋巴（110分钟）' },
+        { value: 'Full Detox Aroma Belly 130 min', dur: 130, price: 12980, en: 'Full-body detox aroma lymph with belly (130 min)', jp: 'お腹付♪全身デトックスアロマリンパ（130分）', cn: '含腹部♪全身排毒精油淋巴（130分钟）' }
       ]},
-      { label: { en: 'Deep Tissue', jp: 'ディープティッシュ', cn: '深层组织' }, items: [
-        { value: 'Deep Tissue 30 min', dur: 30, price: 3500, en: 'Deep Tissue 30 min', jp: 'ディープティッシュ 30分', cn: '深层组织 30分' },
-        { value: 'Deep Tissue 60 min', dur: 60, price: 7000, en: 'Deep Tissue 60 min', jp: 'ディープティッシュ 60分', cn: '深层组织 60分' },
-        { value: 'Deep Tissue 90 min', dur: 90, price: 10300, en: 'Deep Tissue 90 min', jp: 'ディープティッシュ 90分', cn: '深层组织 90分' },
-        { value: 'Deep Tissue 120 min', dur: 120, price: 13500, en: 'Deep Tissue 120 min', jp: 'ディープティッシュ 120分', cn: '深层组织 120分' }
+      { label: { en: 'Short & regular', jp: 'ショート・通常メニュー', cn: '短时・常规菜单' }, items: [
+        { value: 'Hand Massage 20 min', dur: 20, price: 2000, en: 'Hand massage (20 min)', jp: 'ハンドマッサージ（20分）', cn: '手部按摩（20分钟）' },
+        { value: 'Full Body Relax 30 min', dur: 30, price: 3000, en: 'Short full-body relax (1–2 areas) (30 min)', jp: '【ショート】全身リラックス（1–2箇所）（30分）', cn: '【短时】全身放松（1–2处）（30分钟）' },
+        { value: 'Seitai Focus 60 min', dur: 60, price: 5800, en: 'Short seitai course (1–2 areas deep) (60 min)', jp: '【ショート】整体コース（1–2箇所深め）（60分）', cn: '【短时】整体课程（1–2处加深）（60分钟）' },
+        { value: 'Salt Hip Leg 30 min', dur: 30, price: 3000, en: 'Salt-rub hip & leg de-puff (30 min)', jp: '【ショート】塩もみヒップ＆脚むくみ取り（30分）', cn: '【短时】盐揉臀＆腿部消肿（30分钟）' },
+        { value: 'Stomach Massage 30 min', dur: 30, price: 3500, en: 'Stomach massage (30 min)', jp: '【ショート】お腹マッサージ（30分）', cn: '【短时】腹部按摩（30分钟）' },
+        { value: 'Lymph Treatment 30 min', dur: 30, price: 3500, en: 'Lymph treatment (30 min)', jp: '【ショート】リンパトリートメント（30分）', cn: '【短时】淋巴护理（30分钟）' },
+        { value: 'Diet Aroma Lymph 30 min', dur: 30, price: 4000, en: 'Focused aroma lymph (diet support) (30 min)', jp: '【重点箇所】ダイエット効果UPアロマリンパ（30分）', cn: '【重点部位】瘦身加强精油淋巴（30分钟）' },
+        { value: 'Chinese Aroma Oil 90 min', dur: 90, price: 11000, en: 'Chinese-style aroma oil (90 min)', jp: '漢方式アロマオイル（90分）', cn: '汉方精油（90分钟）' },
+        { value: 'Chinese Aroma Oil 120 min', dur: 120, price: 13500, en: 'Chinese-style aroma oil (120 min)', jp: '漢方式アロマオイル（120分）', cn: '汉方精油（120分钟）' },
+        { value: 'Special Set C 105 min', dur: 105, price: 10500, en: 'Special set C: aroma 60 + soles 45 (Total 105 min)', jp: '【スペシャルセットC】全身アロマ60分＋足裏45分（計105分）', cn: '【特别套餐C】全身精油60分＋足底45分（合计105分钟）' },
+        { value: 'Special Set D 135 min', dur: 135, price: 14500, en: 'Special set D: aroma 90 + soles 45 (Total 135 min)', jp: '【スペシャルセットD】全身アロマ90分＋足裏45分（計135分）', cn: '【特别套餐D】全身精油90分＋足底45分（合计135分钟）' }
+      ]},
+      { label: { en: 'Options', jp: 'オプション', cn: '加项' }, items: [
+        { value: 'Foot Exfoliation 20 min', dur: 20, price: 1500, en: 'Option: foot exfoliation (20 min)', jp: '【オプション】フット角質取り（20分）', cn: '【加项】足部去角质（20分钟）' },
+        { value: 'Back Exfoliation 20 min', dur: 20, price: 1500, en: 'Option: back exfoliation (20 min)', jp: '【オプション】背中角質ケア（20分）', cn: '【加项】背部去角质（20分钟）' }
       ]}
     ];
 
@@ -285,7 +368,7 @@
         samePackageText:'All guests choose the same course', additionalServicesTitle:"Additional Guests' Courses (if different)",
         submitButton:'Submit & Open WhatsApp', redirecting:'Redirecting...',
         previewTitle:'WhatsApp Message Preview', previewHint:'Complete all required fields above to preview your message.',
-        paymentNote:'Please pay at the salon after arrival, before your treatment begins.<br>Sheet fee ¥300 · Therapist request ¥500 · Late night 0:00–8:00 ¥500 / 30 min.<br>Open 24h · 東京都港区新橋2-9-5 中銀新橋ビル 3F',
+        paymentNote:'Please pay at the salon after arrival, before your treatment begins.<br>Sheet fee ¥300 · Late night 0:00–8:00 ¥500 / 30 min · Card +8%.<br>Open 24h · 東京都港区新橋2-9-5 中銀新橋ビル 3F',
         guestUnit: function(n){ return n + (n>1?' Guests':' Guest'); },
         waIntro:'Hello, I would like to make a reservation at Hoshien (Shinbashi / 中銀新橋ビル 3F).\n\n',
         waName:'Name', waDate:'Date', waTime:'Time', waGuests:'Number of Guests',
@@ -305,7 +388,7 @@
         samePackageText:'全員同じコースを選択', additionalServicesTitle:'追加ゲストのコース（異なる場合）',
         submitButton:'送信して WhatsApp を開く', redirecting:'移動中…',
         previewTitle:'WhatsApp メッセージプレビュー', previewHint:'送信内容を確認するため、上記の必須項目をすべてご記入ください。',
-        paymentNote:'ご来店後・施術前にお支払いください。<br>シーツ代¥300 · 指名料¥500 · 深夜0:00–8:00 ¥500／30分。<br>24時間営業 · 東京都港区新橋2-9-5 中銀新橋ビル 3F',
+        paymentNote:'ご来店後・施術前にお支払いください。<br>シーツ代¥300 · 深夜0:00–8:00 ¥500／30分 · カード手数料8%。<br>24時間営業 · 東京都港区新橋2-9-5 中銀新橋ビル 3F',
         guestUnit: function(n){ return n + '名'; },
         waIntro:'こんにちは、Hoshien（新橋・中銀新橋ビル3F）のご予約を希望します。\n\n',
         waName:'お名前', waDate:'日付', waTime:'時間', waGuests:'人数',
@@ -325,7 +408,7 @@
         samePackageText:'所有客人都选择相同项目', additionalServicesTitle:'其他客人的项目（如不同）',
         submitButton:'提交并打开 WhatsApp', redirecting:'跳转中…',
         previewTitle:'WhatsApp 消息预览', previewHint:'请先填写上方所有必填项，即可预览消息内容。',
-        paymentNote:'请到店后、开始护理前付款。<br>床单费¥300 · 指定技师¥500 · 深夜0:00–8:00 ¥500／30分。<br>24小时营业 · 东京都港区新橋2-9-5 中銀新橋ビル 3F',
+        paymentNote:'请到店后、开始护理前付款。<br>床单费¥300 · 深夜0:00–8:00 ¥500／30分 · 信用卡手续费8%。<br>24小时营业 · 东京都港区新橋2-9-5 中銀新橋ビル 3F',
         guestUnit: function(n){ return n + ' 人'; },
         waIntro:'您好，我想预约 Hoshien（新橋・中銀新橋ビル 3F）。\n\n',
         waName:'姓名', waDate:'日期', waTime:'时间', waGuests:'人数',
