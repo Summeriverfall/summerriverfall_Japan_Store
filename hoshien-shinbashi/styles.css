@@ -519,14 +519,23 @@ ul { list-style: none; }
   column-gap: 0.65rem;
   row-gap: 0.18rem;
   margin: 0;
-  /* name prefers full width of its content; price drops to next line (right) when needed */
 }
+/* With duration: name gets full width; price sits on the same row as time (desc) */
 .opt-choice.has-desc {
-  align-items: flex-start;
+  display: grid;
+  grid-template-columns: 1.35rem minmax(0, 1fr) auto;
+  grid-template-areas:
+    "radio name name"
+    ". desc price";
+  align-items: start;
 }
 .opt-choice .opt-radio {
   flex: 0 0 1.35rem;
   margin-top: 0.28rem;
+}
+.opt-choice.has-desc .opt-radio {
+  grid-area: radio;
+  flex: unset;
 }
 .opt-choice .opt-name {
   flex: 0 0 auto;
@@ -542,6 +551,12 @@ ul { list-style: none; }
   text-wrap: wrap;
   overflow-wrap: break-word;
 }
+.opt-choice.has-desc .opt-name {
+  grid-area: name;
+  width: auto;
+  max-width: 100%;
+  flex: unset;
+}
 .opt-choice .opt-price {
   flex: 0 0 auto;
   margin-left: auto;
@@ -551,12 +566,26 @@ ul { list-style: none; }
   line-height: 1.4;
   font-size: 1rem;
 }
+.opt-choice.has-desc .opt-price {
+  grid-area: price;
+  margin-left: 0;
+  margin-top: 0;
+  align-self: center;
+  justify-self: end;
+}
 .opt-choice .opt-desc {
   flex: 1 0 100%;
   box-sizing: border-box;
   margin-left: calc(1.35rem + 0.65rem);
   max-width: calc(100% - 1.35rem - 0.65rem);
   width: auto;
+}
+.opt-choice.has-desc .opt-desc {
+  grid-area: desc;
+  margin-left: 0;
+  max-width: none;
+  flex: unset;
+  align-self: center;
 }
 .opt-choice input {
   position: absolute;
@@ -1289,11 +1318,17 @@ ul { list-style: none; }
   .opt-choice {
     column-gap: 0.55rem;
   }
+  .opt-choice.has-desc {
+    grid-template-columns: 1.35rem minmax(0, 1fr) auto;
+  }
   .opt-choice .opt-radio { align-self: flex-start; margin-top: 0.2rem; }
   .opt-choice .opt-name {
     padding-top: 0.08rem;
     line-height: 1.3;
     max-width: calc(100% - 1.35rem - 0.55rem);
+  }
+  .opt-choice.has-desc .opt-name {
+    max-width: 100%;
   }
   .opt-choice .opt-price {
     text-align: right;
@@ -1303,9 +1338,18 @@ ul { list-style: none; }
     line-height: 1.3;
     font-size: 1rem;
   }
+  .opt-choice.has-desc .opt-price {
+    margin-left: 0;
+    margin-top: 0;
+    align-self: center;
+  }
   .opt-choice .opt-desc {
     margin-left: calc(1.35rem + 0.55rem);
     max-width: calc(100% - 1.35rem - 0.55rem);
+  }
+  .opt-choice.has-desc .opt-desc {
+    margin-left: 0;
+    max-width: none;
   }
   .opt-group-foot {
     justify-content: stretch;
