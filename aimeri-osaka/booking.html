@@ -7,7 +7,7 @@
   <title>Book Appointment — Ai.meri</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Noto+Sans+JP:wght@300;400;500&family=Noto+Sans+SC:wght@300;400;500&family=Noto+Serif+SC:wght@400;500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;600&family=Noto+Sans+SC:wght@400;500&family=Noto+Serif+SC:wght@400;500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     :root {
@@ -35,8 +35,9 @@
       min-height: 100vh;
       padding: 40px 20px;
       -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
     }
-    .booking-container { max-width: 620px; margin: 0 auto; animation: fadeInUp 0.8s ease-out; }
+    .booking-container { max-width: 620px; width: 100%; margin: 0 auto; animation: fadeInUp 0.8s ease-out; min-width: 0; }
     @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     .booking-top { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 2rem; }
     .back-link { display: inline-flex; align-items: center; gap: 8px; color: var(--ink-soft); text-decoration: none; font-size: 0.9rem; }
@@ -58,20 +59,100 @@
     .booking-card {
       background: var(--white); border: 1px solid var(--gold-pale); padding: 2.5rem;
       box-shadow: 0 24px 60px rgba(42,38,35,0.08); border-radius: 6px;
+      min-width: 0; max-width: 100%; overflow-x: hidden;
     }
-    .form-group { margin-bottom: 1.6rem; }
+    .form-group { margin-bottom: 1.6rem; min-width: 0; max-width: 100%; }
     .form-label { display: block; font-size: 0.74rem; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--brand); margin-bottom: 0.5rem; }
     .form-input, .form-select {
       width: 100%; padding: 13px 15px; border: 1px solid var(--gold-pale); font-size: 0.92rem; font-family: inherit;
       color: var(--ink); background: var(--stone); border-radius: 6px; transition: all 0.3s;
+      max-width: 100%; min-width: 0; box-sizing: border-box;
+    }
+    .date-wrap {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      width: 100%;
+      max-width: 100%;
+      min-width: 0;
+      overflow: hidden;
+      border: 1px solid var(--gold-pale);
+      border-radius: 6px;
+      background: var(--stone);
+      transition: border-color 0.3s, box-shadow 0.3s, background 0.3s;
+    }
+    .date-wrap:focus-within {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(184,154,106,0.15);
+      background: var(--white);
+    }
+    .form-group.error .date-wrap { border-color: #C0392B; }
+    .date-wrap input[type="date"].form-input {
+      display: block;
+      width: 100%;
+      max-width: 100%;
+      min-width: 0 !important;
+      min-height: 48px;
+      margin: 0;
+      border: 0;
+      border-radius: 0;
+      box-shadow: none !important;
+      background: transparent;
+      line-height: 1.35;
+      font-size: 0.85rem;
+      font-weight: 300;
+      font-family: inherit;
+      color: var(--ink-soft);
+      box-sizing: border-box;
+    }
+    .date-wrap input[type="date"].form-input:focus {
+      outline: none;
+      background: transparent;
+    }
+    .date-wrap input[type="date"].form-input:focus,
+    .date-wrap input[type="date"].form-input:valid {
+      color: var(--ink);
+    }
+    .date-wrap input[type="date"].form-input::-webkit-date-and-time-value {
+      text-align: left;
+      min-height: 1.25em;
+      font-size: 0.85rem;
+      font-weight: 300;
+      color: inherit;
+    }
+    .date-wrap input[type="date"].form-input::-webkit-calendar-picker-indicator {
+      margin: 0;
+      padding: 0;
+      flex-shrink: 0;
+    }
+    .date-wrap input[type="date"].form-input::-webkit-datetime-edit,
+    .date-wrap input[type="date"].form-input::-webkit-datetime-edit-fields-wrapper {
+      min-width: 0;
+      max-width: 100%;
+      overflow: hidden;
+      padding: 0;
+      font-size: 0.85rem;
+      font-weight: 300;
+      font-family: inherit;
+      color: inherit;
+    }
+    .date-wrap input[type="date"].form-input::-webkit-datetime-edit-text,
+    .date-wrap input[type="date"].form-input::-webkit-datetime-edit-month-field,
+    .date-wrap input[type="date"].form-input::-webkit-datetime-edit-day-field,
+    .date-wrap input[type="date"].form-input::-webkit-datetime-edit-year-field {
+      font-size: 0.85rem;
+      font-weight: 300;
+      font-family: inherit;
+      color: inherit;
+      letter-spacing: normal;
+      padding: 0;
     }
     #service, .guest-service-row .form-select {
-      font-size: 0.78rem;
+      font-size: clamp(0.65rem, 2.5vw, 0.78rem);
       line-height: 1.35;
       padding-right: 2rem;
     }
     .form-input:focus, .form-select:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px rgba(184,154,106,0.15); background: var(--white); }
-    .form-hint { font-size: 0.78rem; color: var(--ink-soft); margin-top: 0.45rem; }
+    .form-hint { font-size: 0.78rem; font-weight: 300; line-height: 1.55; color: var(--ink-soft); margin-top: 0.45rem; font-family: var(--font-body); }
     .form-error { color: #C0392B; font-size: 0.82rem; margin-top: 0.45rem; display: none; }
     .form-group.error .form-error { display: block; }
     .form-group.error .form-input, .form-group.error .form-select { border-color: #C0392B; }
@@ -85,7 +166,45 @@
     .message-preview-hint { padding: 1rem 1.1rem; font-size: 0.8rem; color: var(--ink-soft); font-style: italic; }
     .message-preview.ready .message-preview-body { display: block; }
     .message-preview.ready .message-preview-hint { display: none; }
-    .payment-note { font-size: 0.78rem; color: var(--ink-soft); text-align: center; margin: 1.2rem 0 0.8rem; line-height: 1.7; }
+    .booking-notice {
+      margin: 1.4rem 0 1.1rem;
+      padding: 1rem 1.1rem 1.05rem;
+      border: 1px solid var(--gold-pale);
+      background: rgba(184, 154, 106, 0.06);
+      border-radius: 6px;
+    }
+    .booking-notice-title {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--brand);
+      margin-bottom: 0.7rem;
+    }
+    .booking-notice-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: 0.45rem;
+    }
+    .booking-notice-list li {
+      position: relative;
+      padding-left: 0.95rem;
+      font-size: 0.82rem;
+      color: var(--ink-soft);
+      line-height: 1.55;
+    }
+    .booking-notice-list li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0.55em;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--gold);
+    }
     .submit-button {
       width: 100%; padding: 16px; background: var(--brand); color: var(--white); border: 1px solid var(--brand);
       font-size: 0.9rem; font-weight: 500; letter-spacing: 0.12em; font-family: inherit; cursor: pointer;
@@ -109,9 +228,35 @@
     .same-package-label input { accent-color: #44527a; }
     #addonSection { display: none; }
     @media (max-width: 768px) {
-      body { padding: 24px 15px; }
-      .booking-card { padding: 2rem 1.4rem; }
+      body { padding: 24px 15px; overflow-x: hidden; }
+      .booking-container { max-width: 100%; }
+      .booking-card { padding: 2rem 1.4rem; overflow-x: hidden; }
       .booking-top { flex-wrap: wrap; }
+      #dateGroup { max-width: 100%; overflow: hidden; }
+      .date-wrap { max-width: 100%; }
+      .form-input, .form-select,
+      #service, .guest-service-row .form-select {
+        font-size: 15px;
+      }
+      .date-wrap input[type="date"].form-input {
+        font-size: 14px;
+        min-height: 48px;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+      }
+      .date-wrap input[type="date"].form-input::-webkit-date-and-time-value,
+      .date-wrap input[type="date"].form-input::-webkit-datetime-edit,
+      .date-wrap input[type="date"].form-input::-webkit-datetime-edit-fields-wrapper,
+      .date-wrap input[type="date"].form-input::-webkit-datetime-edit-text,
+      .date-wrap input[type="date"].form-input::-webkit-datetime-edit-month-field,
+      .date-wrap input[type="date"].form-input::-webkit-datetime-edit-day-field,
+      .date-wrap input[type="date"].form-input::-webkit-datetime-edit-year-field {
+        font-size: 14px;
+        font-weight: 300;
+        min-width: 0;
+        max-width: 100%;
+      }
     }
   </style>
 </head>
@@ -145,7 +290,9 @@
         </div>
         <div class="form-group" id="dateGroup">
           <label for="date" class="form-label" id="labelDate">Date *</label>
-          <input type="date" id="date" name="date" class="form-input" required>
+          <div class="date-wrap">
+            <input type="date" id="date" name="date" class="form-input" required>
+          </div>
           <div class="form-error" id="errorDate">Please select a date</div>
         </div>
         <div class="form-group" id="timeGroup">
@@ -193,7 +340,14 @@
           <p class="message-preview-hint" id="previewHint">Complete all required fields above to preview your message.</p>
         </div>
 
-        <p class="payment-note" id="paymentNote">Please pay at the salon after arrival, before your treatment begins.<br>Daily 10:00–24:00 · 〒542-0082 大阪府大阪市中央区島之内1-16-22 904室</p>
+        <aside class="booking-notice" aria-labelledby="noticeTitle">
+          <h3 class="booking-notice-title" id="noticeTitle">Before you book</h3>
+          <ul class="booking-notice-list" id="noticeList">
+            <li>Please pay at the salon after arrival, before your treatment begins.</li>
+            <li>Daily 10:00–24:00</li>
+            <li>〒542-0082 大阪府大阪市中央区島之内1-16-22 904室</li>
+          </ul>
+        </aside>
 
         <button type="submit" class="submit-button" id="submitButton">
           <span class="whatsapp-icon"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.884-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg></span>
@@ -261,7 +415,12 @@
         samePackageText:'All guests choose the same course', additionalServicesTitle:"Additional Guests' Courses (if different)",
         submitButton:'Submit & Open WhatsApp', redirecting:'Redirecting...',
         previewTitle:'WhatsApp Message Preview', previewHint:'Complete all required fields above to preview your message.',
-        paymentNote:'Please pay at the salon after arrival, before your treatment begins.<br>Daily 10:00–24:00 · 〒542-0082 大阪府大阪市中央区島之内1-16-22 904室',
+        noticeTitle:'Before you book',
+        noticeItems:[
+          'Please pay at the salon after arrival, before your treatment begins.',
+          'Daily 10:00–24:00',
+          '〒542-0082 大阪府大阪市中央区島之内1-16-22 904室'
+        ],
         guestUnit: function(n){ return n + (n>1?' Guests':' Guest'); },
         waIntro:'Hello, I would like to make a reservation at Ai.meri (Shinsaibashi Shimanouchi 904).\n\n',
         waName:'Name', waDate:'Date', waTime:'Time', waGuests:'Number of Guests',
@@ -281,7 +440,12 @@
         samePackageText:'全員同じコースを選択', additionalServicesTitle:'追加ゲストのコース（異なる場合）',
         submitButton:'送信して WhatsApp を開く', redirecting:'移動中…',
         previewTitle:'WhatsApp メッセージプレビュー', previewHint:'送信内容を確認するため、上記の必須項目をすべてご記入ください。',
-        paymentNote:'ご来店後・施術前にお支払いください。<br>毎日 10:00–24:00 · 〒542-0082 大阪府大阪市中央区島之内1-16-22 904室',
+        noticeTitle:'ご予約前のご案内',
+        noticeItems:[
+          'ご来店後・施術前にお支払いください。',
+          '毎日 10:00–24:00',
+          '〒542-0082 大阪府大阪市中央区島之内1-16-22 904室'
+        ],
         guestUnit: function(n){ return n + '名'; },
         waIntro:'こんにちは、Ai.meri（心斎橋・島之内904）のご予約を希望します。\n\n',
         waName:'お名前', waDate:'日付', waTime:'時間', waGuests:'人数',
@@ -301,7 +465,12 @@
         samePackageText:'所有客人都选择相同项目', additionalServicesTitle:'其他客人的项目（如不同）',
         submitButton:'提交并打开 WhatsApp', redirecting:'跳转中…',
         previewTitle:'WhatsApp 消息预览', previewHint:'请先填写上方所有必填项，即可预览消息内容。',
-        paymentNote:'请到店后、开始护理前付款。<br>每天 10:00–24:00 · 〒542-0082 大阪府大阪市中央区岛之内1-16-22 904室',
+        noticeTitle:'预约前提示',
+        noticeItems:[
+          '请到店后、开始护理前付款。',
+          '每天 10:00–24:00',
+          '〒542-0082 大阪府大阪市中央区岛之内1-16-22 904室'
+        ],
         guestUnit: function(n){ return n + ' 人'; },
         waIntro:'您好，我想预约 Ai.meri（心斋桥・岛之内904）。\n\n',
         waName:'姓名', waDate:'日期', waTime:'时间', waGuests:'人数',
@@ -407,7 +576,10 @@
       document.getElementById('submitButtonText').textContent = o.submitButton;
       document.getElementById('previewTitle').textContent = o.previewTitle;
       document.getElementById('previewHint').textContent = o.previewHint;
-      document.getElementById('paymentNote').innerHTML = o.paymentNote;
+      document.getElementById('noticeTitle').textContent = o.noticeTitle;
+      document.getElementById('noticeList').innerHTML = o.noticeItems.map(function(item){
+        return '<li>' + item + '</li>';
+      }).join('');
       document.getElementById('service').innerHTML = buildServiceOptionsHTML(sv);
       document.getElementById('guests').innerHTML = buildGuestsOptionsHTML(gv);
       document.getElementById('time').innerHTML = buildTimeOptions(tv);
