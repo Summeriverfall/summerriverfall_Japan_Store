@@ -7,7 +7,7 @@
   <title>Book Appointment — Hoshien</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Noto+Sans+JP:wght@300;400;500&family=Noto+Sans+SC:wght@300;400;500&family=Noto+Serif+SC:wght@400;500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;600&family=Noto+Sans+SC:wght@400;500&family=Noto+Serif+SC:wght@400;500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     :root {
@@ -35,8 +35,9 @@
       min-height: 100vh;
       padding: 40px 20px;
       -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
     }
-    .booking-container { max-width: 620px; margin: 0 auto; animation: fadeInUp 0.8s ease-out; }
+    .booking-container { max-width: 620px; width: 100%; margin: 0 auto; animation: fadeInUp 0.8s ease-out; min-width: 0; }
     @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     .booking-top { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 2rem; }
     .back-link { display: inline-flex; align-items: center; gap: 8px; color: var(--ink-soft); text-decoration: none; font-size: 0.9rem; }
@@ -58,20 +59,104 @@
     .booking-card {
       background: var(--white); border: 1px solid var(--gold-pale); padding: 2.5rem;
       box-shadow: 0 24px 60px rgba(42,38,35,0.08); border-radius: 6px;
+      min-width: 0; max-width: 100%; overflow-x: hidden;
     }
-    .form-group { margin-bottom: 1.6rem; }
+    .form-group { margin-bottom: 1.6rem; min-width: 0; max-width: 100%; }
     .form-label { display: block; font-size: 0.74rem; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--brand); margin-bottom: 0.5rem; }
     .form-input, .form-select {
       width: 100%; padding: 13px 15px; border: 1px solid var(--gold-pale); font-size: 0.92rem; font-family: inherit;
       color: var(--ink); background: var(--stone); border-radius: 6px; transition: all 0.3s;
+      max-width: 100%; min-width: 0; box-sizing: border-box;
+    }
+    /* Wrapper clips native date min-width that ignores max-width on mobile */
+    .date-wrap {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      width: 100%;
+      max-width: 100%;
+      min-width: 0;
+      overflow: hidden;
+      border: 1px solid var(--gold-pale);
+      border-radius: 6px;
+      background: var(--stone);
+      transition: border-color 0.3s, box-shadow 0.3s, background 0.3s;
+    }
+    .date-wrap:focus-within {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(184,154,106,0.15);
+      background: var(--white);
+    }
+    .form-group.error .date-wrap { border-color: #C0392B; }
+    .date-wrap input[type="date"].form-input {
+      display: block;
+      width: 100%;
+      max-width: 100%;
+      min-width: 0 !important;
+      min-height: 48px;
+      margin: 0;
+      border: 0;
+      border-radius: 0;
+      box-shadow: none !important;
+      background: transparent;
+      line-height: 1.35;
+      font-size: 0.85rem;
+      font-weight: 300;
+      font-family: inherit;
+      color: var(--ink-soft);
+      box-sizing: border-box;
+    }
+    .date-wrap input[type="date"].form-input:focus {
+      outline: none;
+      background: transparent;
+    }
+    .date-wrap input[type="date"].form-input:focus,
+    .date-wrap input[type="date"].form-input:valid {
+      color: var(--ink);
+    }
+    .date-wrap input[type="date"].form-input::-webkit-date-and-time-value {
+      text-align: left;
+      min-height: 1.25em;
+      font-size: 0.85rem;
+      font-weight: 300;
+      color: inherit;
+    }
+    .date-wrap input[type="date"].form-input::-webkit-calendar-picker-indicator {
+      margin: 0;
+      padding: 0;
+      flex-shrink: 0;
+    }
+    .date-wrap input[type="date"].form-input::-webkit-datetime-edit,
+    .date-wrap input[type="date"].form-input::-webkit-datetime-edit-fields-wrapper {
+      min-width: 0;
+      max-width: 100%;
+      overflow: hidden;
+      padding: 0;
+      font-size: 0.85rem;
+      font-weight: 300;
+      font-family: inherit;
+      color: inherit;
+    }
+    .date-wrap input[type="date"].form-input::-webkit-datetime-edit-text,
+    .date-wrap input[type="date"].form-input::-webkit-datetime-edit-month-field,
+    .date-wrap input[type="date"].form-input::-webkit-datetime-edit-day-field,
+    .date-wrap input[type="date"].form-input::-webkit-datetime-edit-year-field {
+      font-size: 0.85rem;
+      font-weight: 300;
+      font-family: inherit;
+      color: inherit;
+      letter-spacing: normal;
+      padding: 0;
     }
     #service, .guest-service-row .form-select {
-      font-size: 0.78rem;
+      font-size: clamp(0.65rem, 2.5vw, 0.78rem);
       line-height: 1.35;
       padding-right: 2rem;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
     }
     .form-input:focus, .form-select:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px rgba(184,154,106,0.15); background: var(--white); }
-    .form-hint { font-size: 0.78rem; color: var(--ink-soft); margin-top: 0.45rem; }
+    .form-hint { font-size: 0.78rem; font-weight: 300; line-height: 1.55; color: var(--ink-soft); margin-top: 0.45rem; font-family: var(--font-body); }
     .form-error { color: #C0392B; font-size: 0.82rem; margin-top: 0.45rem; display: none; }
     .form-group.error .form-error { display: block; }
     .form-group.error .form-input, .form-group.error .form-select { border-color: #C0392B; }
@@ -85,7 +170,45 @@
     .message-preview-hint { padding: 1rem 1.1rem; font-size: 0.8rem; color: var(--ink-soft); font-style: italic; }
     .message-preview.ready .message-preview-body { display: block; }
     .message-preview.ready .message-preview-hint { display: none; }
-    .payment-note { font-size: 0.78rem; color: var(--ink-soft); text-align: center; margin: 1.2rem 0 0.8rem; line-height: 1.7; }
+    .booking-notice {
+      margin: 1.4rem 0 1.1rem;
+      padding: 1rem 1.1rem 1.05rem;
+      border: 1px solid var(--gold-pale);
+      background: rgba(184, 154, 106, 0.06);
+      border-radius: 6px;
+    }
+    .booking-notice-title {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--brand);
+      margin-bottom: 0.7rem;
+    }
+    .booking-notice-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: 0.45rem;
+    }
+    .booking-notice-list li {
+      position: relative;
+      padding-left: 0.95rem;
+      font-size: 0.82rem;
+      color: var(--ink-soft);
+      line-height: 1.55;
+    }
+    .booking-notice-list li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0.55em;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--gold);
+    }
     .submit-button {
       width: 100%; padding: 16px; background: var(--brand); color: var(--white); border: 1px solid var(--brand);
       font-size: 0.9rem; font-weight: 500; letter-spacing: 0.12em; font-family: inherit; cursor: pointer;
@@ -109,9 +232,37 @@
     .same-package-label input { accent-color: #8f6a5c; }
     #addonSection { display: none; }
     @media (max-width: 768px) {
-      body { padding: 24px 15px; }
-      .booking-card { padding: 2rem 1.4rem; }
+      body { padding: 24px 15px; overflow-x: hidden; }
+      .booking-container { max-width: 100%; }
+      .booking-card { padding: 2rem 1.4rem; overflow-x: hidden; }
       .booking-top { flex-wrap: wrap; }
+      #dateGroup { max-width: 100%; overflow: hidden; }
+      .date-wrap { max-width: 100%; }
+      .form-input, .form-select {
+        font-size: 15px;
+      }
+      #service, .guest-service-row .form-select {
+        font-size: clamp(12px, 3.2vw, 14px);
+      }
+      .date-wrap input[type="date"].form-input {
+        font-size: 14px;
+        min-height: 48px;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+      }
+      .date-wrap input[type="date"].form-input::-webkit-date-and-time-value,
+      .date-wrap input[type="date"].form-input::-webkit-datetime-edit,
+      .date-wrap input[type="date"].form-input::-webkit-datetime-edit-fields-wrapper,
+      .date-wrap input[type="date"].form-input::-webkit-datetime-edit-text,
+      .date-wrap input[type="date"].form-input::-webkit-datetime-edit-month-field,
+      .date-wrap input[type="date"].form-input::-webkit-datetime-edit-day-field,
+      .date-wrap input[type="date"].form-input::-webkit-datetime-edit-year-field {
+        font-size: 14px;
+        font-weight: 300;
+        min-width: 0;
+        max-width: 100%;
+      }
     }
   </style>
 </head>
@@ -145,13 +296,15 @@
         </div>
         <div class="form-group" id="dateGroup">
           <label for="date" class="form-label" id="labelDate">Date *</label>
-          <input type="date" id="date" name="date" class="form-input" required>
+          <div class="date-wrap">
+            <input type="date" id="date" name="date" class="form-input" required>
+          </div>
           <div class="form-error" id="errorDate">Please select a date</div>
         </div>
         <div class="form-group" id="timeGroup">
           <label for="time" class="form-label" id="labelTime">Time *</label>
           <select id="time" name="time" class="form-select" required></select>
-          <div class="form-hint" id="hintTime">Open 24 hours daily<br>*booking slots every 30 min, 24h clock.</div>
+          <div class="form-hint" id="hintTime">Open 24 hours daily<br>*booking slots 00:00–23:30, 24h clock. Late-night surcharge 0:00–8:00.</div>
           <div class="form-error" id="errorTime">Please select a time</div>
         </div>
         <div class="form-group" id="guestsGroup">
@@ -193,7 +346,11 @@
           <p class="message-preview-hint" id="previewHint">Complete all required fields above to preview your message.</p>
         </div>
 
-        <p class="payment-note" id="paymentNote">Please pay at the salon after arrival, before your treatment begins.<br>Sheet fee ¥300 · Late night 0:00–8:00 ¥500 / 30 min · Card +8%.<br>Open 24h · 東京都港区新橋2-9-5 中銀新橋ビル 3F</p>
+        <aside class="booking-notice" aria-labelledby="noticeTitle">
+          <h3 class="booking-notice-title" id="noticeTitle">Before you book</h3>
+          <ul class="booking-notice-list" id="noticeList">
+          </ul>
+        </aside>
 
         <button type="submit" class="submit-button" id="submitButton">
           <span class="whatsapp-icon"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.884-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg></span>
@@ -303,54 +460,54 @@
 
     var serviceGroups = [
       { label: { en: 'Popular coupons', jp: '人気クーポン', cn: '人气优惠' }, items: [
-        { value: 'Sleep Head Spa Bodywork 70 min', dur: 70, price: 5980, en: 'Deep-sleep head spa + full-body kneading (Signature technique · 70 min)', jp: '熟睡ヘッドスパ＋全身もみほぐし（独自手技 · 70分）', cn: '熟睡头疗＋全身推拿（独创手法 · 70分钟）' },
-        { value: 'Sleep Head Spa Bodywork Foot 75 min', dur: 75, price: 5980, en: 'Deep-sleep head spa + kneading + soles (Signature technique · 75 min)', jp: '熟睡ヘッドスパ＋全身もみほぐし＋足裏（独自手技 · 75分）', cn: '熟睡头疗＋全身推拿＋足底（独创手法 · 75分钟）' },
-        { value: 'Sleep Head Spa Lymph 70 min', dur: 70, price: 6980, en: 'Deep-sleep head spa + full-body lymph (Popular No.1 · 70 min)', jp: '熟睡ヘッドスパ＆全身リンパ（人気No.1 · 70分）', cn: '熟睡头疗＆全身淋巴（人气No.1 · 70分钟）' },
-        { value: 'Full Body Aroma Lymph 100 min', dur: 100, price: 9800, en: 'Neck–shoulders–head to soles aroma lymph (Top repeater rate · 100 min)', jp: '首肩頭～足裏まで全身アロマリンパ（リピ率NO.1 · 100分）', cn: '颈肩头～足底 全身精油淋巴（回头率No.1 · 100分钟）' },
-        { value: 'Head Spa Seitai Foot 90 min', dur: 90, price: 8280, en: 'Head spa & seitai 60 + soles 30 (Total 90 min)', jp: 'ヘッドスパ＆整体60分＋足裏30分（計90分）', cn: '头疗＆整体60分＋足底30分（合计90分钟）' },
-        { value: 'Pair Lymph Head Spa 60 min', dur: 60, price: 12000, en: 'Pair: full-body lymph + head spa (2 guests) (60 min · ¥12,000 for 2)', jp: '【ペア割】全身リンパ＋熟睡ヘッドスパ（2名）（60分 · 2名で¥12,000）', cn: '【双人折】全身淋巴＋熟睡头疗（2人）（60分钟 · 2人共¥12,000）' },
-        { value: 'Taiwan Foot Calf 60 min', dur: 60, price: 5000, en: 'Taiwanese-style foot massage + calves (Classic · 60 min)', jp: '本格台湾式 足裏マッサージ＋ふくらはぎ（定番 · 60分）', cn: '正宗台式 足底按摩＋小腿（经典 · 60分钟）' },
-        { value: 'Shoulder Carbon Head 45 min', dur: 45, price: 4980, en: 'Shoulders + carbonated foam dry head (45 min)', jp: '肩こり＋炭酸泡ドライヘッド（45分）', cn: '肩颈＋碳酸泡干式头疗（45分钟）' },
-        { value: 'Upper Body Aroma Lymph 45 min', dur: 45, price: 4200, en: 'Upper-body aroma: neck/shoulders/back/waist (45 min)', jp: '上半身アロマオイル 首肩＋背中＋腰リンパ（45分）', cn: '上半身精油 颈肩＋背＋腰淋巴（45分钟）' },
-        { value: 'Upper Aroma Foot 75 min', dur: 75, price: 7500, en: 'Upper aroma lymph 45 + soles 30 (Total 75 min)', jp: '上半身アロマリンパ45分＋足裏30分（計75分）', cn: '上半身精油淋巴45分＋足底30分（合计75分钟）' },
-        { value: 'Eye Fatigue Seitai 120 min', dur: 120, price: 10800, en: 'Eye strain & swelling: head spa & seitai (120 min)', jp: '眼精疲労＆むくみ解消 ヘッドスパ＆整体（120分）', cn: '眼疲劳＆浮肿 头疗＆整体（120分钟）' },
-        { value: 'Taiwan Step Bodywork 60 min', dur: 60, price: 5200, en: 'Taiwanese-style stepping full-body kneading (Limited · 60 min)', jp: '台湾式 足踏み 全身もみほぐし（期間限定 · 60分）', cn: '台式踩背 全身推拿（限时 · 60分钟）' },
-        { value: 'Facial Care 30 min', dur: 30, price: 3500, en: 'Facial care (algae mask) (30 min)', jp: 'フェイシャルケア（藻パック）（30分）', cn: '面部护理（海藻面膜）（30分钟）' }
+        { value: 'Sleep Head Spa Bodywork 70 min', dur: 70, price: 5980, en: 'Head spa + kneading 70 min', jp: 'ヘッドスパ＋もみほぐし 70分', cn: '头疗＋全身推拿 70分钟' },
+        { value: 'Sleep Head Spa Bodywork Foot 75 min', dur: 75, price: 5980, en: 'Head spa + kneading + foot 75 min', jp: 'ヘッドスパ＋もみほぐし＋足裏 75分', cn: '头疗＋推拿＋足底 75分钟' },
+        { value: 'Sleep Head Spa Lymph 70 min', dur: 70, price: 6980, en: 'Head spa + lymph 70 min', jp: 'ヘッドスパ＋リンパ 70分', cn: '头疗＋全身淋巴 70分钟' },
+        { value: 'Full Body Aroma Lymph 100 min', dur: 100, price: 9800, en: 'Full aroma lymph 100 min', jp: '全身アロマリンパ 100分', cn: '全身精油淋巴 100分钟' },
+        { value: 'Head Spa Seitai Foot 90 min', dur: 90, price: 8280, en: 'Head + seitai + foot 90 min', jp: 'ヘッド＋整体＋足裏 90分', cn: '头疗＋整体＋足底 90分钟' },
+        { value: 'Pair Lymph Head Spa 60 min', dur: 60, price: 12000, en: 'Pair lymph + head spa 60 min', jp: 'ペア リンパ＋ヘッド 60分', cn: '双人 淋巴＋头疗 60分钟' },
+        { value: 'Taiwan Foot Calf 60 min', dur: 60, price: 5000, en: 'Taiwan foot + calf 60 min', jp: '台湾式足裏＋ふくらはぎ 60分', cn: '台式足底＋小腿 60分钟' },
+        { value: 'Shoulder Carbon Head 45 min', dur: 45, price: 4980, en: 'Shoulders + carbon head 45 min', jp: '肩こり＋炭酸ヘッド 45分', cn: '肩颈＋碳酸头疗 45分钟' },
+        { value: 'Upper Body Aroma Lymph 45 min', dur: 45, price: 4200, en: 'Upper aroma lymph 45 min', jp: '上半身アロマリンパ 45分', cn: '上半身精油淋巴 45分钟' },
+        { value: 'Upper Aroma Foot 75 min', dur: 75, price: 7500, en: 'Upper aroma + foot 75 min', jp: '上半身アロマ＋足裏 75分', cn: '上半身精油＋足底 75分钟' },
+        { value: 'Eye Fatigue Seitai 120 min', dur: 120, price: 10800, en: 'Eye fatigue + seitai 120 min', jp: '眼精疲労＋整体 120分', cn: '眼疲劳＋整体 120分钟' },
+        { value: 'Taiwan Step Bodywork 60 min', dur: 60, price: 5200, en: 'Taiwan step bodywork 60 min', jp: '台湾式足踏み整体 60分', cn: '台式踩背整体 60分钟' },
+        { value: 'Facial Care 30 min', dur: 30, price: 3500, en: 'Facial care 30 min', jp: 'フェイシャル 30分', cn: '面部护理 30分钟' }
       ]},
       { label: { en: 'Small face & head', jp: '小顔・ヘッド', cn: '小脸・头疗' }, items: [
-        { value: 'Korugi Neck 45 min', dur: 45, price: 4980, en: 'Small-face korugi 30 + neck/shoulders 15 (Total 45 min)', jp: '小顔コルギ30分＋肩首集中15分（計45分）', cn: '小脸骨气30分＋肩颈集中15分（合计45分钟）' },
-        { value: 'Eye Fatigue Korugi 30 min', dur: 30, price: 4000, en: 'Eye-fatigue care · small-face korugi (30 min)', jp: '目の疲労ケア 小顔コルギ（30分）', cn: '眼疲劳护理 小脸骨气（30分钟）' },
-        { value: 'Korugi Neck Decollete 60 min', dur: 60, price: 6200, en: 'Small-face korugi + neck/shoulders/décolleté (Popular with men · 60 min)', jp: '小顔コルギ＋首肩デコルテ（男性にも人気 · 60分）', cn: '小脸骨气＋颈肩胸（男士也欢迎 · 60分钟）' },
-        { value: 'Korugi Lymph 90 min', dur: 90, price: 9100, en: 'Small-face korugi 30 + full-body lymph 60 (Total 90 min)', jp: '小顔コルギ30分＋全身リンパ60分（計90分）', cn: '小脸骨气30分＋全身淋巴60分（合计90分钟）' },
-        { value: 'Sleep Head Spa 20 min', dur: 20, price: 2000, en: 'Deep-sleep head spa massage (20 min)', jp: '熟睡ヘッドスパマッサージ（20分）', cn: '熟睡头疗按摩（20分钟）' },
-        { value: 'Head Upper Body 60 min', dur: 60, price: 6200, en: 'Head spa + eyes + décolleté to waist (60 min)', jp: '熟睡ヘッドスパ＋目元＋デコルテ〜首肩腰（60分）', cn: '熟睡头疗＋眼周＋颈胸～腰（60分钟）' },
-        { value: 'Collarbone Arm Lymph 60 min', dur: 60, price: 6500, en: 'Head + collarbone/décolleté + arm lymph (60 min)', jp: 'ヘッドスパ＋肩周り〜デコルテ＋手腕リンパ（60分）', cn: '头疗＋肩～胸＋手臂淋巴（60分钟）' }
+        { value: 'Korugi Neck 45 min', dur: 45, price: 4980, en: 'Korugi + neck 45 min', jp: 'コルギ＋首肩 45分', cn: '骨气＋肩颈 45分钟' },
+        { value: 'Eye Fatigue Korugi 30 min', dur: 30, price: 4000, en: 'Eye fatigue korugi 30 min', jp: '目疲労コルギ 30分', cn: '眼疲劳骨气 30分钟' },
+        { value: 'Korugi Neck Decollete 60 min', dur: 60, price: 6200, en: 'Korugi + neck/décolleté 60 min', jp: 'コルギ＋首肩デコルテ 60分', cn: '骨气＋颈肩胸 60分钟' },
+        { value: 'Korugi Lymph 90 min', dur: 90, price: 9100, en: 'Korugi + lymph 90 min', jp: 'コルギ＋リンパ 90分', cn: '骨气＋淋巴 90分钟' },
+        { value: 'Sleep Head Spa 20 min', dur: 20, price: 2000, en: 'Sleep head spa 20 min', jp: '熟睡ヘッドスパ 20分', cn: '熟睡头疗 20分钟' },
+        { value: 'Head Upper Body 60 min', dur: 60, price: 6200, en: 'Head + upper body 60 min', jp: 'ヘッド＋上半身 60分', cn: '头疗＋上半身 60分钟' },
+        { value: 'Collarbone Arm Lymph 60 min', dur: 60, price: 6500, en: 'Collarbone + arm lymph 60 min', jp: '鎖骨＋腕リンパ 60分', cn: '锁骨＋手臂淋巴 60分钟' }
       ]},
       { label: { en: 'Lymph & hot stone', jp: 'リンパ・温石', cn: '淋巴・温石' }, items: [
-        { value: 'Scapula Lymph 60 min', dur: 60, price: 6500, en: 'Shoulder-blade focus + full-body lymph (60 min)', jp: '肩甲骨＋全身リンパマッサージ（60分）', cn: '肩胛＋全身淋巴按摩（60分钟）' },
-        { value: 'Head Spa Full Lymph 120 min', dur: 120, price: 12800, en: 'Head spa & full-body lymph (120 min)', jp: 'ヘッドスパ＆全身リンパマッサージ（120分）', cn: '头疗＆全身淋巴按摩（120分钟）' },
-        { value: 'Eye Fatigue Lymph Arm 130 min', dur: 130, price: 12800, en: 'Head spa + full lymph + arms (130 min)', jp: 'ヘッドスパ＋全身リンパ＋腕（130分）', cn: '头疗＋全身淋巴＋手臂（130分钟）' },
-        { value: 'Warm Detox Head Intestine 90 min', dur: 90, price: 9500, en: 'Head spa + intestinal therapy + hot-stone lymph (90 min)', jp: 'ヘッドスパ＋腸セラピー＋全身温石リンパ（90分）', cn: '头疗＋肠道护理＋全身温石淋巴（90分钟）' },
-        { value: 'Hot Stone Aroma Foot 120 min', dur: 120, price: 12980, en: 'Hot-stone full-body aroma lymph + soles (120 min)', jp: '温石全身アロマリンパ＋足裏（120分）', cn: '温石全身精油淋巴＋足底（120分钟）' },
-        { value: 'Head Intestine Lymph 110 min', dur: 110, price: 12800, en: 'Deep-sleep head + intestine + full lymph (110 min)', jp: '熟睡ヘッドスパ＋腸セラピー＋全身リンパ（110分）', cn: '熟睡头疗＋肠道＋全身淋巴（110分钟）' },
-        { value: 'Full Detox Aroma Belly 130 min', dur: 130, price: 12980, en: 'Full-body detox aroma lymph with belly (130 min)', jp: 'お腹付♪全身デトックスアロマリンパ（130分）', cn: '含腹部♪全身排毒精油淋巴（130分钟）' }
+        { value: 'Scapula Lymph 60 min', dur: 60, price: 6500, en: 'Scapula + lymph 60 min', jp: '肩甲骨＋リンパ 60分', cn: '肩胛＋淋巴 60分钟' },
+        { value: 'Head Spa Full Lymph 120 min', dur: 120, price: 12800, en: 'Head spa + full lymph 120 min', jp: 'ヘッドスパ＋全身リンパ 120分', cn: '头疗＋全身淋巴 120分钟' },
+        { value: 'Eye Fatigue Lymph Arm 130 min', dur: 130, price: 12800, en: 'Head + lymph + arms 130 min', jp: 'ヘッド＋リンパ＋腕 130分', cn: '头疗＋淋巴＋手臂 130分钟' },
+        { value: 'Warm Detox Head Intestine 90 min', dur: 90, price: 9500, en: 'Head + intestine + hot stone 90 min', jp: 'ヘッド＋腸＋温石 90分', cn: '头疗＋肠道＋温石 90分钟' },
+        { value: 'Hot Stone Aroma Foot 120 min', dur: 120, price: 12980, en: 'Hot stone aroma + foot 120 min', jp: '温石アロマ＋足裏 120分', cn: '温石精油＋足底 120分钟' },
+        { value: 'Head Intestine Lymph 110 min', dur: 110, price: 12800, en: 'Head + intestine + lymph 110 min', jp: 'ヘッド＋腸＋リンパ 110分', cn: '头疗＋肠道＋淋巴 110分钟' },
+        { value: 'Full Detox Aroma Belly 130 min', dur: 130, price: 12980, en: 'Detox aroma + belly 130 min', jp: 'デトックスアロマ＋お腹 130分', cn: '排毒精油＋腹部 130分钟' }
       ]},
       { label: { en: 'Short & regular', jp: 'ショート・通常メニュー', cn: '短时・常规菜单' }, items: [
-        { value: 'Hand Massage 20 min', dur: 20, price: 2000, en: 'Hand massage (20 min)', jp: 'ハンドマッサージ（20分）', cn: '手部按摩（20分钟）' },
-        { value: 'Full Body Relax 30 min', dur: 30, price: 3000, en: 'Short full-body relax (1–2 areas) (30 min)', jp: '【ショート】全身リラックス（1–2箇所）（30分）', cn: '【短时】全身放松（1–2处）（30分钟）' },
-        { value: 'Seitai Focus 60 min', dur: 60, price: 5800, en: 'Short seitai course (1–2 areas deep) (60 min)', jp: '【ショート】整体コース（1–2箇所深め）（60分）', cn: '【短时】整体课程（1–2处加深）（60分钟）' },
-        { value: 'Salt Hip Leg 30 min', dur: 30, price: 3000, en: 'Salt-rub hip & leg de-puff (30 min)', jp: '【ショート】塩もみヒップ＆脚むくみ取り（30分）', cn: '【短时】盐揉臀＆腿部消肿（30分钟）' },
-        { value: 'Stomach Massage 30 min', dur: 30, price: 3500, en: 'Stomach massage (30 min)', jp: '【ショート】お腹マッサージ（30分）', cn: '【短时】腹部按摩（30分钟）' },
-        { value: 'Lymph Treatment 30 min', dur: 30, price: 3500, en: 'Lymph treatment (30 min)', jp: '【ショート】リンパトリートメント（30分）', cn: '【短时】淋巴护理（30分钟）' },
-        { value: 'Diet Aroma Lymph 30 min', dur: 30, price: 4000, en: 'Focused aroma lymph (diet support) (30 min)', jp: '【重点箇所】ダイエット効果UPアロマリンパ（30分）', cn: '【重点部位】瘦身加强精油淋巴（30分钟）' },
-        { value: 'Chinese Aroma Oil 90 min', dur: 90, price: 11000, en: 'Chinese-style aroma oil (90 min)', jp: '漢方式アロマオイル（90分）', cn: '汉方精油（90分钟）' },
-        { value: 'Chinese Aroma Oil 120 min', dur: 120, price: 13500, en: 'Chinese-style aroma oil (120 min)', jp: '漢方式アロマオイル（120分）', cn: '汉方精油（120分钟）' },
-        { value: 'Special Set C 105 min', dur: 105, price: 10500, en: 'Special set C: aroma 60 + soles 45 (Total 105 min)', jp: '【スペシャルセットC】全身アロマ60分＋足裏45分（計105分）', cn: '【特别套餐C】全身精油60分＋足底45分（合计105分钟）' },
-        { value: 'Special Set D 135 min', dur: 135, price: 14500, en: 'Special set D: aroma 90 + soles 45 (Total 135 min)', jp: '【スペシャルセットD】全身アロマ90分＋足裏45分（計135分）', cn: '【特别套餐D】全身精油90分＋足底45分（合计135分钟）' }
+        { value: 'Hand Massage 20 min', dur: 20, price: 2000, en: 'Hand massage 20 min', jp: 'ハンドマッサージ 20分', cn: '手部按摩 20分钟' },
+        { value: 'Full Body Relax 30 min', dur: 30, price: 3000, en: 'Full body relax 30 min', jp: '全身リラックス 30分', cn: '全身放松 30分钟' },
+        { value: 'Seitai Focus 60 min', dur: 60, price: 5800, en: 'Seitai focus 60 min', jp: '整体コース 60分', cn: '整体课程 60分钟' },
+        { value: 'Salt Hip Leg 30 min', dur: 30, price: 3000, en: 'Salt hip & leg 30 min', jp: '塩もみヒップ＆脚 30分', cn: '盐揉臀腿 30分钟' },
+        { value: 'Stomach Massage 30 min', dur: 30, price: 3500, en: 'Stomach massage 30 min', jp: 'お腹マッサージ 30分', cn: '腹部按摩 30分钟' },
+        { value: 'Lymph Treatment 30 min', dur: 30, price: 3500, en: 'Lymph treatment 30 min', jp: 'リンパトリートメント 30分', cn: '淋巴护理 30分钟' },
+        { value: 'Diet Aroma Lymph 30 min', dur: 30, price: 4000, en: 'Diet aroma lymph 30 min', jp: 'ダイエットアロマリンパ 30分', cn: '纤体精油淋巴 30分钟' },
+        { value: 'Chinese Aroma Oil 90 min', dur: 90, price: 11000, en: 'Chinese aroma oil 90 min', jp: '漢方アロマオイル 90分', cn: '汉方精油 90分钟' },
+        { value: 'Chinese Aroma Oil 120 min', dur: 120, price: 13500, en: 'Chinese aroma oil 120 min', jp: '漢方アロマオイル 120分', cn: '汉方精油 120分钟' },
+        { value: 'Special Set C 105 min', dur: 105, price: 10500, en: 'Special C aroma + foot 105 min', jp: 'セットC アロマ＋足裏 105分', cn: '套餐C 精油＋足底 105分钟' },
+        { value: 'Special Set D 135 min', dur: 135, price: 14500, en: 'Special D aroma + foot 135 min', jp: 'セットD アロマ＋足裏 135分', cn: '套餐D 精油＋足底 135分钟' }
       ]},
       { label: { en: 'Options', jp: 'オプション', cn: '加项' }, items: [
-        { value: 'Foot Exfoliation 20 min', dur: 20, price: 1500, en: 'Option: foot exfoliation (20 min)', jp: '【オプション】フット角質取り（20分）', cn: '【加项】足部去角质（20分钟）' },
-        { value: 'Back Exfoliation 20 min', dur: 20, price: 1500, en: 'Option: back exfoliation (20 min)', jp: '【オプション】背中角質ケア（20分）', cn: '【加项】背部去角质（20分钟）' }
+        { value: 'Foot Exfoliation 20 min', dur: 20, price: 1500, en: 'Foot exfoliation 20 min', jp: 'フット角質取り 20分', cn: '足部去角质 20分钟' },
+        { value: 'Back Exfoliation 20 min', dur: 20, price: 1500, en: 'Back exfoliation 20 min', jp: '背中角質ケア 20分', cn: '背部去角质 20分钟' }
       ]}
     ];
 
@@ -360,7 +517,7 @@
         successMessage:'Your booking information has been prepared. You will be redirected to WhatsApp shortly...',
         labelService:'Course *', labelDate:'Date *', labelTime:'Time *', labelGuests:'Number of Guests *', labelName:'Name *',
         selectCourse:'Select a course', selectTime:'Select a time', selectGuests:'Select number of guests', namePlaceholder:'Enter your name',
-        hintTime:'Open 24 hours daily<br>*booking slots every 30 min, 24h clock. Late night 0:00–8:00 +¥500 / 30 min.',
+        hintTime:'Open 24 hours daily<br>*booking slots 00:00–23:30, 24h clock. Late-night surcharge 0:00–8:00.',
         errorService:'Please select a course', errorDate:'Please select a date', errorTime:'Please select a time',
         errorTimeRange:'Please choose a valid time slot.',
         errorGuests:'Please select number of guests', errorName:'Please enter your name',
@@ -368,7 +525,8 @@
         samePackageText:'All guests choose the same course', additionalServicesTitle:"Additional Guests' Courses (if different)",
         submitButton:'Submit & Open WhatsApp', redirecting:'Redirecting...',
         previewTitle:'WhatsApp Message Preview', previewHint:'Complete all required fields above to preview your message.',
-        paymentNote:'Please pay at the salon after arrival, before your treatment begins.<br>Sheet fee ¥300 · Late night 0:00–8:00 ¥500 / 30 min · Card +8%.<br>Open 24h · 東京都港区新橋2-9-5 中銀新橋ビル 3F',
+        noticeTitle:'Before you book',
+        noticeItems:["Please pay at the salon after arrival, before your treatment begins.","Sheet fee ¥300. Card payments +8%. Late-night 0:00〜8:00 ¥500 / 30 min.","Open 24 hours","東京都港区新橋2-9-5 中銀新橋ビル 3F"],
         guestUnit: function(n){ return n + (n>1?' Guests':' Guest'); },
         waIntro:'Hello, I would like to make a reservation at Hoshien (Shinbashi / 中銀新橋ビル 3F).\n\n',
         waName:'Name', waDate:'Date', waTime:'Time', waGuests:'Number of Guests',
@@ -380,7 +538,7 @@
         successMessage:'予約内容を作成しました。まもなく WhatsApp へ移動します…',
         labelService:'コース *', labelDate:'日付 *', labelTime:'時間 *', labelGuests:'人数 *', labelName:'お名前 *',
         selectCourse:'コースを選択', selectTime:'時間を選択', selectGuests:'人数を選択', namePlaceholder:'お名前を入力',
-        hintTime:'年中無休・24時間営業<br>*予約枠は30分刻み。深夜0:00–8:00は＋¥500／30分。',
+        hintTime:'毎日24時間営業<br>*予約枠 00:00〜23:30。深夜割増 0:00〜8:00。',
         errorService:'コースを選択してください', errorDate:'日付を選択してください', errorTime:'時間を選択してください',
         errorTimeRange:'有効な時間を選択してください。',
         errorGuests:'人数を選択してください', errorName:'お名前を入力してください',
@@ -388,7 +546,8 @@
         samePackageText:'全員同じコースを選択', additionalServicesTitle:'追加ゲストのコース（異なる場合）',
         submitButton:'送信して WhatsApp を開く', redirecting:'移動中…',
         previewTitle:'WhatsApp メッセージプレビュー', previewHint:'送信内容を確認するため、上記の必須項目をすべてご記入ください。',
-        paymentNote:'ご来店後・施術前にお支払いください。<br>シーツ代¥300 · 深夜0:00–8:00 ¥500／30分 · カード手数料8%。<br>24時間営業 · 東京都港区新橋2-9-5 中銀新橋ビル 3F',
+        noticeTitle:'ご予約前のご案内',
+        noticeItems:["ご来店後・施術前にお支払いください。","シーツ代¥300。カード手数料8%。深夜割増 0:00〜8:00 毎30分¥500。","毎日24時間営業","東京都港区新橋2-9-5 中銀新橋ビル 3F"],
         guestUnit: function(n){ return n + '名'; },
         waIntro:'こんにちは、Hoshien（新橋・中銀新橋ビル3F）のご予約を希望します。\n\n',
         waName:'お名前', waDate:'日付', waTime:'時間', waGuests:'人数',
@@ -400,7 +559,7 @@
         successMessage:'预约信息已生成，即将跳转至 WhatsApp…',
         labelService:'项目 *', labelDate:'日期 *', labelTime:'时间 *', labelGuests:'人数 *', labelName:'姓名 *',
         selectCourse:'请选择项目', selectTime:'请选择时间', selectGuests:'请选择人数', namePlaceholder:'请输入您的姓名',
-        hintTime:'全天24小时营业<br>*预约时段每30分钟一档。深夜0:00–8:00 加收¥500／30分。',
+        hintTime:'每天24小时营业<br>*预约时段 00:00–23:30。深夜加价 0:00–8:00。',
         errorService:'请选择项目', errorDate:'请选择日期', errorTime:'请选择时间',
         errorTimeRange:'请选择有效时间。',
         errorGuests:'请选择人数', errorName:'请输入姓名',
@@ -408,7 +567,8 @@
         samePackageText:'所有客人都选择相同项目', additionalServicesTitle:'其他客人的项目（如不同）',
         submitButton:'提交并打开 WhatsApp', redirecting:'跳转中…',
         previewTitle:'WhatsApp 消息预览', previewHint:'请先填写上方所有必填项，即可预览消息内容。',
-        paymentNote:'请到店后、开始护理前付款。<br>床单费¥300 · 深夜0:00–8:00 ¥500／30分 · 信用卡手续费8%。<br>24小时营业 · 东京都港区新橋2-9-5 中銀新橋ビル 3F',
+        noticeTitle:'预约前提示',
+        noticeItems:["请到店后、开始护理前付款。","床单费¥300。信用卡手续费8%。深夜加收 0:00〜8:00 每30分¥500。","每天24小时营业","东京都港区新桥2-9-5 中银新桥大楼 3F"],
         guestUnit: function(n){ return n + ' 人'; },
         waIntro:'您好，我想预约 Hoshien（新橋・中銀新橋ビル 3F）。\n\n',
         waName:'姓名', waDate:'日期', waTime:'时间', waGuests:'人数',
@@ -514,7 +674,10 @@
       document.getElementById('submitButtonText').textContent = o.submitButton;
       document.getElementById('previewTitle').textContent = o.previewTitle;
       document.getElementById('previewHint').textContent = o.previewHint;
-      document.getElementById('paymentNote').innerHTML = o.paymentNote;
+      document.getElementById('noticeTitle').textContent = o.noticeTitle;
+      document.getElementById('noticeList').innerHTML = o.noticeItems.map(function(item){
+        return '<li>' + item + '</li>';
+      }).join('');
       document.getElementById('service').innerHTML = buildServiceOptionsHTML(sv);
       document.getElementById('guests').innerHTML = buildGuestsOptionsHTML(gv);
       document.getElementById('time').innerHTML = buildTimeOptions(tv);
