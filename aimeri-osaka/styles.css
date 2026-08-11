@@ -499,8 +499,9 @@ ul { list-style: none; }
     "radio name price"
     ". desc .";
 }
-/* 名称过长放不下时：名称整行，时长左下 / 价格右下 */
+/* 名称+价格并排放不下：名称整行，时长左下 / 价格右下 */
 .opt-choice.has-desc.is-price-stacked {
+  grid-template-columns: 1.35rem minmax(0, 1fr) auto;
   grid-template-areas:
     "radio name name"
     ". desc price";
@@ -1295,6 +1296,11 @@ ul { list-style: none; }
   }
   .opt-choice.has-desc {
     grid-template-areas:
+      "radio name price"
+      ". desc .";
+  }
+  .opt-choice.has-desc.is-price-stacked {
+    grid-template-areas:
       "radio name name"
       ". desc price";
   }
@@ -1306,10 +1312,13 @@ ul { list-style: none; }
   .opt-choice .opt-price {
     text-align: right;
     justify-self: end;
-    align-self: center;
+    align-self: start;
     margin-top: 0;
     line-height: 1.3;
     font-size: 1rem;
+  }
+  .opt-choice.has-desc.is-price-stacked .opt-price {
+    align-self: center;
   }
   .opt-choice .opt-desc {
     align-self: center;

@@ -115,24 +115,57 @@
   (function () {
     var rows = document.querySelectorAll(".opt-choice.has-desc");
     if (!rows.length) return;
+    var resizeTimer = 0;
+    var syncing = false;
 
     function syncPriceLayout() {
-      rows.forEach(function (row) {
-        row.classList.remove("is-price-stacked");
-      });
-      // 先按并排布局测量；名称换行或溢出则改为堆叠
+      if (syncing) return;
+      syncing = true;
+
       rows.forEach(function (row) {
         var name = row.querySelector(".opt-name");
-        if (!name) return;
-        var lh = parseFloat(window.getComputedStyle(name).lineHeight) || 22;
-        var wraps = name.scrollHeight > lh * 1.55;
-        var overflows = name.scrollWidth > name.clientWidth + 1;
-        if (wraps || overflows) row.classList.add("is-price-stacked");
+        var price = row.querySelector(".opt-price");
+        if (!name || !price) return;
+
+        row.classList.remove("is-price-stacked");
+
+        var prevWhiteSpace = name.style.whiteSpace;
+        var prevOverflowWrap = name.style.overflowWrap;
+        var prevWordBreak = name.style.wordBreak;
+        name.style.whiteSpace = "nowrap";
+        name.style.overflowWrap = "normal";
+        name.style.wordBreak = "keep-all";
+
+        var nameNatural = name.scrollWidth;
+        var nameCol = name.clientWidth;
+        name.style.whiteSpace = prevWhiteSpace;
+        name.style.overflowWrap = prevOverflowWrap;
+        name.style.wordBreak = prevWordBreak;
+
+        // 名称单行放不进并排列宽 → 价格放到右下（与时长同一行）
+        if (nameNatural > nameCol + 1) {
+          row.classList.add("is-price-stacked");
+        }
       });
+
+      syncing = false;
+    }
+
+    function scheduleSync() {
+      if (syncing) return;
+      if (resizeTimer) window.clearTimeout(resizeTimer);
+      resizeTimer = window.setTimeout(function () {
+        resizeTimer = 0;
+        syncPriceLayout();
+      }, 50);
     }
 
     syncPriceLayout();
-    window.addEventListener("resize", syncPriceLayout);
+    window.addEventListener("resize", scheduleSync);
+    if (typeof ResizeObserver !== "undefined") {
+      var ro = new ResizeObserver(scheduleSync);
+      rows.forEach(function (row) { ro.observe(row); });
+    }
     if (document.fonts && document.fonts.ready) {
       document.fonts.ready.then(syncPriceLayout).catch(function () {});
     }
