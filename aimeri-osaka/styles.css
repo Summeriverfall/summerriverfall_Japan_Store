@@ -486,10 +486,10 @@ ul { list-style: none; }
 .opt-row:hover { background: rgba(166,123,109,0.04); }
 .opt-choice {
   cursor: pointer;
-  grid-template-columns: 1.35rem minmax(0, 1fr);
+  grid-template-columns: 1.35rem minmax(0, 1fr) auto;
   grid-template-areas:
-    "radio name"
-    ". price";
+    "radio name name"
+    ". price price";
   margin: 0;
   align-items: start;
   column-gap: 0.65rem;
@@ -497,9 +497,8 @@ ul { list-style: none; }
 }
 .opt-choice.has-desc {
   grid-template-areas:
-    "radio name"
-    ". desc"
-    ". price";
+    "radio name name"
+    ". desc price";
 }
 .opt-choice .opt-radio {
   grid-area: radio;
@@ -521,15 +520,17 @@ ul { list-style: none; }
 }
 .opt-choice .opt-price {
   grid-area: price;
-  margin-top: 0.1rem;
-  min-width: 0;
-  justify-self: start;
-  text-align: left;
+  margin-top: 0;
+  min-width: 4.5rem;
+  justify-self: end;
+  align-self: center;
+  text-align: right;
   line-height: 1.4;
   font-size: 1rem;
 }
 .opt-choice .opt-desc {
   grid-area: desc;
+  align-self: center;
 }
 .menu-tax-note {
   margin: 1.15rem 0 0;
