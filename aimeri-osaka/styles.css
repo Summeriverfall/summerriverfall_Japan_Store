@@ -488,14 +488,19 @@ ul { list-style: none; }
   cursor: pointer;
   grid-template-columns: 1.35rem minmax(0, 1fr) auto;
   grid-template-areas:
-    "radio name name"
-    ". price price";
+    "radio name price";
   margin: 0;
   align-items: start;
   column-gap: 0.65rem;
   row-gap: 0.2rem;
 }
 .opt-choice.has-desc {
+  grid-template-areas:
+    "radio name price"
+    ". desc .";
+}
+/* 名称过长放不下时：名称整行，时长左下 / 价格右下 */
+.opt-choice.has-desc.is-price-stacked {
   grid-template-areas:
     "radio name name"
     ". desc price";
@@ -507,7 +512,6 @@ ul { list-style: none; }
 .opt-choice .opt-name {
   grid-area: name;
   min-width: 0;
-  width: 100%;
   font-family: var(--font-body);
   font-weight: 500;
   font-size: 1rem;
@@ -523,10 +527,15 @@ ul { list-style: none; }
   margin-top: 0;
   min-width: 4.5rem;
   justify-self: end;
-  align-self: center;
+  align-self: start;
   text-align: right;
   line-height: 1.4;
   font-size: 1rem;
+  padding-top: 0.08rem;
+}
+.opt-choice.has-desc.is-price-stacked .opt-price {
+  align-self: center;
+  padding-top: 0;
 }
 .opt-choice .opt-desc {
   grid-area: desc;
@@ -1281,14 +1290,13 @@ ul { list-style: none; }
   }
   .opt-row:not(.opt-choice) .opt-book { grid-area: book; justify-self: end; }
   .opt-choice {
-    grid-template-columns: 1.35rem minmax(0, 1fr);
+    grid-template-columns: 1.35rem minmax(0, 1fr) auto;
     column-gap: 0.55rem;
   }
   .opt-choice.has-desc {
     grid-template-areas:
-      "radio name"
-      ". desc"
-      ". price";
+      "radio name name"
+      ". desc price";
   }
   .opt-choice .opt-radio { align-self: start; margin-top: 0.2rem; }
   .opt-choice .opt-name {
@@ -1296,11 +1304,15 @@ ul { list-style: none; }
     line-height: 1.4;
   }
   .opt-choice .opt-price {
-    text-align: left;
-    justify-self: start;
-    margin-top: 0.1rem;
+    text-align: right;
+    justify-self: end;
+    align-self: center;
+    margin-top: 0;
     line-height: 1.3;
     font-size: 1rem;
+  }
+  .opt-choice .opt-desc {
+    align-self: center;
   }
   .opt-group-foot {
     justify-content: stretch;

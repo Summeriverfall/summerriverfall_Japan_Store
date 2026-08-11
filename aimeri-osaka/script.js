@@ -111,6 +111,33 @@
     syncBook();
   });
 
+  /* 菜单项：名称+价格能同一行则并排，否则价格下移与时长左右分列 */
+  (function () {
+    var rows = document.querySelectorAll(".opt-choice.has-desc");
+    if (!rows.length) return;
+
+    function syncPriceLayout() {
+      rows.forEach(function (row) {
+        row.classList.remove("is-price-stacked");
+      });
+      // 先按并排布局测量；名称换行或溢出则改为堆叠
+      rows.forEach(function (row) {
+        var name = row.querySelector(".opt-name");
+        if (!name) return;
+        var lh = parseFloat(window.getComputedStyle(name).lineHeight) || 22;
+        var wraps = name.scrollHeight > lh * 1.55;
+        var overflows = name.scrollWidth > name.clientWidth + 1;
+        if (wraps || overflows) row.classList.add("is-price-stacked");
+      });
+    }
+
+    syncPriceLayout();
+    window.addEventListener("resize", syncPriceLayout);
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(syncPriceLayout).catch(function () {});
+    }
+  })();
+
   /* Back to top */
   var topBtn = document.getElementById("backToTop");
   if (topBtn) {
