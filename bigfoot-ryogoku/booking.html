@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- PV 自建统计（暂关：老板确认后再开） -->
+  <!-- <script src="/shops/pv-track.js"></script> -->
+
+  <script>
+    var BOOKING_LANG = (function () {
+      var p = new URLSearchParams(location.search).get('lang');
+      var map = { en: 'en', jp: 'jp', ja: 'jp', cn: 'cn', 'zh-CN': 'cn' };
+      return map[p] || 'en';
+    })();
+  </script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-FCMYZE0ERW"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-FCMYZE0ERW', {
+      store: 'bigfoot-ryogoku',
+      page_type: 'booking',
+      language: BOOKING_LANG
+    });
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Book BIG FOOT SPA Ryogoku — foot reflexology, aroma oil, cream head spa. Weekdays 11:00–23:30 / weekends & holidays 10:00–23:30. WhatsApp reservation.">
+  <meta name="robots" content="noindex, follow">
+  <meta name="theme-color" content="#5a6d7a">
+  <title>Book Appointment — BIG FOOT SPA</title>
+  <link rel="canonical" href="https://reserveinjp.com/shops/bigfoot-ryogoku/booking.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="BIG FOOT SPA">
+  <meta property="og:title" content="Book Appointment — BIG FOOT SPA">
+  <meta property="og:description" content="Reserve foot, aroma or head spa via WhatsApp. Ryogoku, last reception 23:00.">
+  <meta property="og:url" content="https://reserveinjp.com/shops/bigfoot-ryogoku/booking.html">
+  <meta property="og:image" content="https://reserveinjp.com/shops/bigfoot-ryogoku/assets/images/hero.webp">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;600&family=Noto+Sans+SC:wght@400;500&family=Noto+Serif+SC:wght@400;500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --ink: #2a2623;
+      --ink-soft: #6e6660;
+      --brand: #5a6d7a;
+      --brand-deep: #3f4f5a;
+      --gold: #b89a6a;
+      --gold-pale: #e4d6c2;
+      --stone: #f0efec;
+      --white: #ffffff;
+      --font-display: "Playfair Display", "Noto Serif SC", serif;
+      --font-body: "Noto Sans JP", "Noto Sans SC", sans-serif;
+    }
+    html[lang="zh-CN"] { --font-body: "Noto Sans SC", "Noto Sans JP", sans-serif; --font-display: "Playfair Display", "Noto Serif SC", serif; }
+    html[lang="ja"] { --font-body: "Noto Sans JP", "Noto Sans SC", sans-serif; }
+    body {
+      font-family: var(--font-body);
+      font-weight: 300;
+      background:
+        radial-gradient(circle at 12% 8%, rgba(90,109,122,0.12), transparent 42%),
+        radial-gradient(circle at 90% 92%, rgba(184,154,106,0.1), transparent 45%),
+        var(--stone);
+      color: var(--ink);
+      min-height: 100vh;
+      padding: 40px 20px;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    .booking-container { max-width: 620px; width: 100%; margin: 0 auto; animation: fadeInUp 0.8s ease-out; min-width: 0; }
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .booking-top { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 2rem; }
+    .back-link { display: inline-flex; align-items: center; gap: 8px; color: var(--ink-soft); text-decoration: none; font-size: 0.9rem; }
+    .back-link:hover { color: var(--brand); }
+    .lang-switch { display: flex; align-items: center; gap: 0.2rem; flex-shrink: 0; }
+    .lang-switch button {
+      font-size: 0.7rem; letter-spacing: 0.08em; color: var(--ink-soft); padding: 0.35rem 0.55rem;
+      border: none; background: transparent; cursor: pointer; font-family: inherit;
+    }
+    .lang-switch button:hover, .lang-switch button.active { color: var(--brand); }
+    .lang-switch button.active { border-bottom: 1px solid var(--gold); }
+    .booking-header { text-align: center; margin-bottom: 2.4rem; }
+    .brand-badge {
+      display: inline-block; border: 1px solid var(--gold); padding: 7px 18px; margin-bottom: 1.1rem;
+      font-size: 0.66rem; color: var(--brand); font-weight: 500; letter-spacing: 0.28em; text-transform: uppercase;
+    }
+    .booking-title { font-family: var(--font-display); font-size: clamp(2rem, 5vw, 2.6rem); font-weight: 500; letter-spacing: 0.08em; margin-bottom: 0.4rem; text-wrap: balance; }
+    .booking-subtitle { font-size: 0.92rem; color: var(--ink-soft); }
+    .booking-card {
+      background: var(--white); border: 1px solid var(--gold-pale); padding: 2.5rem;
+      box-shadow: 0 24px 60px rgba(42,38,35,0.08); border-radius: 6px;
+      min-width: 0; max-width: 100%; overflow-x: hidden;
+    }
+    .form-group { margin-bottom: 1.6rem; min-width: 0; max-width: 100%; }
+    .form-label { display: block; font-size: 0.74rem; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--brand); margin-bottom: 0.5rem; }
+    .form-input, .form-select {
+      width: 100%; padding: 13px 15px; border: 1px solid var(--gold-pale); font-size: 0.92rem; font-family: inherit;
+      color: var(--ink); background: var(--stone); border-radius: 6px; transition: all 0.3s;
+      max-width: 100%; min-width: 0; box-sizing: border-box;
+    }
+    /* Wrapper clips native date min-width that ignores max-width on mobile */
+    .date-wrap {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      width: 100%;
+      max-width: 100%;
+      min-width: 0;
+      overflow: hidden;
+      border: 1px solid var(--gold-pale);
+      border-radius: 6px;
+      background: var(--stone);
+      transition: border-color 0.3s, box-shadow 0.3s, background 0.3s;
+    }
+    .date-wrap:focus-within {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(184,154,106,0.15);
+      background: var(--white);
+    }
+    .form-group.error .date-wrap { border-color: #C0392B; }
+    .date-wrap input[type="date"].form-input {
+      display: block;
+      width: 100%;
+      max-width: 100%;
+      min-width: 0 !important;
+      min-height: 48px;
+      margin: 0;
+      border: 0;
+      border-radius: 0;
+      box-shadow: none !important;
+      background: transparent;
+      line-height: 1.35;
+      font-size: 0.85rem;
+      font-weight: 300;
+      font-family: inherit;
+      color: var(--ink-soft);
+      box-sizing: border-box;
+    }
+    .date-wrap input[type="date"].form-input:focus {
+      outline: none;
+      background: transparent;
+    }
+    .date-wrap input[type="date"].form-input:focus,
+    .date-wrap input[type="date"].form-input:valid {
+      color: var(--ink);
+    }
+    .date-wrap input[type="date"].form-input::-webkit-date-and-time-value {
+      text-align: left;
+      min-height: 1.25em;
+      font-size: 0.85rem;
+      font-weight: 300;
+      color: inherit;
+    }
+    .date-wrap input[type="date"].form-input::-webkit-calendar-picker-indicator {
+      margin: 0;
+      padding: 0;
+      flex-shrink: 0;
+    }
+    .date-wrap input[type="date"].form-input::-webkit-datetime-edit,
+    .date-wrap input[type="date"].form-input::-webkit-datetime-edit-fields-wrapper {
+      min-width: 0;
+      max-width: 100%;
+      overflow: hidden;
+      padding: 0;
+      font-size: 0.85rem;
+      font-weight: 300;
+      font-family: inherit;
+      color: inherit;
+    }
+    .date-wrap input[type="date"].form-input::-webkit-datetime-edit-text,
+    .date-wrap input[type="date"].form-input::-webkit-datetime-edit-month-field,
+    .date-wrap input[type="date"].form-input::-webkit-datetime-edit-day-field,
+    .date-wrap input[type="date"].form-input::-webkit-datetime-edit-year-field {
+      font-size: 0.85rem;
+      font-weight: 300;
+      font-family: inherit;
+      color: inherit;
+      letter-spacing: normal;
+      padding: 0;
+    }
+    #service, .guest-service-row .form-select {
+      font-size: clamp(0.85rem, 2.8vw, 0.95rem);
+      line-height: 1.4;
+      padding-right: 2rem;
+      max-width: 100%;
+      width: 100%;
+      min-width: 0;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+    #serviceGroup, .guest-service-row {
+      max-width: 100%;
+      min-width: 0;
+      overflow: hidden;
+    }
+    .form-input:focus, .form-select:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px rgba(184,154,106,0.15); background: var(--white); }
+    .form-hint { font-size: 0.78rem; font-weight: 300; line-height: 1.55; color: var(--ink-soft); margin-top: 0.45rem; font-family: var(--font-body); }
+    .form-error { color: #C0392B; font-size: 0.82rem; margin-top: 0.45rem; display: none; }
+    .form-group.error .form-error { display: block; }
+    .form-group.error .form-input, .form-group.error .form-select { border-color: #C0392B; }
+    .message-preview { margin: 1.4rem 0; border: 1px solid var(--gold-pale); background: var(--stone); border-radius: 6px; }
+    .message-preview-head {
+      display: flex; align-items: center; gap: 8px; padding: 0.7rem 1rem; border-bottom: 1px solid var(--gold-pale);
+      font-size: 0.66rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--brand); font-weight: 500;
+    }
+    .message-preview-head svg { width: 16px; height: 16px; fill: #1E8E4F; flex-shrink: 0; }
+    .message-preview-body { display: none; margin: 0; padding: 1rem 1.1rem; font-family: inherit; font-size: 0.86rem; line-height: 1.65; white-space: pre-wrap; word-break: break-word; }
+    .message-preview-hint { padding: 1rem 1.1rem; font-size: 0.8rem; color: var(--ink-soft); font-style: italic; }
+    .message-preview.ready .message-preview-body { display: block; }
+    .message-preview.ready .message-preview-hint { display: none; }
+    .booking-notice {
+      margin: 1.4rem 0 1.1rem;
+      padding: 1rem 1.1rem 1.05rem;
+      border: 1px solid var(--gold-pale);
+      background: rgba(184, 154, 106, 0.06);
+      border-radius: 6px;
+    }
+    .booking-notice-title {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--brand);
+      margin-bottom: 0.7rem;
+    }
+    .booking-notice-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: 0.45rem;
+    }
+    .booking-notice-list li {
+      position: relative;
+      padding-left: 0.95rem;
+      font-size: 0.82rem;
+      color: var(--ink-soft);
+      line-height: 1.55;
+    }
+    .booking-notice-list li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0.55em;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--gold);
+    }
+    .submit-button {
+      width: 100%; padding: 16px; background: var(--brand); color: var(--white); border: 1px solid var(--brand);
+      font-size: 0.9rem; font-weight: 500; letter-spacing: 0.12em; font-family: inherit; cursor: pointer;
+      transition: all 0.3s; display: flex; align-items: center; justify-content: center; gap: 10px; border-radius: 6px;
+    }
+    .submit-button:hover { background: var(--brand-deep); transform: translateY(-2px); box-shadow: 0 12px 28px rgba(63,79,90,0.28); }
+    .submit-button:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+    .whatsapp-icon { width: 19px; height: 19px; display: inline-flex; }
+    .whatsapp-icon svg { width: 100%; height: 100%; fill: currentColor; }
+    .success-message {
+      display: none; background: rgba(90,109,122,0.1); border: 1px solid var(--gold); padding: 1rem;
+      margin-bottom: 1.4rem; color: var(--brand-deep); font-size: 0.92rem; text-align: center; border-radius: 6px;
+    }
+    .success-message.show { display: block; }
+    .additional-services { display: none; margin-top: 1.4rem; padding-top: 1.4rem; border-top: 1px dashed var(--gold-pale); }
+    .additional-services.show { display: block; }
+    .additional-services h4 { font-size: 0.85rem; font-weight: 500; color: var(--brand); margin-bottom: 1rem; }
+    .guest-service-row { background: var(--stone); padding: 1rem; margin-bottom: 0.7rem; border-radius: 6px; }
+    .guest-label { font-size: 0.8rem; color: var(--ink-soft); margin-bottom: 0.45rem; font-weight: 500; }
+    .same-package-label { display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 0.88rem; }
+    .same-package-label input { accent-color: #5a6d7a; }
+    #addonSection { display: none; }
+    @media (max-width: 768px) {
+      body { padding: 24px 15px; overflow-x: hidden; }
+      .booking-container { max-width: 100%; }
+      .booking-card { padding: 2rem 1.4rem; overflow-x: hidden; }
+      .booking-top { flex-wrap: wrap; }
+      #dateGroup { max-width: 100%; overflow: hidden; }
+      .date-wrap { max-width: 100%; }
+      .form-input, .form-select {
+        font-size: 15px;
+      }
+      #service, .guest-service-row .form-select {
+        font-size: clamp(0.85rem, 2.8vw, 0.95rem);
+      }
+      .date-wrap input[type="date"].form-input {
+        font-size: 14px;
+        min-height: 48px;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+      }
+      .date-wrap input[type="date"].form-input::-webkit-date-and-time-value,
+      .date-wrap input[type="date"].form-input::-webkit-datetime-edit,
+      .date-wrap input[type="date"].form-input::-webkit-datetime-edit-fields-wrapper,
+      .date-wrap input[type="date"].form-input::-webkit-datetime-edit-text,
+      .date-wrap input[type="date"].form-input::-webkit-datetime-edit-month-field,
+      .date-wrap input[type="date"].form-input::-webkit-datetime-edit-day-field,
+      .date-wrap input[type="date"].form-input::-webkit-datetime-edit-year-field {
+        font-size: 14px;
+        font-weight: 300;
+        min-width: 0;
+        max-width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="booking-container">
+    <div class="booking-top">
+      <a href="landing.html" class="back-link" id="backLink">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span id="backLinkText">Back to Home</span>
+      </a>
+      <div class="lang-switch" role="group" aria-label="Language">
+        <button type="button" data-lang="cn">中文</button>
+        <button type="button" data-lang="en" class="active">EN</button>
+        <button type="button" data-lang="jp">日本語</button>
+      </div>
+    </div>
+
+    <div class="booking-header">
+      <div class="brand-badge" id="brandBadge">Book Your Appointment</div>
+      <h1 class="booking-title">BIG FOOT SPA</h1>
+      <p class="booking-subtitle" id="bookingSubtitle">Fill in the form below to book your appointment</p>
+    </div>
+
+    <div class="booking-card">
+      <div class="success-message" id="successMessage"></div>
+      <form id="bookingForm">
+        <div class="form-group" id="serviceGroup">
+          <label for="service" class="form-label" id="labelService">Course *</label>
+          <select id="service" name="service" class="form-select" required></select>
+          <div class="form-error" id="errorService">Please select a course</div>
+        </div>
+        <div class="form-group" id="dateGroup">
+          <label for="date" class="form-label" id="labelDate">Date *</label>
+          <div class="date-wrap">
+            <input type="date" id="date" name="date" class="form-input" required>
+          </div>
+          <div class="form-error" id="errorDate">Please select a date</div>
+        </div>
+        <div class="form-group" id="timeGroup">
+          <label for="time" class="form-label" id="labelTime">Time *</label>
+          <select id="time" name="time" class="form-select" required></select>
+          <div class="form-hint" id="hintTime" hidden></div>
+          <div class="form-error" id="errorTime">Please select a time</div>
+        </div>
+        <div class="form-group" id="guestsGroup">
+          <label for="guests" class="form-label" id="labelGuests">Number of Guests *</label>
+          <select id="guests" name="guests" class="form-select" required></select>
+          <div class="form-group" id="guestsExactGroup" style="display:none;margin:0.7rem 0 0;">
+            <label for="guestsExact" class="form-label" id="labelGuestsExact">Exact number *</label>
+            <input type="number" id="guestsExact" name="guestsExact" class="form-input" min="5" max="30" step="1" inputmode="numeric" placeholder="5">
+            <div class="form-error" id="errorGuestsExact">Please enter 5 or more</div>
+          </div>
+          <div class="form-error" id="errorGuests">Please select number of guests</div>
+        </div>
+        <div class="form-group" id="nameGroup">
+          <label for="name" class="form-label" id="labelName">Name *</label>
+          <input type="text" id="name" name="name" class="form-input" placeholder="Enter your name" required>
+          <div class="form-error" id="errorName">Please enter your name</div>
+        </div>
+
+        <div id="addonSection" aria-hidden="true"></div>
+
+        <div class="form-group" id="samePackageGroup" style="display: none;">
+          <label class="same-package-label">
+            <input type="checkbox" id="samePackage" name="samePackage" checked>
+            <span id="samePackageText">All guests choose the same course</span>
+          </label>
+        </div>
+
+        <div class="additional-services" id="additionalServices">
+          <h4 id="additionalServicesTitle">Additional Guests' Courses (if different)</h4>
+          <div id="additionalServicesContainer"></div>
+        </div>
+
+        <div class="message-preview" id="messagePreview">
+          <div class="message-preview-head">
+            <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.884-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+            <span id="previewTitle">WhatsApp Message Preview</span>
+          </div>
+          <pre class="message-preview-body" id="previewBody"></pre>
+          <p class="message-preview-hint" id="previewHint">Complete all required fields above to preview your message.</p>
+        </div>
+
+        <aside class="booking-notice" id="bookingNotice" hidden aria-labelledby="noticeTitle">
+          <h3 class="booking-notice-title" id="noticeTitle">Before you book</h3>
+          <ul class="booking-notice-list" id="noticeList"></ul>
+        </aside>
+
+        <button type="submit" class="submit-button" id="submitButton">
+          <span class="whatsapp-icon"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.884-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg></span>
+          <span id="submitButtonText">Submit &amp; Open WhatsApp</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    var WHATSAPP_NUMBER = '85290744644';
+    // whatsapp-config.json is archive/reference only; number above is authoritative.
+    fetch('whatsapp-config.json', { cache: 'no-store' })
+      .then(function (r) { return r.json(); })
+      .then(function (c) { var num = c && c[c.use]; if (num && /^\d{8,15}$/.test(num)) WHATSAPP_NUMBER = num; })
+      .catch(function () {});
+
+    var currentLang = 'en';
+    var SHEET_FEE = 0;
+    var LATE_PER_30 = 0;
+
+    var serviceInfo = {
+      'Doctor Fish 10 min': 1100,
+      'Full Body Knead 60 min': 6800,
+      'Aroma Lymph Oil 60 min': 7300,
+      'Neck Head Foot 60 min': 6900,
+      'Back Aroma Intestine 80 min': 7800,
+      'Luxury Aroma Head Foot 90 min': 10800,
+      'Full Body Knead Head 75 min': 8300,
+      'Foot Neck Shoulder 90 min': 8800,
+      'Foot Calf 40 min': 6600,
+      'Foot Calf 60 min': 8800,
+      'Foot Calf 90 min': 11000,
+      'Callus Foot Beauty 60 min': 8800,
+      'Aroma Focus 40 min': 7700,
+      'Lower Body Aroma 60 min': 11000,
+      'Back Aroma Lymph 60 min': 11000,
+      'Neck Decollete Head 60 min': 10000,
+      'Dry Head Back Aroma 70 min': 12000,
+      'Aroma Intestine 90 min': 14000,
+      'Detox Legs Intestine 120 min': 16500,
+      'Aroma Lymph 180 min': 22000,
+      'Bali Cream Head 45 min': 8800,
+      'Bali Cream Head 60 min': 11800,
+      'Pore CICA Pack 60 min': 7800,
+      'Small Face Pack 40 min': 7800,
+      'Small Face Decollete 60 min': 10800,
+      'Body Shiatsu 40 min': 6050,
+      'Body Shiatsu 60 min': 8250,
+      'Dry Head Upper Body 60 min': 8800,
+      'Body Shiatsu 90 min': 11000,
+      'Body Shiatsu 120 min': 13200,
+      'Body Shiatsu Head 180 min': 20000,
+      'Shiatsu Dry Head 60 min': 8150,
+      'Shiatsu Foot 60 min': 8800,
+      'Knead Foot 90 min': 12100,
+      'Knead Foot Focus 90 min': 13200,
+      'Back Aroma Foot 90 min': 13200,
+      'Upper Aroma Foot Head 90 min': 13100,
+      'Foot Body 120 min': 15300,
+      'Aroma Foot Head 120 min': 16400,
+      'Aroma Lulur 60 min': 10800,
+      'Aroma Lulur 90 min': 12800,
+      'Aroma Lulur 120 min': 15800,
+      'Ear Esthe 60 min': 10800
+    };
+
+    var serviceGroups = [
+      { label: { en: 'Popular & campaign', jp: 'オススメ・キャンペーン', cn: '推荐・活动' }, items: [
+        { value: 'Doctor Fish 10 min', dur: 10, price: 1100, en: 'Doctor fish 10 min', jp: 'ドクターフィッシュ10分', cn: '医生鱼护理 10分钟' },
+        { value: 'Full Body Knead 60 min', dur: 60, price: 6800, en: 'Full-body kneading massage', jp: '全身もみほぐし60分', cn: '全身推拿放松 60分钟' },
+        { value: 'Aroma Lymph Oil 60 min', dur: 60, price: 7300, en: 'Aroma lymph oil massage', jp: 'アロマリンパオイルマッサージ60分', cn: '精油淋巴按摩 60分钟' },
+        { value: 'Neck Head Foot 60 min', dur: 60, price: 6900, en: 'Neck & shoulders head 30 + foot points 30', jp: '首肩ヘッド30分＋足つぼ30分', cn: '颈肩头疗30＋足疗30' },
+        { value: 'Back Aroma Intestine 80 min', dur: 80, price: 7800, en: 'Back aroma oil 60 + intestine therapy 20', jp: '背面アロマ60分＋腸セラピ20分', cn: '背面精油60＋肠疗20' },
+        { value: 'Luxury Aroma Head Foot 90 min', dur: 90, price: 10800, en: 'Full-body aroma + head + soles', jp: '全身アロマ＋ヘッド＋足裏', cn: '全身精油＋头疗＋足底' },
+        { value: 'Full Body Knead Head 75 min', dur: 75, price: 8300, en: 'Full-body kneading + head', jp: '全身もみほぐし＋ヘッド75分', cn: '全身推拿＋头疗 75分钟' },
+        { value: 'Foot Neck Shoulder 90 min', dur: 90, price: 8800, en: 'Foot points + neck & shoulder care', jp: '足つぼ＋首肩ケア90分', cn: '足疗＋颈肩护理 90分钟' }
+      ]},
+      { label: { en: 'Foot massage', jp: '足マッサージ', cn: '足部按摩' }, items: [
+        { value: 'Foot Calf 40 min', dur: 40, price: 6600, en: 'Foot massage 25 + calf 15', jp: '足マッサージ25分＋ふくらはぎ15分', cn: '足部按摩25＋小腿15' },
+        { value: 'Foot Calf 60 min', dur: 60, price: 8800, en: 'Foot massage 40 + calf 20', jp: '足マッサージ40分＋ふくらはぎ20分', cn: '足部按摩40＋小腿20' },
+        { value: 'Foot Calf 90 min', dur: 90, price: 11000, en: 'Foot points 50 + calf 40', jp: '足つぼ50分＋ふくらはぎ40分', cn: '足疗50＋小腿40' },
+        { value: 'Callus Foot Beauty 60 min', dur: 60, price: 8800, en: 'Callus care 20 + foot massage 40', jp: '足の角質ケア20分＋足マッサージ40分', cn: '足部角质20＋足部按摩40' }
+      ]},
+      { label: { en: 'Aroma lymph', jp: 'アロマリンパ', cn: '精油淋巴' }, items: [
+        { value: 'Aroma Focus 40 min', dur: 40, price: 7700, en: 'Aroma lymph 40 — upper or lower body', jp: 'アロマリンパ40分・上半身OR下半身', cn: '精油淋巴40分・上半身或下半身' },
+        { value: 'Lower Body Aroma 60 min', dur: 60, price: 11000, en: 'Hips + thighs + calves aroma', jp: 'お尻＋ふともも＋ふくらはぎアロマ60分', cn: '臀＋大腿＋小腿精油60分' },
+        { value: 'Back Aroma Lymph 60 min', dur: 60, price: 11000, en: 'Body & back aroma lymph', jp: '体背面アロマリンパ60分', cn: '体背精油淋巴 60分钟' },
+        { value: 'Neck Decollete Head 60 min', dur: 60, price: 10000, en: 'Neck lymph & décolleté 30 + dry head spa 30', jp: '首リンパ×デコルテ30分＋ドライヘッド30分', cn: '颈淋巴×颈胸30＋干式头疗30' },
+        { value: 'Dry Head Back Aroma 70 min', dur: 70, price: 12000, en: 'Dry head spa 10 + full back aroma 60', jp: 'ドライヘッド10分＋全身背面アロマ60分', cn: '干式头疗10＋全身背面精油60' },
+        { value: 'Aroma Intestine 90 min', dur: 90, price: 14000, en: 'Full-body aroma lymph 70 + intestine 20', jp: '全身アロマリンパ70分＋腸セラピ20分', cn: '全身精油淋巴70＋肠疗20' },
+        { value: 'Detox Legs Intestine 120 min', dur: 120, price: 16500, en: 'Full detox + legs + intestine therapy', jp: '全身デトックス＋美脚＋腸セラピ', cn: '全身排毒＋美腿＋肠疗' },
+        { value: 'Aroma Lymph 180 min', dur: 180, price: 22000, en: 'Full-body aroma lymph — half-day care', jp: '全身アロマリンパ180分・至福の半日ケア', cn: '全身精油淋巴 180分钟・半日护理' }
+      ]},
+      { label: { en: 'Bali cream head spa', jp: 'バリ式クリームヘッド', cn: '巴厘奶油头疗' }, items: [
+        { value: 'Bali Cream Head 45 min', dur: 45, price: 8800, en: 'Bali-style cream head spa', jp: 'バリ式クリームヘッドスパ45分', cn: '巴厘奶油头疗 45分钟' },
+        { value: 'Bali Cream Head 60 min', dur: 60, price: 11800, en: 'Bali-style cream head spa', jp: 'バリ式クリームヘッドスパ60分', cn: '巴厘奶油头疗 60分钟' }
+      ]},
+      { label: { en: 'Facial', jp: 'フェイシャル', cn: '面部护理' }, items: [
+        { value: 'Pore CICA Pack 60 min', dur: 60, price: 7800, en: 'Pore cleanse + CICA serum pack', jp: '毛穴洗浄＋CICA美容液パック60分', cn: '毛孔清洁＋CICA精华面膜 60分钟' },
+        { value: 'Small Face Pack 40 min', dur: 40, price: 7800, en: 'Small-face facial + moisture pack', jp: '小顔フェイシャル＋保湿パック40分', cn: '小脸护理＋保湿面膜 40分钟' },
+        { value: 'Small Face Decollete 60 min', dur: 60, price: 10800, en: 'Small-face facial with décolleté + modeling pack', jp: '小顔フェイシャル（デコルテ）＋モデリングパック60分', cn: '小脸护理（含颈胸）＋塑形面膜 60分钟' }
+      ]},
+      { label: { en: 'Body shiatsu', jp: 'ボディ指圧もみほぐし', cn: '身体指压推拿' }, items: [
+        { value: 'Body Shiatsu 40 min', dur: 40, price: 6050, en: 'Body shiatsu kneading (no oil)', jp: 'ボディ指圧もみほぐし40分', cn: '身体指压推拿 40分钟' },
+        { value: 'Body Shiatsu 60 min', dur: 60, price: 8250, en: 'Full-body shiatsu kneading (no oil)', jp: '全身指圧もみほぐし60分', cn: '全身指压推拿 60分钟' },
+        { value: 'Dry Head Upper Body 60 min', dur: 60, price: 8800, en: 'Dry head spa 20 + upper-body kneading 40', jp: 'ドライヘッド20分＋上半身もみほぐし40分', cn: '干式头疗20＋上半身推拿40' },
+        { value: 'Body Shiatsu 90 min', dur: 90, price: 11000, en: 'Body shiatsu kneading (no oil)', jp: 'ボディ指圧もみほぐし90分', cn: '身体指压推拿 90分钟' },
+        { value: 'Body Shiatsu 120 min', dur: 120, price: 13200, en: 'Body shiatsu kneading (no oil)', jp: 'ボディ指圧もみほぐし120分', cn: '身体指压推拿 120分钟' },
+        { value: 'Body Shiatsu Head 180 min', dur: 180, price: 20000, en: 'Body shiatsu 120 + dry head spa 60', jp: 'ボディ指圧120分＋ドライヘッド60分', cn: '身体指压120＋干式头疗60' }
+      ]},
+      { label: { en: 'Combo courses', jp: '組み合わせコース', cn: '组合课程' }, items: [
+        { value: 'Shiatsu Dry Head 60 min', dur: 60, price: 8150, en: 'Body shiatsu 40 + dry head spa 20', jp: 'ボディ指圧40分＋ドライヘッド20分', cn: '身体指压40＋干式头疗20' },
+        { value: 'Shiatsu Foot 60 min', dur: 60, price: 8800, en: 'Body shiatsu 30 + foot massage 30', jp: 'ボディ指圧30分＋足マッサージ30分', cn: '身体指压30＋足部按摩30' },
+        { value: 'Knead Foot 90 min', dur: 90, price: 12100, en: 'Body kneading 60 + foot massage 30', jp: '体もみほぐし60分＋足マッサージ30分', cn: '身体推拿60＋足部按摩30' },
+        { value: 'Knead Foot Focus 90 min', dur: 90, price: 13200, en: 'Body kneading 30 + foot massage 60', jp: '体もみほぐし30分＋足マッサージ60分', cn: '身体推拿30＋足部按摩60' },
+        { value: 'Back Aroma Foot 90 min', dur: 90, price: 13200, en: 'Back aroma lymph 60 + foot points 30', jp: '体背面アロマリンパ60分＋足つぼ30分', cn: '体背精油淋巴60＋足疗30' },
+        { value: 'Upper Aroma Foot Head 90 min', dur: 90, price: 13100, en: 'Upper aroma 40 + foot 40 + dry head', jp: '上半身アロマ40分＋足40分＋ドライヘッド', cn: '上半身精油40＋足40＋干式头疗' },
+        { value: 'Foot Body 120 min', dur: 120, price: 15300, en: 'Foot massage 60 + body shiatsu 60', jp: '足マッサージ60分＋ボディ指圧60分', cn: '足部按摩60＋身体指压60' },
+        { value: 'Aroma Foot Head 120 min', dur: 120, price: 16400, en: 'Aroma oil 70 + foot 40 + dry head 10', jp: 'アロマオイル70分＋足40分＋ドライヘッド10分', cn: '精油70＋足40＋干式头疗10' }
+      ]},
+      { label: { en: 'Lulur spa', jp: 'ルルールスパ', cn: '卢鲁护肤' }, items: [
+        { value: 'Aroma Lulur 60 min', dur: 60, price: 10800, en: 'Aroma oil 40 + lulur spa 20', jp: 'アロマオイル40分＋ルルールスパ20分', cn: '精油40＋卢鲁护肤 20' },
+        { value: 'Aroma Lulur 90 min', dur: 90, price: 12800, en: 'Aroma oil massage 70 + lulur spa 20', jp: 'アロマオイル70分＋ルルールスパ20分', cn: '精油按摩70＋卢鲁护肤20' },
+        { value: 'Aroma Lulur 120 min', dur: 120, price: 15800, en: 'Aroma oil massage 80 + lulur spa 40', jp: 'アロマオイル80分＋ルルールスパ40分', cn: '精油按摩80＋卢鲁护肤40' }
+      ]},
+      { label: { en: 'Ear esthe', jp: '耳エステ', cn: '采耳护理' }, items: [
+        { value: 'Ear Esthe 60 min', dur: 60, price: 10800, en: 'Ear cleaning + ear massage', jp: '耳掃除＋耳マッサージ60分', cn: '采耳＋耳部按摩 60分钟' }
+      ]}
+    ];
+
+    var i18n = {
+      en: { htmlLang:'en', title:'Book Appointment — BIG FOOT SPA', backLink:'Back to Home', brandBadge:'Book Your Appointment',
+        bookingSubtitle:'Fill in the form below to book your appointment',
+        successMessage:'Your booking information has been prepared. You will be redirected to WhatsApp shortly...',
+        labelService:'Course *', labelDate:'Date *', labelTime:'Time *', labelGuests:'Number of Guests *', labelName:'Name *',
+        selectCourse:'Select a course', selectTime:'Select a time', selectGuests:'Select number of guests', namePlaceholder:'Enter your name',
+        hintTime:'',
+        errorService:'Please select a course', errorDate:'Please select a date', errorTime:'Please select a time',
+        errorTimeRange:'Please choose a time within booking hours (10:00 – 23:00).',
+        errorGuests:'Please select number of guests', errorName:'Please enter your name',
+        errorGuestsExact:'Please enter 5 or more', labelGuestsExact:'Exact number *', guestPlus:'5+',
+        samePackageText:'All guests choose the same course', additionalServicesTitle:"Additional Guests' Courses (if different)",
+        submitButton:'Submit & Open WhatsApp', redirecting:'Redirecting...',
+        previewTitle:'WhatsApp Message Preview', previewHint:'Complete all required fields above to preview your message.',
+        noticeTitle:'Before you book',
+        noticeItems:[
+          'Changing gown: ¥110 top / ¥110 bottom',
+          'Therapist request: ¥550 personal / ¥220 gender',
+          'After 22:00: +10% late-night surcharge'
+        ],
+        guestUnit: function(n){ return n + (n>1?' Guests':' Guest'); },
+        waIntro:'Hello, I would like to make a reservation at BIG FOOT SPA (Ryogoku · Yuasa Ryogoku Bldg 1F).\n\n',
+        waName:'Name', waDate:'Date', waTime:'Time', waGuests:'Number of Guests',
+        waGuestCourse: function(n){ return 'Guest ' + n + ' Course'; },
+        waSameCourse:'All guests choose the same course', waSheet:'Sheet fee', waLate:'Late-night surcharge', waTotal:'Total',
+        dateLocale:'en-US' },
+      jp: { htmlLang:'ja', title:'ご予約 — BIG FOOT SPA', backLink:'ホームに戻る', brandBadge:'ご予約',
+        bookingSubtitle:'以下のフォームにご記入のうえ、ご予約ください',
+        successMessage:'予約内容を作成しました。まもなく WhatsApp へ移動します…',
+        labelService:'コース *', labelDate:'日付 *', labelTime:'時間 *', labelGuests:'人数 *', labelName:'お名前 *',
+        selectCourse:'コースを選択', selectTime:'時間を選択', selectGuests:'人数を選択', namePlaceholder:'お名前を入力',
+        hintTime:'',
+        errorService:'コースを選択してください', errorDate:'日付を選択してください', errorTime:'時間を選択してください',
+        errorTimeRange:'予約枠（10:00〜23:00）の時間を選択してください。',
+        errorGuests:'人数を選択してください', errorName:'お名前を入力してください',
+        errorGuestsExact:'5以上の人数を入力してください', labelGuestsExact:'正確な人数 *', guestPlus:'5+',
+        samePackageText:'全員同じコースを選択', additionalServicesTitle:'追加ゲストのコース（異なる場合）',
+        submitButton:'送信して WhatsApp を開く', redirecting:'移動中…',
+        previewTitle:'WhatsApp メッセージプレビュー', previewHint:'送信内容を確認するため、上記の必須項目をすべてご記入ください。',
+        noticeTitle:'ご予約前のご案内',
+        noticeItems:[
+          '着替：上下各110円',
+          '個人指名550円／男女指名220円',
+          '22時以降は施術料金の10％深夜料金'
+        ],
+        guestUnit: function(n){ return n + '名'; },
+        waIntro:'こんにちは、BIG FOOT SPA（両国・ユアサ両国ビル1F）のご予約を希望します。\n\n',
+        waName:'お名前', waDate:'日付', waTime:'時間', waGuests:'人数',
+        waGuestCourse: function(n){ return 'ゲスト' + n + ' コース'; },
+        waSameCourse:'全員同じコース', waSheet:'シーツ代', waLate:'深夜割増', waTotal:'合計',
+        dateLocale:'ja-JP' },
+      cn: { htmlLang:'zh-CN', title:'预约 — BIG FOOT SPA', backLink:'返回首页', brandBadge:'在线预约',
+        bookingSubtitle:'请填写以下信息完成预约',
+        successMessage:'预约信息已生成，即将跳转至 WhatsApp…',
+        labelService:'项目 *', labelDate:'日期 *', labelTime:'时间 *', labelGuests:'人数 *', labelName:'姓名 *',
+        selectCourse:'请选择项目', selectTime:'请选择时间', selectGuests:'请选择人数', namePlaceholder:'请输入您的姓名',
+        hintTime:'',
+        errorService:'请选择项目', errorDate:'请选择日期', errorTime:'请选择时间',
+        errorTimeRange:'请选择预约时段内的时间（10:00–23:00）。',
+        errorGuests:'请选择人数', errorName:'请输入姓名',
+        errorGuestsExact:'请输入5人或以上', labelGuestsExact:'准确人数 *', guestPlus:'5+',
+        samePackageText:'所有客人都选择相同项目', additionalServicesTitle:'其他客人的项目（如不同）',
+        submitButton:'提交并打开 WhatsApp', redirecting:'跳转中…',
+        previewTitle:'WhatsApp 消息预览', previewHint:'请先填写上方所有必填项，即可预览消息内容。',
+        noticeTitle:'预约前提示',
+        noticeItems:[
+          '更衣：上下各 ¥110',
+          '个人指名 ¥550／性别指名 ¥220',
+          '22:00 以后加收施术费 10% 深夜费'
+        ],
+        guestUnit: function(n){ return n + ' 人'; },
+        waIntro:'您好，我想预约 BIG FOOT SPA（両国・ユアサ両国ビル1F）。\n\n',
+        waName:'姓名', waDate:'日期', waTime:'时间', waGuests:'人数',
+        waGuestCourse: function(n){ return '客人' + n + ' 项目'; },
+        waSameCourse:'所有客人都选择相同项目', waSheet:'床单费', waLate:'深夜加价', waTotal:'合计',
+        dateLocale:'zh-CN' }
+    };
+
+    function t(k){ return i18n[currentLang][k]; }
+    function shortOptLabel(s, maxLen){
+      s = String(s || '').replace(/\s+/g, ' ').trim();
+      maxLen = maxLen || 34;
+      if (s.length > maxLen) {
+        s = s.replace(/[（(][^）)]*[）)]\s*$/, '').trim();
+      }
+      if (s.length > maxLen) s = s.slice(0, maxLen - 1) + '…';
+      return s;
+    }
+    function buildServiceOptionsHTML(selectedValue){
+      var html = '<option value="">' + t('selectCourse') + '</option>';
+      serviceGroups.forEach(function(g){
+        html += '<optgroup label="' + g.label[currentLang] + '">';
+        g.items.forEach(function(it){
+          var sel = it.value === selectedValue ? ' selected' : '';
+          var label = shortOptLabel(it[currentLang], 34) + ' — ¥' + it.price.toLocaleString();
+          html += '<option value="' + it.value + '"' + sel + '>' + label + '</option>';
+        });
+        html += '</optgroup>';
+      });
+      return html;
+    }
+
+    function buildGuestsOptionsHTML(selectedValue){
+      var html = '<option value="">' + t('selectGuests') + '</option>';
+      for (var i=1;i<=4;i++){
+        var sel = String(i)===selectedValue ? ' selected' : '';
+        html += '<option value="'+i+'"'+sel+'>'+t('guestUnit')(i)+'</option>';
+      }
+      html += '<option value="5+"'+(selectedValue==='5+'?' selected':'')+'>'+t('guestPlus')+'</option>';
+      return html;
+    }
+
+    function getGuestCount(){
+      var gv = document.getElementById('guests').value;
+      if (gv === '5+') {
+        var ex = parseInt(document.getElementById('guestsExact').value, 10);
+        return (!isNaN(ex) && ex >= 5) ? ex : 0;
+      }
+      return parseInt(gv, 10) || 0;
+    }
+
+    function syncGuestsExactUI(){
+      var show = document.getElementById('guests').value === '5+';
+      var box = document.getElementById('guestsExactGroup');
+      box.style.display = show ? 'block' : 'none';
+      document.getElementById('guestsExact').required = show;
+      if (!show) {
+        document.getElementById('guestsExact').value = '';
+        box.classList.remove('error');
+      }
+    }
+
+    function pad2(n){ return n<10 ? '0'+n : ''+n; }
+    // BIG FOOT: slots 10:00–23:00 in 30-min steps
+    function buildTimeOptions(selectedValue){
+      var html = '<option value="">' + t('selectTime') + '</option>';
+      for (var h = 10; h <= 23; h++) {
+        for (var m = 0; m < 60; m += 30) {
+          if (h === 23 && m > 0) continue;
+          var v = pad2(h) + ':' + pad2(m);
+          html += '<option value="'+v+'"'+(v===selectedValue?' selected':'')+'>'+v+'</option>';
+        }
+      }
+      return html;
+    }
+
+    function getInitialLang(){
+      var p = new URLSearchParams(window.location.search); var lang = p.get('lang');
+      if (lang==='cn'||lang==='jp'||lang==='en') return lang;
+      var ref = document.referrer;
+      if (ref.indexOf('/cn/')!==-1) return 'cn';
+      if (ref.indexOf('/jp/')!==-1) return 'jp';
+      if (ref.indexOf('/en/')!==-1) return 'en';
+      return 'en';
+    }
+
+    function applyLang(lang){
+      currentLang = lang; var o = i18n[lang];
+      var sv = document.getElementById('service').value;
+      var gv = document.getElementById('guests').value;
+      var tv = document.getElementById('time').value;
+      document.documentElement.lang = o.htmlLang;
+      document.title = o.title;
+      document.getElementById('backLinkText').textContent = o.backLink;
+      document.getElementById('brandBadge').textContent = o.brandBadge;
+      document.getElementById('bookingSubtitle').textContent = o.bookingSubtitle;
+      document.getElementById('successMessage').textContent = o.successMessage;
+      document.getElementById('labelService').textContent = o.labelService;
+      document.getElementById('labelDate').textContent = o.labelDate;
+      document.getElementById('labelTime').textContent = o.labelTime;
+      document.getElementById('labelGuests').textContent = o.labelGuests;
+      document.getElementById('labelName').textContent = o.labelName;
+      var hintEl = document.getElementById('hintTime');
+      if (hintEl) {
+        if (o.hintTime) { hintEl.hidden = false; hintEl.innerHTML = o.hintTime; }
+        else { hintEl.hidden = true; hintEl.innerHTML = ''; }
+      }
+      document.getElementById('errorService').textContent = o.errorService;
+      document.getElementById('errorDate').textContent = o.errorDate;
+      document.getElementById('errorTime').textContent = o.errorTime;
+      document.getElementById('errorGuests').textContent = o.errorGuests;
+      document.getElementById('errorGuestsExact').textContent = o.errorGuestsExact;
+      document.getElementById('labelGuestsExact').textContent = o.labelGuestsExact;
+      document.getElementById('errorName').textContent = o.errorName;
+      document.getElementById('name').placeholder = o.namePlaceholder;
+      document.getElementById('samePackageText').textContent = o.samePackageText;
+      document.getElementById('additionalServicesTitle').textContent = o.additionalServicesTitle;
+      document.getElementById('submitButtonText').textContent = o.submitButton;
+      document.getElementById('previewTitle').textContent = o.previewTitle;
+      document.getElementById('previewHint').textContent = o.previewHint;
+      var noticeEl = document.getElementById('bookingNotice') || document.querySelector('.booking-notice');
+      var noticeList = document.getElementById('noticeList');
+      var noticeTitle = document.getElementById('noticeTitle');
+      var fees = (o.noticeItems || []).filter(Boolean);
+      if (noticeEl && noticeList) {
+        if (fees.length) {
+          noticeEl.hidden = false;
+          if (noticeTitle) noticeTitle.textContent = o.noticeTitle;
+          noticeList.innerHTML = fees.map(function(item){ return '<li>' + item + '</li>'; }).join('');
+        } else {
+          noticeEl.hidden = true;
+          noticeList.innerHTML = '';
+        }
+      }
+      document.getElementById('service').innerHTML = buildServiceOptionsHTML(sv);
+      document.getElementById('guests').innerHTML = buildGuestsOptionsHTML(gv);
+      document.getElementById('time').innerHTML = buildTimeOptions(tv);
+      syncGuestsExactUI();
+      document.querySelectorAll('.lang-switch button').forEach(function(b){ b.classList.toggle('active', b.getAttribute('data-lang')===lang); });
+      var home = lang==='en' ? 'en/index.html' : (lang==='jp' ? 'jp/index.html' : 'cn/index.html');
+      document.getElementById('backLink').setAttribute('href', home);
+      var url = new URL(window.location.href); url.searchParams.set('lang', lang); history.replaceState(null,'',url);
+      updateAdditionalServices();
+      updateMessagePreview();
+    }
+
+    var dateInput = document.getElementById('date');
+    dateInput.setAttribute('min', new Date().toISOString().split('T')[0]);
+    applyLang(getInitialLang());
+
+    document.querySelectorAll('.lang-switch button').forEach(function(btn){
+      btn.addEventListener('click', function(){ applyLang(this.getAttribute('data-lang')); });
+    });
+
+    (function(){
+      var svc = new URLSearchParams(window.location.search).get('service');
+      if (svc){ var sel=document.getElementById('service'); for(var i=0;i<sel.options.length;i++){ if(sel.options[i].value===svc){ sel.options[i].selected=true; break; } } }
+      updateMessagePreview();
+    })();
+
+    document.getElementById('guests').addEventListener('change', function(){
+      syncGuestsExactUI();
+      updateAdditionalServices();
+    });
+    document.getElementById('guestsExact').addEventListener('input', updateAdditionalServices);
+    document.getElementById('samePackage').addEventListener('change', updateAdditionalServices);
+
+    function updateAdditionalServices(){
+      syncGuestsExactUI();
+      var gc = getGuestCount();
+      var add = document.getElementById('additionalServices');
+      var cont = document.getElementById('additionalServicesContainer');
+      var spg = document.getElementById('samePackageGroup');
+      var spc = document.getElementById('samePackage');
+      var guestsVal = document.getElementById('guests').value;
+      if (!guestsVal || gc <= 1){ add.classList.remove('show'); cont.innerHTML=''; spg.style.display='none'; updateMessagePreview(); return; }
+      spg.style.display='block';
+      if (spc.checked){ add.classList.remove('show'); cont.innerHTML=''; updateMessagePreview(); return; }
+      var n = gc - 1, html='';
+      for (var i=1;i<=n;i++){
+        html += '<div class="guest-service-row"><div class="guest-label">'+t('waGuestCourse')(i+1)+'</div>' +
+                '<select name="guest'+i+'Service" class="form-select">'+buildServiceOptionsHTML('')+'</select></div>';
+      }
+      cont.innerHTML = html; add.classList.add('show'); updateMessagePreview();
+    }
+
+    function servicePrice(s){ return serviceInfo[s] || 0; }
+
+    function serviceDuration(svc){
+      var m = String(svc || '').match(/(\d+)\s*min\b/i);
+      return m ? parseInt(m[1], 10) : 0;
+    }
+
+    function sheetFeeFor(svc){
+      if (!svc || !SHEET_FEE) return 0;
+      return SHEET_FEE;
+    }
+
+    function isLateNightStart(ts){
+      if (!ts) return false;
+      var h = parseInt(ts.split(':')[0], 10);
+      return !isNaN(h) && h >= 0 && h < 8;
+    }
+
+    function lateSurchargeFor(svc, timeStr){
+      if (!isLateNightStart(timeStr)) return 0;
+      var dur = serviceDuration(svc);
+      if (!dur) return 0;
+      return Math.ceil(dur / 30) * LATE_PER_30;
+    }
+
+    function isTimeInHours(ts){
+      if (!ts) return false;
+      var p = ts.split(':'); var h = parseInt(p[0],10), m = parseInt(p[1],10);
+      if (isNaN(h) || isNaN(m) || m % 30 !== 0) return false;
+      if (h < 10 || h > 23) return false;
+      if (h === 23 && m > 0) return false;
+      return true;
+    }
+
+    function validateForm(){
+      var ok = true;
+      document.querySelectorAll('.form-group').forEach(function(g){ g.classList.remove('error'); });
+      if (!document.getElementById('name').value.trim()){ document.getElementById('nameGroup').classList.add('error'); ok=false; }
+      if (!document.getElementById('date').value){ document.getElementById('dateGroup').classList.add('error'); ok=false; }
+      var timeVal = document.getElementById('time').value;
+      if (!timeVal){ document.getElementById('errorTime').textContent = t('errorTime'); document.getElementById('timeGroup').classList.add('error'); ok=false; }
+      else if (!isTimeInHours(timeVal)){ document.getElementById('errorTime').textContent = t('errorTimeRange'); document.getElementById('timeGroup').classList.add('error'); ok=false; }
+      if (!document.getElementById('guests').value){ document.getElementById('guestsGroup').classList.add('error'); ok=false; }
+      else if (document.getElementById('guests').value === '5+') {
+        var ex = parseInt(document.getElementById('guestsExact').value, 10);
+        if (isNaN(ex) || ex < 5){ document.getElementById('guestsExactGroup').classList.add('error'); ok=false; }
+      }
+      if (!document.getElementById('service').value){ document.getElementById('serviceGroup').classList.add('error'); ok=false; }
+      return ok;
+    }
+
+    function formatDate(ds){ var d=new Date(ds+'T00:00:00'); return d.toLocaleDateString(t('dateLocale'),{year:'numeric',month:'long',day:'numeric'}); }
+
+    function isFormComplete(){
+      if (!document.getElementById('name').value.trim() || !document.getElementById('date').value ||
+          !document.getElementById('time').value || !document.getElementById('guests').value || !document.getElementById('service').value) {
+        return false;
+      }
+      if (document.getElementById('guests').value === '5+') return getGuestCount() >= 5;
+      return true;
+    }
+
+    function buildWhatsAppMessage(fd){
+      var name=fd.get('name'), date=formatDate(fd.get('date')), time=fd.get('time');
+      var gc=getGuestCount(), main=fd.get('service');
+      var m = t('waIntro');
+      m += t('waName')+': '+name+'\n';
+      m += t('waDate')+': '+date+'\n';
+      m += t('waTime')+': '+time+'\n';
+      m += t('waGuests')+': '+gc+'\n';
+      m += t('waGuestCourse')(1)+' : '+main+' (¥'+servicePrice(main).toLocaleString()+')\n';
+      var same = fd.get('samePackage')==='on';
+      var total = servicePrice(main);
+      var guestServices = [main];
+      if (gc>1 && same){ m += t('waSameCourse')+'\n'; total = servicePrice(main)*gc; for (var si=1;si<gc;si++) guestServices.push(main); }
+      else { for (var i=1;i<gc;i++){ var gs=fd.get('guest'+i+'Service'); if(gs&&gs.trim()){ m += t('waGuestCourse')(i+1)+' : '+gs+' (¥'+servicePrice(gs).toLocaleString()+')\n'; total += servicePrice(gs); guestServices.push(gs); } } }
+      var sheetFees = guestServices.map(sheetFeeFor);
+      var sheetTotal = sheetFees.reduce(function(a,b){ return a+b; }, 0);
+      if (sheetTotal>0){
+        m += t('waSheet')+': ¥'+SHEET_FEE.toLocaleString()+' ×'+sheetFees.length+' (¥'+sheetTotal.toLocaleString()+')\n';
+        total += sheetTotal;
+      }
+      var lateTotal = guestServices.reduce(function(sum, svc){ return sum + lateSurchargeFor(svc, time); }, 0);
+      if (lateTotal>0){
+        m += t('waLate')+': ¥'+lateTotal.toLocaleString()+'\n';
+        total += lateTotal;
+      }
+      if (total>0){ m += '\n'+t('waTotal')+': ¥'+total.toLocaleString(); }
+      return m;
+    }
+
+    function updateMessagePreview(){
+      var ps=document.getElementById('messagePreview'), pb=document.getElementById('previewBody');
+      if (!isFormComplete()){ ps.classList.remove('ready'); pb.textContent=''; return; }
+      pb.textContent = buildWhatsAppMessage(new FormData(document.getElementById('bookingForm')));
+      ps.classList.add('ready');
+    }
+
+    document.getElementById('bookingForm').addEventListener('submit', function(e){
+      e.preventDefault();
+      if (!validateForm()) return;
+      var msg = encodeURIComponent(buildWhatsAppMessage(new FormData(this)));
+      var url = 'https://api.whatsapp.com/send/?phone=' + WHATSAPP_NUMBER + '&text=' + msg + '&type=phone_number&app_absent=0';
+      document.getElementById('successMessage').classList.add('show');
+      document.getElementById('submitButton').disabled = true;
+      document.getElementById('submitButtonText').textContent = t('redirecting');
+      setTimeout(function(){ window.open(url,'_blank'); }, 500);
+    });
+
+    document.getElementById('bookingForm').addEventListener('input', updateMessagePreview);
+    document.getElementById('bookingForm').addEventListener('change', updateMessagePreview);
+
+    document.querySelectorAll('.form-input, .form-select').forEach(function(input){
+      input.addEventListener('blur', function(){
+        var g=this.closest('.form-group'); if(!g) return;
+        if (this.hasAttribute('required') && !this.value.trim()) g.classList.add('error'); else g.classList.remove('error');
+      });
+      input.addEventListener('input', function(){
+        var g=this.closest('.form-group'); if(g && g.classList.contains('error') && this.value.trim()) g.classList.remove('error');
+      });
+    });
+  </script>
+</body>
+</html>
