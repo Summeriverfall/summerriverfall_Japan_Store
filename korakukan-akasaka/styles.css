@@ -1410,24 +1410,32 @@ ul { list-style: none; }
 }
 .menu-guide-list li { margin: 0.15rem 0; }
 
-/* Korakukan menu: duration as title, project detail as small line under it */
+/* Korakukan menu: duration as title, project detail click-to-reveal */
 .opt-choice.has-desc {
   grid-template-columns: 1.35rem minmax(0, 1fr) auto;
-  grid-template-areas:
-    "radio name price"
-    ". desc .";
+  grid-template-areas: "radio name price";
   align-items: start;
 }
 .opt-choice.has-desc .opt-name {
   font-weight: 500;
 }
 .opt-choice.has-desc .opt-desc {
+  display: none;
+  grid-area: desc;
   font-size: 0.82rem;
   color: var(--ink-soft);
   line-height: 1.4;
-  margin-top: 0.05rem;
+  margin-top: 0.15rem;
 }
-.opt-choice.has-desc.is-price-stacked {
+.opt-choice.has-desc:has(input:checked) {
+  grid-template-areas:
+    "radio name price"
+    ". desc .";
+}
+.opt-choice.has-desc:has(input:checked) .opt-desc {
+  display: block;
+}
+.opt-choice.has-desc.is-price-stacked:has(input:checked) {
   grid-template-areas:
     "radio name name"
     ". desc price";
