@@ -527,8 +527,8 @@ ul { list-style: none; }
 }
 .opt-choice.has-desc {
   grid-template-areas:
-    "radio name price"
-    ". desc desc";
+    "radio name name"
+    ". desc price";
   align-items: start;
 }
 .opt-choice .opt-radio {
@@ -538,20 +538,41 @@ ul { list-style: none; }
 .opt-choice .opt-name {
   grid-area: name;
   min-width: 0;
-  align-self: start;
-  line-height: 1.3;
-  padding-top: 0.08rem;
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 1rem;
+  letter-spacing: 0.02em;
+  color: var(--ink);
+  line-height: 1.35;
+  text-wrap: wrap;
 }
 .opt-choice .opt-price {
   grid-area: price;
   margin-top: -0.12rem;
-  min-width: 4.5rem;
+  min-width: 0;
   align-self: start;
   line-height: 1.4;
   font-size: 1rem;
 }
+.opt-choice.has-desc .opt-price {
+  margin-top: 0;
+  align-self: center;
+  justify-self: end;
+}
 .opt-choice .opt-desc {
   grid-area: desc;
+  align-self: center;
+}
+.opt-name-sub {
+  display: block;
+  margin-top: 0.22rem;
+  font-size: 0.78rem;
+  font-weight: 400;
+  line-height: 1.4;
+  letter-spacing: 0.02em;
+  color: var(--ink-soft);
+  opacity: 0.92;
+  text-wrap: wrap;
 }
 .opt-tag {
   white-space: nowrap;
@@ -1335,8 +1356,8 @@ ul { list-style: none; }
   }
   .opt-choice.has-desc {
     grid-template-areas:
-      "radio name price"
-      ". desc desc";
+      "radio name name"
+      ". desc price";
   }
   .opt-choice .opt-radio { align-self: start; margin-top: 0.2rem; }
   .opt-choice .opt-name {
@@ -1350,6 +1371,10 @@ ul { list-style: none; }
     margin-top: -0.12rem;
     line-height: 1.3;
     font-size: 1rem;
+  }
+  .opt-choice.has-desc .opt-price {
+    margin-top: 0;
+    align-self: center;
   }
   .opt-group-foot {
     justify-content: stretch;

@@ -180,9 +180,20 @@
       padding: 0;
     }
     #service, .guest-service-row .form-select {
-      font-size: 0.78rem;
+      font-size: clamp(0.65rem, 2.5vw, 0.78rem);
       line-height: 1.35;
       padding-right: 2rem;
+      max-width: 100%;
+      width: 100%;
+      min-width: 0;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+    #serviceGroup, .guest-service-row {
+      max-width: 100%;
+      min-width: 0;
+      overflow: hidden;
     }
     .form-input:focus, .form-select:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px rgba(184,154,106,0.15); background: var(--white); }
     .form-hint { font-size: 0.78rem; font-weight: 300; line-height: 1.55; color: var(--ink-soft); margin-top: 0.45rem; font-family: var(--font-body); }
@@ -267,9 +278,11 @@
       .booking-top { flex-wrap: wrap; }
       #dateGroup { max-width: 100%; overflow: hidden; }
       .date-wrap { max-width: 100%; }
-      .form-input, .form-select,
-      #service, .guest-service-row .form-select {
+      .form-input, .form-select {
         font-size: 15px;
+      }
+      #service, .guest-service-row .form-select {
+        font-size: clamp(0.65rem, 2.5vw, 0.78rem);
       }
       .date-wrap input[type="date"].form-input {
         font-size: 14px;
@@ -401,12 +414,8 @@
     var serviceInfo = {
       'Custom Body Head Spa 60 min': 4500,
       'Oil Lymph 60 min': 6800,
-      'Seitai Thai Stretch 60 min': 3980,
-      'Body Foot Combo 60 min': 4500,
-      'Daytime Oil Treatment 60 min': 5500,
       'Posture Head Spa 60 min': 5500,
       'Quick Head Neck 45 min': 4500,
-      'August Slimming 60 min': 6980,
       'Couple Custom Body 60 min': 5500,
       'Head Spa Seitai 90 min': 7500,
       '3D Small Face 40 min': 4500,
@@ -425,8 +434,6 @@
       'Oil Lymph Detox 90 min': 9800,
       'Special Detox 100 min': 12800,
       'Luxury Body Face Head 150 min': 16900,
-      'Custom Combo 100 min': 12500,
-      'Seitai Oil Head 120 min': 11800,
       'Seitai Head Spa 70 min': 7800,
       'Standard Seitai 60 min': 7200,
       'Repeater Knead Head 60 min': 5000,
@@ -441,66 +448,58 @@
       'Bust Care': 4500,
       'Bust Intestine 30 min': 4500,
       'Gua Sha or Cupping': 2200,
-      'Student Head Spa 30 min': 2500,
       'Oil Option 30 min': 4000,
       'Option 10 min': 1200
     };
 
     var serviceGroups = [
       { label: { en: 'Popular courses', jp: '人気コース', cn: '人气课程' }, items: [
-        { value: 'Custom Body Head Spa 60 min', dur: 60, price: 4500, en: 'Made-to-order full-body massage & head spa (Popular No.1 · 60 min)', jp: 'オーダーメイド 全身マッサージ＆ヘッドスパ（人気No.1 · 60分）', cn: '定制 全身按摩＆头疗（人气No.1 · 60分钟）' },
-        { value: 'Oil Lymph 60 min', dur: 60, price: 6800, en: 'Repeater No.1 oil lymph massage (60 min)', jp: 'リピーターNo.1 オイルリンパマッサージ（60分）', cn: '回头客No.1 精油淋巴按摩（60分钟）' },
-        { value: 'Seitai Thai Stretch 60 min', dur: 60, price: 3980, en: 'Seitai & Thai-style stretch campaign (New guests · 60 min)', jp: '整体＆タイ式ストレッチキャンペーン（新規 · 60分）', cn: '整体＆泰式拉伸活动（新客 · 60分钟）' },
-        { value: 'Body Foot Combo 60 min', dur: 60, price: 4500, en: 'Reward combo: body 30 + foot points 30 (New guests · total 60 min)', jp: 'お得ご褒美 ボディ30＋足ツボ30（新規 · 計60分）', cn: '超值犒劳 身体30＋足疗30（新客 · 合计60分钟）' },
-        { value: 'Daytime Oil Treatment 60 min', dur: 60, price: 5500, en: 'Full-body oil treatment (10:00–18:00) (New guests · 60 min)', jp: '【10時～18時限定】全身トリートメントオイル（新規 · 60分）', cn: '【10–18点限定】全身精油护理（新客 · 60分钟）' },
-        { value: 'Posture Head Spa 60 min', dur: 60, price: 5500, en: 'Posture care: rounded shoulders + neck + head spa (60 min)', jp: '姿勢改善【猫背＋巻肩＋首＋ヘッドスパ】（60分）', cn: '体态改善【驼背＋圆肩＋颈＋头疗】（60分钟）' },
-        { value: 'Quick Head Neck 45 min', dur: 45, price: 4500, en: 'Quick-effect head massage & neck lymph (45 min)', jp: '速効ヘッドマッサージ＆首リンパ（45分）', cn: '速效头疗＆颈淋巴（45分钟）' },
-        { value: 'August Slimming 60 min', dur: 60, price: 6980, en: 'Upper-body & leg cellulite slimming (New guests · 60 min)', jp: '痩身★上半身＆脚セルライト（新規 · 60分）', cn: '瘦身★上半身＆腿部脂肪团（新客 · 60分钟）' },
-        { value: 'Couple Custom Body 60 min', dur: 60, price: 5500, en: 'Couple favorite · custom body massage (60 min)', jp: 'カップル人気 ボディオーダーメイドマッサージ（60分）', cn: '情侣人气 全身定制按摩（60分钟）' },
-        { value: 'Head Spa Seitai 90 min', dur: 90, price: 7500, en: 'Head massage 15 + full-body seitai 75 (Total 90 min)', jp: 'ヘッドマッサージ15＋全身整体75（計90分）', cn: '头疗15＋全身整体75（合计90分钟）' }
+        { value: 'Custom Body Head Spa 60 min', dur: 60, price: 4500, en: 'Made-to-order full-body massage & head spa', jp: 'オーダーメイド 全身マッサージ＆ヘッドスパ', cn: '定制 全身按摩＆头疗' },
+        { value: 'Oil Lymph 60 min', dur: 60, price: 6800, en: 'Repeater No.1 oil lymph massage', jp: 'リピーターNo.1 オイルリンパマッサージ', cn: '回头客No.1 精油淋巴按摩' },
+        { value: 'Posture Head Spa 60 min', dur: 60, price: 5500, en: 'Posture care', jp: '姿勢改善', cn: '体态改善' },
+        { value: 'Quick Head Neck 45 min', dur: 45, price: 4500, en: 'Quick-effect head massage & neck lymph', jp: '速効ヘッドマッサージ＆首リンパ', cn: '速效头疗＆颈淋巴' },
+        { value: 'Couple Custom Body 60 min', dur: 60, price: 5500, en: 'Couple favorite · custom body massage', jp: 'カップル人気 ボディオーダーメイドマッサージ', cn: '情侣人气 全身定制按摩' },
+        { value: 'Head Spa Seitai 90 min', dur: 90, price: 7500, en: 'Head massage 15 + full-body seitai 75', jp: 'ヘッドマッサージ15＋全身整体75', cn: '头疗15＋全身整体75' }
       ]},
       { label: { en: 'Small face & facial', jp: '小顔・フェイシャル', cn: '小脸・面部' }, items: [
-        { value: '3D Small Face 40 min', dur: 40, price: 4500, en: 'Popular 3D small-face contour (men welcome) (40 min)', jp: '一番人気3D小顔（男性にも）（40分）', cn: '最受欢迎3D小脸（男士亦可）（40分钟）' },
-        { value: '3D Small Face Lymph 60 min', dur: 60, price: 6500, en: 'Popular 3D small-face lymph (60 min)', jp: '一番人気3D小顔リンパ（60分）', cn: '最受欢迎3D小脸淋巴（60分钟）' },
-        { value: 'Korean Small Face 70 min', dur: 70, price: 8800, en: 'Manager pick · Korean small-face + alignment (70 min)', jp: '店長おすすめ 韓式小顔＋矯正（70分）', cn: '店长推荐 韩式小脸＋矫正（70分钟）' },
-        { value: '3D Small Face Head Super 60 min', dur: 60, price: 7980, en: '3D small-face + head super (machine) (60 min)', jp: '【3D小顔＋ヘッドスーパー】（60分）', cn: '【3D小脸＋超级头疗】（60分钟）' },
-        { value: 'Aroma Lymph Korugi 80 min', dur: 80, price: 8800, en: 'Aroma lymph 30 + korugi small-face 50 (Total 80 min)', jp: 'アロマリンパ30＋コルギ小顔50（計80分）', cn: '精油淋巴30＋骨气小脸50（合计80分钟）' },
-        { value: 'Small Face Correction 60 min', dur: 60, price: 8800, en: 'Small-face correction (incl. head/neck/shoulders) (60 min)', jp: '小顔矯正（ヘッド＋首肩含む）（60分）', cn: '小脸矫正（含头＋颈肩）（60分钟）' }
+        { value: '3D Small Face 40 min', dur: 40, price: 4500, en: 'Popular 3D small-face contour (men welcome)', jp: '一番人気3D小顔（男性にも）', cn: '最受欢迎3D小脸（男士亦可）' },
+        { value: '3D Small Face Lymph 60 min', dur: 60, price: 6500, en: 'Popular 3D small-face lymph', jp: '一番人気3D小顔リンパ', cn: '最受欢迎3D小脸淋巴' },
+        { value: 'Korean Small Face 70 min', dur: 70, price: 8800, en: 'Manager pick · Korean small-face + alignment', jp: '店長おすすめ 韓式小顔＋矯正', cn: '店长推荐 韩式小脸＋矫正' },
+        { value: '3D Small Face Head Super 60 min', dur: 60, price: 7980, en: '3D small-face + head super (machine)', jp: '【3D小顔＋ヘッドスーパー】', cn: '【3D小脸＋超级头疗】' },
+        { value: 'Aroma Lymph Korugi 80 min', dur: 80, price: 8800, en: 'Aroma lymph 30 + korugi small-face 50', jp: 'アロマリンパ30＋コルギ小顔50', cn: '精油淋巴30＋骨气小脸50' },
+        { value: 'Small Face Correction 60 min', dur: 60, price: 8800, en: 'Small-face correction (incl. head/neck/shoulders)', jp: '小顔矯正（ヘッド＋首肩含む）', cn: '小脸矫正（含头＋颈肩）' }
       ]},
       { label: { en: 'Slimming & machines', jp: '痩身・マシン', cn: '瘦身・仪器' }, items: [
-        { value: 'Style Slim Trial 30 min', dur: 30, price: 4000, en: 'Style slimming trial (area select) (30 min)', jp: 'スタイル痩身体験（部位セレクト）（30分）', cn: '塑形瘦身体验（部位可选）（30分钟）' },
-        { value: 'Machine Experience', dur: 30, price: 4500, en: 'Latest machine experience (up to 2 areas) (Select areas)', jp: '最新型マシン体験（最大2部位）（部位セレクト）', cn: '最新仪器体验（最多2部位）（部位可选）' },
-        { value: 'Cavitation 60 min', dur: 60, price: 8900, en: 'Cavitation: arms / back / stomach / thighs (60 min)', jp: '最新キャビテーション［二の腕・背中・お腹・太もも］（60分）', cn: '最新溶脂［手臂・背・腹・大腿］（60分钟）' },
-        { value: 'Cavitation Unlimited 90 min', dur: 90, price: 15800, en: 'Unlimited-area latest cavitation (90 min)', jp: '特典かけ放題 最新キャビテーション（90分）', cn: '特惠不限部位 最新溶脂（90分钟）' },
-        { value: 'Body Line Transform from', dur: 60, price: 18900, en: 'Body-line transform (machine & hands) (From ¥18,900)', jp: 'ボディライン変身（マシン＆ハンド）（¥18,900～）', cn: '身形改造（仪器＆手法）（¥18,900起）' }
+        { value: 'Style Slim Trial 30 min', dur: 30, price: 4000, en: 'Style slimming trial (area select)', jp: 'スタイル痩身体験（部位セレクト）', cn: '塑形瘦身体验（部位可选）' },
+        { value: 'Machine Experience', dur: 30, price: 4500, en: 'Latest machine experience (up to 2 areas)', jp: '最新型マシン体験（最大2部位）', cn: '最新仪器体验（最多2部位）' },
+        { value: 'Cavitation 60 min', dur: 60, price: 8900, en: 'Latest cavitation', jp: '最新キャビテーション', cn: '最新溶脂' },
+        { value: 'Cavitation Unlimited 90 min', dur: 90, price: 15800, en: 'Unlimited-area latest cavitation', jp: '特典かけ放題 最新キャビテーション', cn: '特惠不限部位 最新溶脂' },
+        { value: 'Body Line Transform from', dur: 60, price: 18900, en: 'Body-line transform (machine & hands)', jp: 'ボディライン変身（マシン＆ハンド）', cn: '身形改造（仪器＆手法）' }
       ]},
       { label: { en: 'Sets & lymph', jp: 'セット・リンパ', cn: '套餐・淋巴' }, items: [
-        { value: 'Seasonal Reflex 60 min', dur: 60, price: 5600, en: 'Seasonal reflex: foot bath + soles & oil (60 min)', jp: '季節キャンペーン リフレ（足湯＋足裏＆オイル）（60分）', cn: '季节活动 足疗（足浴＋足底＆精油）（60分钟）' },
-        { value: 'Hand Foot Head 70 min', dur: 70, price: 6000, en: 'Hand kneading 30 + foot 30 + head spa 10 (Total 70 min)', jp: '手揉み30＋足ツボ30＋ヘッドスパ10（計70分）', cn: '推拿30＋足疗30＋头疗10（合计70分钟）' },
-        { value: 'Seitai Head Foot 100 min', dur: 100, price: 8900, en: 'Seitai 60 + head spa + foot points 40 (Total 100 min)', jp: '整体60＋ヘッドスパ＋足ツボ40（計100分）', cn: '整体60＋头疗＋足疗40（合计100分钟）' },
-        { value: 'Oil Lymph Foot 90 min', dur: 90, price: 9900, en: 'Oil lymph 60 + foot reflex 30 (Total 90 min)', jp: 'オイルリンパ60＋足リフレ30（計90分）', cn: '精油淋巴60＋足疗30（合计90分钟）' },
-        { value: 'Oil Lymph Detox 90 min', dur: 90, price: 9800, en: 'Oil lymph detox (head / legs / intestine) (90 min)', jp: '【オイルでリンパDetox】ヘッド／美脚／腸（90分）', cn: '【精油淋巴排毒】头／美腿／肠（90分钟）' },
-        { value: 'Special Detox 100 min', dur: 100, price: 12800, en: 'Special: aroma detox / small face / décolleté / legs (100 min)', jp: '《スペシャル》アロマDetox／小顔／デコルテ／美脚（100分）', cn: '《特别》精油排毒／小脸／颈胸／美腿（100分钟）' },
-        { value: 'Luxury Body Face Head 150 min', dur: 150, price: 16900, en: 'Body care + small face + head spa (150 min)', jp: 'ボディケア＋小顔＋ヘッドスパ（150分）', cn: '身体护理＋小脸＋头疗（150分钟）' },
-        { value: 'Custom Combo 100 min', dur: 100, price: 12500, en: 'Campaign made-to-order free combo (New guests · 100 min)', jp: 'キャンペーン オーダーメイド組合せ自由（新規 · 100分）', cn: '活动 自由组合定制（新客 · 100分钟）' },
-        { value: 'Seitai Oil Head 120 min', dur: 120, price: 11800, en: 'Seitai + oil lymph + head massage (New guests · 120 min)', jp: '整体＋オイルリンパ＋ヘッドマッサージ（新規 · 120分）', cn: '整体＋精油淋巴＋头疗（新客 · 120分钟）' },
-        { value: 'Seitai Foot Combo 100 min', dur: 100, price: 12400, en: 'Combo: seitai 60 + soles 40 (Total 100 min)', jp: '組合せ☆整体60＋足裏40（計100分）', cn: '组合☆整体60＋足底40（合计100分钟）' },
-        { value: 'Aroma Foot Combo 100 min', dur: 100, price: 13000, en: 'Aroma 60 + foot reflex 40 (Total 100 min)', jp: 'アロマ60＋足裏リフレ40（計100分）', cn: '精油60＋足底反射40（合计100分钟）' },
-        { value: 'Free Combo 120 min', dur: 120, price: 15600, en: 'Free combo: seitai / aroma / face / head / feet (120 min)', jp: '《組み合わせ自由》整体・アロマ・小顔・ヘッド・足等（120分）', cn: '《自由组合》整体・精油・小脸・头・足等（120分钟）' },
-        { value: 'Full Body Lymph from', dur: 60, price: 8000, en: 'Full-body lymphatic drainage (From ¥8,000)', jp: 'フルボディリンパドレナージュ（¥8,000～）', cn: '全身淋巴引流（¥8,000起）' }
+        { value: 'Seasonal Reflex 60 min', dur: 60, price: 5600, en: 'Seasonal reflex: foot bath + soles & oil', jp: '季節キャンペーン リフレ（足湯＋足裏＆オイル）', cn: '季节活动 足疗（足浴＋足底＆精油）' },
+        { value: 'Hand Foot Head 70 min', dur: 70, price: 6000, en: 'Hand kneading 30 + foot 30 + head spa 10', jp: '手揉み30＋足ツボ30＋ヘッドスパ10', cn: '推拿30＋足疗30＋头疗10' },
+        { value: 'Seitai Head Foot 100 min', dur: 100, price: 8900, en: 'Seitai 60 + head spa + foot points 40', jp: '整体60＋ヘッドスパ＋足ツボ40', cn: '整体60＋头疗＋足疗40' },
+        { value: 'Oil Lymph Foot 90 min', dur: 90, price: 9900, en: 'Oil lymph 60 + foot reflex 30', jp: 'オイルリンパ60＋足リフレ30', cn: '精油淋巴60＋足疗30' },
+        { value: 'Oil Lymph Detox 90 min', dur: 90, price: 9800, en: 'Oil lymph detox', jp: 'オイルリンパDetox', cn: '精油淋巴排毒' },
+        { value: 'Special Detox 100 min', dur: 100, price: 12800, en: 'Aroma detox', jp: 'アロマDetox', cn: '精油排毒' },
+        { value: 'Luxury Body Face Head 150 min', dur: 150, price: 16900, en: 'Body care + small face + head spa', jp: 'ボディケア＋小顔＋ヘッドスパ', cn: '身体护理＋小脸＋头疗' },
+        { value: 'Seitai Foot Combo 100 min', dur: 100, price: 12400, en: 'Combo: seitai 60 + soles 40', jp: '組合せ☆整体60＋足裏40', cn: '组合☆整体60＋足底40' },
+        { value: 'Aroma Foot Combo 100 min', dur: 100, price: 13000, en: 'Aroma 60 + foot reflex 40', jp: 'アロマ60＋足裏リフレ40', cn: '精油60＋足底反射40' },
+        { value: 'Free Combo 120 min', dur: 120, price: 15600, en: 'Free combo', jp: '組み合わせ自由', cn: '自由组合' },
+        { value: 'Full Body Lymph from', dur: 60, price: 8000, en: 'Full-body lymphatic drainage', jp: 'フルボディリンパドレナージュ', cn: '全身淋巴引流' }
       ]},
       { label: { en: 'Body & seitai', jp: 'ボディ・整体', cn: '身体・整体' }, items: [
-        { value: 'Seitai Head Spa 70 min', dur: 70, price: 7800, en: 'Authentic seitai + refreshing head spa (70 min)', jp: '本格整体＋頭スッキリヘッドスパ（70分）', cn: '正统整体＋清爽头疗（70分钟）' },
-        { value: 'Standard Seitai 60 min', dur: 60, price: 7200, en: 'Standard seitai menu (60 min)', jp: '定番メニュー 整体（60分）', cn: '经典整体（60分钟）' },
-        { value: 'Repeater Knead Head 60 min', dur: 60, price: 5000, en: 'Repeater No.1 kneading & head (60 min)', jp: '☆リピーターNo.1《揉みほぐし＆ヘッド》（60分）', cn: '☆回头客No.1《推拿＆头疗》（60分钟）' },
-        { value: 'Chinese Aroma Oil 90 min', dur: 90, price: 11000, en: 'Chinese-style aroma oil (90 min)', jp: '漢方式アロマオイル（90分）', cn: '汉方精油（90分钟）' },
-        { value: 'Chinese Aroma Oil 120 min', dur: 120, price: 13500, en: 'Chinese-style aroma oil (120 min)', jp: '漢方式アロマオイル（120分）', cn: '汉方精油（120分钟）' }
+        { value: 'Seitai Head Spa 70 min', dur: 70, price: 7800, en: 'Authentic seitai + refreshing head spa', jp: '本格整体＋頭スッキリヘッドスパ', cn: '正统整体＋清爽头疗' },
+        { value: 'Standard Seitai 60 min', dur: 60, price: 7200, en: 'Standard seitai menu', jp: '定番メニュー 整体', cn: '经典整体' },
+        { value: 'Repeater Knead Head 60 min', dur: 60, price: 5000, en: 'Repeater No.1 kneading & head', jp: '☆リピーターNo.1《揉みほぐし＆ヘッド》', cn: '☆回头客No.1《推拿＆头疗》' },
+        { value: 'Chinese Aroma Oil 90 min', dur: 90, price: 11000, en: 'Chinese-style aroma oil', jp: '漢方式アロマオイル', cn: '汉方精油' },
+        { value: 'Chinese Aroma Oil 120 min', dur: 120, price: 13500, en: 'Chinese-style aroma oil', jp: '漢方式アロマオイル', cn: '汉方精油' }
       ]},
       { label: { en: 'Bust & specialty', jp: 'バスト・スペシャル', cn: '胸部・特色' }, items: [
-        { value: 'Bust Care', dur: 30, price: 4500, en: 'Bust care (Focused care)', jp: 'バストケア（重点ケア）', cn: '胸部护理（重点护理）' },
-        { value: 'Bust Intestine 30 min', dur: 30, price: 4500, en: 'Bust-up & intestinal activation (30 min)', jp: 'バストアップ＆腸活ホルモン活性（30分）', cn: '丰胸＆肠道焕活（30分钟）' },
-        { value: 'Gua Sha or Cupping', dur: 20, price: 2200, en: 'Campaign: gua sha or cupping (Tax included)', jp: 'キャンペーン★かっさ or カッピング（税込）', cn: '活动★刮痧或拔罐（含税）' },
-        { value: 'Student Head Spa 30 min', dur: 30, price: 2500, en: 'Student discount U24 head spa (New · student ID)', jp: '学割U24 ヘッドスパ（新規・要学生証）', cn: '学生优惠U24 头疗（新客・要学生证）' }
+        { value: 'Bust Care', dur: 30, price: 4500, en: 'Bust care', jp: 'バストケア', cn: '胸部护理' },
+        { value: 'Bust Intestine 30 min', dur: 30, price: 4500, en: 'Bust-up & intestinal activation', jp: 'バストアップ＆腸活ホルモン活性', cn: '丰胸＆肠道焕活' },
+        { value: 'Gua Sha or Cupping', dur: 20, price: 2200, en: 'Campaign: gua sha or cupping', jp: 'キャンペーン★かっさ or カッピング', cn: '活动★刮痧或拔罐' }
       ]}
     ];
 
@@ -571,13 +570,23 @@
     };
 
     function t(k){ return i18n[currentLang][k]; }
+    function shortOptLabel(s, maxLen){
+      s = String(s || '').replace(/\s+/g, ' ').trim();
+      maxLen = maxLen || 34;
+      if (s.length > maxLen) {
+        s = s.replace(/[（(][^）)]*[）)]\s*$/, '').trim();
+      }
+      if (s.length > maxLen) s = s.slice(0, maxLen - 1) + '…';
+      return s;
+    }
     function buildServiceOptionsHTML(selectedValue){
       var html = '<option value="">' + t('selectCourse') + '</option>';
       serviceGroups.forEach(function(g){
         html += '<optgroup label="' + g.label[currentLang] + '">';
         g.items.forEach(function(it){
           var sel = it.value === selectedValue ? ' selected' : '';
-          html += '<option value="' + it.value + '"' + sel + '>' + it[currentLang] + ' — ¥' + it.price.toLocaleString() + '</option>';
+          var label = shortOptLabel(it[currentLang], 34) + ' — ¥' + it.price.toLocaleString();
+          html += '<option value="' + it.value + '"' + sel + '>' + label + '</option>';
         });
         html += '</optgroup>';
       });
