@@ -542,15 +542,20 @@ ul { list-style: none; }
   grid-area: desc;
   align-self: center;
 }
-.menu-tax-note {
-  margin: 1.15rem 0 0;
+.sheet-note {
+  margin: 1rem 0 0;
   padding-top: 0.85rem;
   border-top: 1px solid rgba(166, 123, 109, 0.28);
   font-size: 0.85rem;
   opacity: 0.85;
   text-align: left;
   line-height: 1.55;
+  list-style: disc;
+  padding-left: 1.15rem;
   color: var(--ink-soft);
+}
+.sheet-note li {
+  margin: 0.15rem 0;
 }
 .opt-choice input {
   position: absolute;
