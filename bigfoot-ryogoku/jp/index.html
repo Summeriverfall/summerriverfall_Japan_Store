@@ -100,7 +100,7 @@
         
 
         <div class="menu-group">
-          <article class="opt-group" data-opt-select>
+          <article class="opt-group is-collapsed" data-opt-select data-fold>
             <div class="opt-group-media"><img src="../assets/images/menu-popular.webp" alt="人気コース" loading="lazy"></div>
             <div class="opt-group-head">
               <div>
@@ -133,7 +133,7 @@
               <span class="opt-desc"><span class="u-nowrap">60分</span></span>
             </label>
 
-            <label class="opt-row opt-choice has-desc">
+            <label class="opt-row opt-choice has-desc opt-fold-item">
               <input type="radio" name="opt-popular-jp" value="Neck Head Foot 60 min">
               <span class="opt-radio" aria-hidden="true"></span>
               <span class="opt-name"><span class="u-nowrap">首肩ヘッド30分</span>＋<span class="u-nowrap">足つぼ30分</span></span>
@@ -141,7 +141,7 @@
               <span class="opt-desc"><span class="u-nowrap">60分</span></span>
             </label>
 
-            <label class="opt-row opt-choice has-desc">
+            <label class="opt-row opt-choice has-desc opt-fold-item">
               <input type="radio" name="opt-popular-jp" value="Back Aroma Intestine 80 min">
               <span class="opt-radio" aria-hidden="true"></span>
               <span class="opt-name"><span class="u-nowrap">背面アロマ60分</span>＋<span class="u-nowrap">腸セラピ20分</span></span>
@@ -149,7 +149,7 @@
               <span class="opt-desc"><span class="u-nowrap">80分</span></span>
             </label>
 
-            <label class="opt-row opt-choice has-desc has-detail">
+            <label class="opt-row opt-choice has-desc has-detail opt-fold-item">
               <input type="radio" name="opt-popular-jp" value="Luxury Aroma Head Foot 90 min">
               <span class="opt-radio" aria-hidden="true"></span>
               <span class="opt-name">全身アロマ＋ヘッド＋足裏<span class="opt-name-sub"><span class="u-nowrap">贅沢90分</span></span></span>
@@ -157,7 +157,7 @@
               <span class="opt-desc"><span class="u-nowrap">90分</span></span>
             </label>
 
-            <label class="opt-row opt-choice has-desc">
+            <label class="opt-row opt-choice has-desc opt-fold-item">
               <input type="radio" name="opt-popular-jp" value="Full Body Knead Head 75 min">
               <span class="opt-radio" aria-hidden="true"></span>
               <span class="opt-name">全身もみほぐし＋<span class="u-nowrap">ヘッド75分</span></span>
@@ -165,7 +165,7 @@
               <span class="opt-desc"><span class="u-nowrap">75分</span></span>
             </label>
 
-            <label class="opt-row opt-choice has-desc">
+            <label class="opt-row opt-choice has-desc opt-fold-item">
               <input type="radio" name="opt-popular-jp" value="Foot Neck Shoulder 90 min">
               <span class="opt-radio" aria-hidden="true"></span>
               <span class="opt-name">足つぼ＋<span class="u-nowrap">首肩ケア90分</span></span>
@@ -173,12 +173,16 @@
               <span class="opt-desc"><span class="u-nowrap">90分</span></span>
             </label>
 
+            <button type="button" class="opt-fold-toggle" aria-expanded="false">
+              <span class="opt-fold-more">すべて見る</span>
+              <span class="opt-fold-less">閉じる</span>
+            </button>
             <div class="opt-group-foot">
               <a class="opt-book opt-group-book" data-lang="jp" href="../booking.html?lang=jp&amp;service=Doctor%20Fish%2010%20min"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.884-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg> 予約</a>
             </div>
           </article>
 
-          <article class="opt-group" data-opt-select>
+          <article class="opt-group is-collapsed" data-opt-select data-fold>
             <div class="opt-group-media"><img src="../assets/images/menu-foot.webp" alt="足マッサージ" loading="lazy"></div>
             <div class="opt-group-head">
               <div>
@@ -211,7 +215,7 @@
               <span class="opt-desc"><span class="u-nowrap">90分</span></span>
             </label>
 
-            <label class="opt-row opt-choice has-desc">
+            <label class="opt-row opt-choice has-desc opt-fold-item">
               <input type="radio" name="opt-foot-jp" value="Callus Foot Beauty 60 min">
               <span class="opt-radio" aria-hidden="true"></span>
               <span class="opt-name"><span class="u-nowrap">足の角質ケア20分</span>＋<span class="u-nowrap">足マッサージ40分</span></span>
@@ -219,12 +223,16 @@
               <span class="opt-desc"><span class="u-nowrap">60分</span></span>
             </label>
 
+            <button type="button" class="opt-fold-toggle" aria-expanded="false">
+              <span class="opt-fold-more">すべて見る</span>
+              <span class="opt-fold-less">閉じる</span>
+            </button>
             <div class="opt-group-foot">
               <a class="opt-book opt-group-book" data-lang="jp" href="../booking.html?lang=jp&amp;service=Foot%20Calf%2040%20min"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.884-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg> 予約</a>
             </div>
           </article>
 
-          <article class="opt-group" data-opt-select>
+          <article class="opt-group is-collapsed" data-opt-select data-fold>
             <div class="opt-group-media"><img src="../assets/images/menu-aroma.webp" alt="アロマリンパ" loading="lazy"></div>
             <div class="opt-group-head">
               <div>
@@ -257,7 +265,7 @@
               <span class="opt-desc"><span class="u-nowrap">60分</span></span>
             </label>
 
-            <label class="opt-row opt-choice has-desc">
+            <label class="opt-row opt-choice has-desc opt-fold-item">
               <input type="radio" name="opt-aroma-jp" value="Neck Decollete Head 60 min">
               <span class="opt-radio" aria-hidden="true"></span>
               <span class="opt-name">首リンパ×<span class="u-nowrap">デコルテ30分</span>＋<span class="u-nowrap">ドライヘッド30分</span></span>
@@ -265,7 +273,7 @@
               <span class="opt-desc"><span class="u-nowrap">60分</span></span>
             </label>
 
-            <label class="opt-row opt-choice has-desc">
+            <label class="opt-row opt-choice has-desc opt-fold-item">
               <input type="radio" name="opt-aroma-jp" value="Dry Head Back Aroma 70 min">
               <span class="opt-radio" aria-hidden="true"></span>
               <span class="opt-name"><span class="u-nowrap">ドライヘッド10分</span>＋<span class="u-nowrap">全身背面アロマ60分</span></span>
@@ -273,7 +281,7 @@
               <span class="opt-desc"><span class="u-nowrap">70分</span></span>
             </label>
 
-            <label class="opt-row opt-choice has-desc">
+            <label class="opt-row opt-choice has-desc opt-fold-item">
               <input type="radio" name="opt-aroma-jp" value="Aroma Intestine 90 min">
               <span class="opt-radio" aria-hidden="true"></span>
               <span class="opt-name"><span class="u-nowrap">全身アロマリンパ70分</span>＋<span class="u-nowrap">腸セラピ20分</span></span>
@@ -281,7 +289,7 @@
               <span class="opt-desc"><span class="u-nowrap">90分</span></span>
             </label>
 
-            <label class="opt-row opt-choice has-desc has-detail">
+            <label class="opt-row opt-choice has-desc has-detail opt-fold-item">
               <input type="radio" name="opt-aroma-jp" value="Detox Legs Intestine 120 min">
               <span class="opt-radio" aria-hidden="true"></span>
               <span class="opt-name">全身デトックス＋美脚＋腸セラピ<span class="opt-name-sub"><span class="u-nowrap">贅沢120分</span></span></span>
@@ -289,7 +297,7 @@
               <span class="opt-desc"><span class="u-nowrap">120分</span></span>
             </label>
 
-            <label class="opt-row opt-choice has-desc">
+            <label class="opt-row opt-choice has-desc opt-fold-item">
               <input type="radio" name="opt-aroma-jp" value="Aroma Lymph 180 min">
               <span class="opt-radio" aria-hidden="true"></span>
               <span class="opt-name"><span class="u-nowrap">全身アロマリンパ180分</span>・至福の半日ケア</span>
@@ -297,6 +305,10 @@
               <span class="opt-desc"><span class="u-nowrap">180分</span></span>
             </label>
 
+            <button type="button" class="opt-fold-toggle" aria-expanded="false">
+              <span class="opt-fold-more">すべて見る</span>
+              <span class="opt-fold-less">閉じる</span>
+            </button>
             <div class="opt-group-foot">
               <a class="opt-book opt-group-book" data-lang="jp" href="../booking.html?lang=jp&amp;service=Aroma%20Focus%2040%20min"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.884-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg> 予約</a>
             </div>
@@ -370,7 +382,7 @@
             </div>
           </article>
 
-          <article class="opt-group" data-opt-select>
+          <article class="opt-group is-collapsed" data-opt-select data-fold>
             <div class="opt-group-media"><img src="../assets/images/menu-body.webp" alt="ボディ指圧" loading="lazy"></div>
             <div class="opt-group-head">
               <div>
@@ -403,7 +415,7 @@
               <span class="opt-desc"><span class="u-nowrap">60分</span></span>
             </label>
 
-            <label class="opt-row opt-choice has-desc">
+            <label class="opt-row opt-choice has-desc opt-fold-item">
               <input type="radio" name="opt-body-jp" value="Body Shiatsu 90 min">
               <span class="opt-radio" aria-hidden="true"></span>
               <span class="opt-name"><span class="u-nowrap">ボディ指圧もみほぐし90分</span></span>
@@ -411,7 +423,7 @@
               <span class="opt-desc"><span class="u-nowrap">90分</span></span>
             </label>
 
-            <label class="opt-row opt-choice has-desc">
+            <label class="opt-row opt-choice has-desc opt-fold-item">
               <input type="radio" name="opt-body-jp" value="Body Shiatsu 120 min">
               <span class="opt-radio" aria-hidden="true"></span>
               <span class="opt-name"><span class="u-nowrap">ボディ指圧もみほぐし120分</span></span>
@@ -419,7 +431,7 @@
               <span class="opt-desc"><span class="u-nowrap">120分</span></span>
             </label>
 
-            <label class="opt-row opt-choice has-desc has-detail">
+            <label class="opt-row opt-choice has-desc has-detail opt-fold-item">
               <input type="radio" name="opt-body-jp" value="Body Shiatsu Head 180 min">
               <span class="opt-radio" aria-hidden="true"></span>
               <span class="opt-name"><span class="u-nowrap">ボディ指圧120分</span>＋<span class="u-nowrap">ドライヘッド60分</span><span class="opt-name-sub">目・ハンド付け</span></span>
@@ -427,12 +439,16 @@
               <span class="opt-desc"><span class="u-nowrap">180分</span></span>
             </label>
 
+            <button type="button" class="opt-fold-toggle" aria-expanded="false">
+              <span class="opt-fold-more">すべて見る</span>
+              <span class="opt-fold-less">閉じる</span>
+            </button>
             <div class="opt-group-foot">
               <a class="opt-book opt-group-book" data-lang="jp" href="../booking.html?lang=jp&amp;service=Body%20Shiatsu%2040%20min"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.884-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg> 予約</a>
             </div>
           </article>
 
-          <article class="opt-group" data-opt-select>
+          <article class="opt-group is-collapsed" data-opt-select data-fold>
             <div class="opt-group-media"><img src="../assets/images/menu-combo.webp" alt="組み合わせ" loading="lazy"></div>
             <div class="opt-group-head">
               <div>
@@ -465,7 +481,7 @@
               <span class="opt-desc"><span class="u-nowrap">90分</span></span>
             </label>
 
-            <label class="opt-row opt-choice has-desc">
+            <label class="opt-row opt-choice has-desc opt-fold-item">
               <input type="radio" name="opt-combo-jp" value="Knead Foot Focus 90 min">
               <span class="opt-radio" aria-hidden="true"></span>
               <span class="opt-name"><span class="u-nowrap">体もみほぐし30分</span>＋<span class="u-nowrap">足マッサージ60分</span></span>
@@ -473,7 +489,7 @@
               <span class="opt-desc"><span class="u-nowrap">90分</span></span>
             </label>
 
-            <label class="opt-row opt-choice has-desc">
+            <label class="opt-row opt-choice has-desc opt-fold-item">
               <input type="radio" name="opt-combo-jp" value="Back Aroma Foot 90 min">
               <span class="opt-radio" aria-hidden="true"></span>
               <span class="opt-name"><span class="u-nowrap">体背面アロマリンパ60分</span>＋<span class="u-nowrap">足つぼ30分</span></span>
@@ -481,7 +497,7 @@
               <span class="opt-desc"><span class="u-nowrap">90分</span></span>
             </label>
 
-            <label class="opt-row opt-choice has-desc">
+            <label class="opt-row opt-choice has-desc opt-fold-item">
               <input type="radio" name="opt-combo-jp" value="Upper Aroma Foot Head 90 min">
               <span class="opt-radio" aria-hidden="true"></span>
               <span class="opt-name"><span class="u-nowrap">上半身アロマ40分</span>＋<span class="u-nowrap">足40分</span>＋ドライヘッド</span>
@@ -489,7 +505,7 @@
               <span class="opt-desc"><span class="u-nowrap">90分</span></span>
             </label>
 
-            <label class="opt-row opt-choice has-desc">
+            <label class="opt-row opt-choice has-desc opt-fold-item">
               <input type="radio" name="opt-combo-jp" value="Foot Body 120 min">
               <span class="opt-radio" aria-hidden="true"></span>
               <span class="opt-name"><span class="u-nowrap">足マッサージ60分</span>＋<span class="u-nowrap">ボディ指圧60分</span></span>
@@ -497,7 +513,7 @@
               <span class="opt-desc"><span class="u-nowrap">120分</span></span>
             </label>
 
-            <label class="opt-row opt-choice has-desc">
+            <label class="opt-row opt-choice has-desc opt-fold-item">
               <input type="radio" name="opt-combo-jp" value="Aroma Foot Head 120 min">
               <span class="opt-radio" aria-hidden="true"></span>
               <span class="opt-name"><span class="u-nowrap">アロマオイル70分</span>＋<span class="u-nowrap">足40分</span>＋<span class="u-nowrap">ドライヘッド10分</span></span>
@@ -505,6 +521,10 @@
               <span class="opt-desc"><span class="u-nowrap">120分</span></span>
             </label>
 
+            <button type="button" class="opt-fold-toggle" aria-expanded="false">
+              <span class="opt-fold-more">すべて見る</span>
+              <span class="opt-fold-less">閉じる</span>
+            </button>
             <div class="opt-group-foot">
               <a class="opt-book opt-group-book" data-lang="jp" href="../booking.html?lang=jp&amp;service=Shiatsu%20Dry%20Head%2060%20min"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.884-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg> 予約</a>
             </div>

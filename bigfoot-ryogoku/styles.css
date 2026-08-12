@@ -1372,3 +1372,41 @@ ul { list-style: none; }
   .menu-card { grid-template-columns: 1fr; }
   .menu-card-media { aspect-ratio: 16/10; min-height: 0; }
 }
+
+/* Menu fold: preview 3 items per group */
+.opt-group.is-collapsed .opt-fold-item { display: none; }
+.opt-fold-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  width: 100%;
+  margin: 0.35rem 0 0.15rem;
+  padding: 0.65rem 0.75rem;
+  border: none;
+  border-top: 1px dashed var(--gold-pale);
+  background: transparent;
+  color: var(--brand);
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+}
+.opt-fold-toggle::after {
+  content: "";
+  width: 0.45rem;
+  height: 0.45rem;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: rotate(45deg);
+  margin-top: -0.15rem;
+  transition: transform 0.2s ease;
+}
+.opt-group:not(.is-collapsed) .opt-fold-toggle::after {
+  transform: rotate(-135deg);
+  margin-top: 0.2rem;
+}
+.opt-group.is-collapsed .opt-fold-less { display: none; }
+.opt-group:not(.is-collapsed) .opt-fold-more { display: none; }
+.opt-group:not([data-fold]) .opt-fold-toggle { display: none; }
