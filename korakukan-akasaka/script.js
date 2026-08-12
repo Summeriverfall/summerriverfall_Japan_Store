@@ -120,6 +120,26 @@
     });
   })();
 
+  /* Menu fold: expand / collapse groups with >3 items (same as BIG FOOT) */
+  document.querySelectorAll(".opt-group[data-fold]").forEach(function (group) {
+    var btn = group.querySelector(".opt-fold-toggle");
+    if (!btn) return;
+    btn.addEventListener("click", function () {
+      var collapsed = group.classList.toggle("is-collapsed");
+      btn.setAttribute("aria-expanded", collapsed ? "false" : "true");
+      if (collapsed) {
+        var selected = group.querySelector(".opt-fold-item input:checked");
+        if (selected) {
+          var first = group.querySelector(".opt-choice:not(.opt-fold-item) input");
+          if (first) {
+            first.checked = true;
+            first.dispatchEvent(new Event("change", { bubbles: true }));
+          }
+        }
+      }
+    });
+  });
+
   /* Back to top */
   var topBtn = document.getElementById("backToTop");
   if (topBtn) {
