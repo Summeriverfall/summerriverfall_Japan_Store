@@ -664,6 +664,15 @@ ul { list-style: none; }
 .u-nowrap {
   white-space: nowrap;
 }
+/* Soft line break: only on mobile (e.g. ヘッドスパ↵15分) */
+br.u-br-m {
+  display: none;
+}
+@media (max-width: 600px) {
+  br.u-br-m {
+    display: block;
+  }
+}
 .opt-price,
 .opt-price-solo,
 .opt-price-now,
