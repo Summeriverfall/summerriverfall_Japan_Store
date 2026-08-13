@@ -280,29 +280,29 @@
     var LATE_PER_30 = 0;
 
     var serviceInfo = {
-  "Foot30+Aroma30 60 min": 7000,
-  "Foot30+Aroma60 90 min": 10000,
   "Foot40+Aroma60 100 min": 11000,
   "Foot30+Aroma90 120 min": 13000,
   "Foot60+Aroma60 120 min": 13000,
+  "Foot30+Aroma30 60 min": 7000,
+  "Foot30+Aroma60 90 min": 10000,
   "Foot60+Aroma90 150 min": 16000,
   "Foot60+Aroma120 180 min": 19000,
   "Foot30+Body30 60 min": 6500,
   "Foot30+Body60 90 min": 9500,
+  "Foot30+Body90 120 min": 12500,
   "Foot40+Body40 80 min": 8500,
   "Foot40+Body60 100 min": 10500,
-  "Foot30+Body90 120 min": 12500,
   "Foot60+Body60 120 min": 12500,
   "Foot60+Body60+Aroma60 180 min": 18500,
-  "Aroma 30 min": 4000,
   "Aroma 40 min": 5000,
   "Aroma 60 min": 7000,
   "Aroma 90 min": 10000,
+  "Aroma 30 min": 4000,
   "Aroma 120 min": 13000,
-  "Bodywork 30 min": 3500,
   "Bodywork 40 min": 4500,
   "Bodywork 60 min": 6500,
   "Bodywork 90 min": 9500,
+  "Bodywork 30 min": 3500,
   "Foot 35 min": 4000,
   "Foot 45 min": 5000,
   "Foot 60 min": 7000
@@ -316,22 +316,6 @@
       "cn": "足底＋精油"
     },
     "items": [
-      {
-        "value": "Foot30+Aroma30 60 min",
-        "dur": 60,
-        "price": 7000,
-        "en": "60m · Foot 30 + Aroma 30",
-        "jp": "60分 · 足裏30分＋アロマ30分",
-        "cn": "60分钟 · 足底30分＋精油30分"
-      },
-      {
-        "value": "Foot30+Aroma60 90 min",
-        "dur": 90,
-        "price": 10000,
-        "en": "90m · Foot 30 + Aroma 60",
-        "jp": "90分 · 足裏30分＋アロマ60分",
-        "cn": "90分钟 · 足底30分＋精油60分"
-      },
       {
         "value": "Foot40+Aroma60 100 min",
         "dur": 100,
@@ -355,6 +339,22 @@
         "en": "120m · Foot 60 + Aroma 60",
         "jp": "120分 · 足裏60分＋アロマ60分",
         "cn": "120分钟 · 足底60分＋精油60分"
+      },
+      {
+        "value": "Foot30+Aroma30 60 min",
+        "dur": 60,
+        "price": 7000,
+        "en": "60m · Foot 30 + Aroma 30",
+        "jp": "60分 · 足裏30分＋アロマ30分",
+        "cn": "60分钟 · 足底30分＋精油30分"
+      },
+      {
+        "value": "Foot30+Aroma60 90 min",
+        "dur": 90,
+        "price": 10000,
+        "en": "90m · Foot 30 + Aroma 60",
+        "jp": "90分 · 足裏30分＋アロマ60分",
+        "cn": "90分钟 · 足底30分＋精油60分"
       },
       {
         "value": "Foot60+Aroma90 150 min",
@@ -398,6 +398,14 @@
         "cn": "90分钟 · 足底30分＋整体60分"
       },
       {
+        "value": "Foot30+Body90 120 min",
+        "dur": 120,
+        "price": 12500,
+        "en": "120m · Foot 30 + Body 90",
+        "jp": "120分 · 足裏30分＋整体90分",
+        "cn": "120分钟 · 足底30分＋整体90分"
+      },
+      {
         "value": "Foot40+Body40 80 min",
         "dur": 80,
         "price": 8500,
@@ -412,14 +420,6 @@
         "en": "100m · Foot 40 + Body 60",
         "jp": "100分 · 足裏40分＋整体60分",
         "cn": "100分钟 · 足底40分＋整体60分"
-      },
-      {
-        "value": "Foot30+Body90 120 min",
-        "dur": 120,
-        "price": 12500,
-        "en": "120m · Foot 30 + Body 90",
-        "jp": "120分 · 足裏30分＋整体90分",
-        "cn": "120分钟 · 足底30分＋整体90分"
       },
       {
         "value": "Foot60+Body60 120 min",
@@ -447,14 +447,6 @@
     },
     "items": [
       {
-        "value": "Aroma 30 min",
-        "dur": 30,
-        "price": 4000,
-        "en": "Aroma 30 min",
-        "jp": "アロマ 30分",
-        "cn": "精油 30分钟"
-      },
-      {
         "value": "Aroma 40 min",
         "dur": 40,
         "price": 5000,
@@ -479,6 +471,14 @@
         "cn": "精油 90分钟"
       },
       {
+        "value": "Aroma 30 min",
+        "dur": 30,
+        "price": 4000,
+        "en": "Aroma 30 min",
+        "jp": "アロマ 30分",
+        "cn": "精油 30分钟"
+      },
+      {
         "value": "Aroma 120 min",
         "dur": 120,
         "price": 13000,
@@ -495,14 +495,6 @@
       "cn": "整体"
     },
     "items": [
-      {
-        "value": "Bodywork 30 min",
-        "dur": 30,
-        "price": 3500,
-        "en": "Body 30 min",
-        "jp": "整体 30分",
-        "cn": "整体 30分钟"
-      },
       {
         "value": "Bodywork 40 min",
         "dur": 40,
@@ -526,6 +518,14 @@
         "en": "Body 90 min",
         "jp": "整体 90分",
         "cn": "整体 90分钟"
+      },
+      {
+        "value": "Bodywork 30 min",
+        "dur": 30,
+        "price": 3500,
+        "en": "Body 30 min",
+        "jp": "整体 30分",
+        "cn": "整体 30分钟"
       }
     ]
   },

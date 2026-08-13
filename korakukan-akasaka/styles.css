@@ -1435,7 +1435,7 @@ ul { list-style: none; }
     ". desc price";
 }
 
-/* Menu fold: preview 3 items per group (same as BIG FOOT) */
+/* Menu fold: Word gray = folded; white = shown */
 .opt-group.is-collapsed .opt-fold-item { display: none; }
 .opt-fold-toggle {
   display: flex;
