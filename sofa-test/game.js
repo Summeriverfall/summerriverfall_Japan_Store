@@ -75,9 +75,87 @@ const PERSONALITIES = [
     indexName: "被爱指数",
     indexLine: "发挥不算稳，但她还是把这一局看完了。",
     ending:
-      "她没发定位，直接出现在门口，像闯关奖励本人。亲吻从门锁开始，她小声说好感度满了，该发放抱抱和亲亲。你真好。",
+      "她没发定位，直接出现在门口，像闯关奖励本人。亲吻从门锁开始，她小声说今晚只发给你抱抱。你真好。",
   },
 ];
+
+const ZERO_ARC = {
+  chats: ["（她默默揉了揉你的头）", "哎你这个小笨蛋，即便这样我也还是喜欢你就是了 (´▽｀)♡"],
+  note: "消息已读。她揉了揉你的头。",
+  tag: "揉头",
+  verdict: "她还是喜欢你",
+  sub: "气到最底了。她还是伸手过来。",
+  quoteKicker: "揉头那句",
+  story:
+    "她没骂你，也没走。只是把你的头按进肩膀里，一下一下揉着：哎你这个小笨蛋。今晚她不谈对错，只把这句话留下——即便这样，我也还是喜欢你就是了。",
+};
+
+const FAVOR_ARCS = [
+  {
+    min: 1,
+    chats: ["今天有点累。先睡了。", "晚安。梦到你的话，算我赢 ( ˘ω˘ )"],
+    note: "消息已读。她说晚安。",
+    tag: "已读",
+    verdict: "她先睡了",
+    sub: "灯关了。手机亮了一下，又暗下去。",
+    quoteKicker: "留下的一句",
+    story:
+      "她把对话停在晚安。过了二十分钟，又补了一个小小的颜文字，像怕你以为她生气。今晚没有见面，也没有电话。她把想说的话，先收到枕头底下了。",
+  },
+  {
+    min: 40,
+    chats: ["今天这样聊着，我心情好一点了。", "先不打了。明天醒来第一句找你。"],
+    note: "消息已读。她说明天找你。",
+    tag: "置顶",
+    verdict: "她把你收进明天",
+    sub: "没有立刻见面。她把今晚存成一条想你。",
+    quoteKicker: "她记下的一句",
+    story:
+      "她趴在床上打字又删，最后发出去：今天谢谢你陪我。屏幕暗了之后，她把聊天置顶了。没有过来，可枕头旁边空着的位置，她想象过你。",
+  },
+  {
+    min: 60,
+    chats: ["好想听你声音。", "要不要视频一下？就一小会儿。我把灯调暗了。"],
+    note: "消息已读。她把镜头打开了。",
+    tag: "视频中",
+    verdict: "她把脸给你看了",
+    sub: "没出家门。可整晚她都在屏幕这边。",
+    quoteKicker: "视频里那句",
+    story:
+      "视频里她把下巴搁在枕头上，说今天被你哄到了。聊到眼睛眯起来还不挂。临挂前小声：下次见面，你要补抱。然后飞了一个吻过来，自己先笑场。",
+  },
+  {
+    min: 80,
+    chats: ["我已经下楼了。", "到你家附近了。你说一声，我就上去。"],
+    note: "消息已读。她在楼下等你一句。",
+    tag: "定位",
+    verdict: "她走到一半",
+    sub: "外套穿好了。差你一句「来」。",
+    quoteKicker: "楼下那句",
+    story:
+      "她站在单元门口吹风，定位发了又撤回。最后还是发：我到附近了。今晚先回去，下次不许拦我。你欠我一次，把门锁打开。",
+  },
+  {
+    min: 95,
+    chats: ["我现在就出门。你在家等我，不准跑。", "开门，我要吃掉你。"],
+    note: "消息已读。她说她到了，要吃掉你。",
+    tag: "等待开门",
+    verdict: "她来找你了",
+    sub: "门铃比消息还快。今晚她不走。",
+    quoteKicker: "最甜的一句",
+    story: null,
+  },
+];
+
+function favorArc() {
+  const n = Math.round(state.favor);
+  if (n <= 0) return ZERO_ARC;
+  let picked = FAVOR_ARCS[0];
+  for (const arc of FAVOR_ARCS) {
+    if (n >= arc.min) picked = arc;
+  }
+  return picked;
+}
 
 const state = {
   favor: START_FAVOR,
@@ -289,7 +367,7 @@ function choose(optionIndex) {
 
 function showNextButton() {
   const last = state.qIndex >= state.order.length - 1;
-  const full = state.favor >= MAX_FAVOR;
+  const done = state.favor >= MAX_FAVOR || state.favor <= 0;
   $("choiceHint").textContent = "";
   $("choiceWrap").style.display = "";
   const box = $("options");
@@ -297,42 +375,33 @@ function showNextButton() {
   const btn = document.createElement("button");
   btn.type = "button";
   btn.className = "btn-main next-q";
-  btn.textContent = full || last ? "继续" : "下一题";
+  btn.textContent = done || last ? "继续" : "下一题";
   btn.addEventListener("click", goNext);
   box.appendChild(btn);
 }
 
 function goNext() {
-  if (state.favor >= MAX_FAVOR) {
-    playEnding(true);
-    return;
-  }
-  if (state.qIndex >= state.order.length - 1) {
-    playEnding(false);
+  if (state.favor >= MAX_FAVOR || state.favor <= 0 || state.qIndex >= state.order.length - 1) {
+    playEnding();
     return;
   }
   state.qIndex += 1;
   renderQuestion();
 }
 
-function playEnding(reached) {
+function playEnding() {
   $("choiceWrap").style.display = "none";
   stopTimer();
-  state.reached = reached;
-  if (reached) {
-    addChat(`<div class="sys">对方正在输入…</div>`);
+  const arc = favorArc();
+  state.reached = !arc.story;
+  addChat(`<div class="sys">对方正在输入…</div>`);
+  setTimeout(() => {
+    addChat(`<div class="bubble her">${escapeHtml(arc.chats[0])}</div>`);
     setTimeout(() => {
-      addChat(`<div class="bubble her">我现在就出门。你在家等我，不准跑。</div>`);
-      setTimeout(() => {
-        addChat(`<div class="bubble her">开门，我要吃掉你。</div>`);
-        setTimeout(() => showResult(true), 900);
-      }, 700);
-    }, 600);
-    return;
-  }
-  addChat(`<div class="sys">对话结束</div>`);
-  addChat(`<div class="bubble her">我先去忙啦。回头找你，想我就说。</div>`);
-  setTimeout(() => showResult(false), 900);
+      addChat(`<div class="bubble her">${escapeHtml(arc.chats[1])}</div>`);
+      setTimeout(() => showResult(), 900);
+    }, 700);
+  }, 600);
 }
 
 function dominantType() {
@@ -422,8 +491,10 @@ function drawRadar(canvas, scores) {
   });
 }
 
-function showResult(reached) {
+function showResult() {
   const p = persona();
+  const arc = favorArc();
+  const story = arc.story || p.ending;
   const idx = loveIndex();
   const n = state.history.length;
   const best = Number(localStorage.getItem("bond-best") || 0);
@@ -445,11 +516,11 @@ function showResult(reached) {
   result.innerHTML = `
     <div class="result-lang"><span>简体中文</span><span>♪</span></div>
     <p class="result-end">对话结束</p>
-    <p class="fail-note success"><span>● ${reached ? "消息已读。她说她到门口了，要吃掉你。" : "消息已读。她说回头找你。"}</span><span>${reached ? "等待开门" : "已读"}</span></p>
+    <p class="fail-note success"><span>● ${arc.note}</span><span>${arc.tag}</span></p>
     <hr class="hr" />
-    <p class="kicker">判决</p>
-    <h2 class="verdict">${reached ? "她来找你了" : "今天先到这"}</h2>
-    <p class="verdict-sub">${reached ? "她说好感满了，要上门来收抱抱和亲亲。" : "她没有生气。只是好感还没满，这一局她没过来。"}</p>
+    <p class="kicker">今晚</p>
+    <h2 class="verdict">${arc.verdict}</h2>
+    <p class="verdict-sub">${arc.sub}</p>
     <div class="meter" style="margin:16px 0 8px">
       <span class="meter-label">最终好感</span>
       <div class="meter-track" id="resultMeter"></div>
@@ -483,19 +554,15 @@ function showResult(reached) {
     <p class="index-num">${idx}%</p>
     <p class="verdict-sub">${p.indexLine}</p>
     <hr class="hr" />
-    <p class="kicker">${reached ? "最甜的一句" : "留下的一句"}</p>
+    <p class="kicker">${arc.quoteKicker}</p>
     <div class="quote-box">
       <div>对方：${escapeHtml(fatal.prompt)}</div>
       <div>${fatal.timeout ? "你没有回。" : `你回「${escapeHtml(fatal.answer)}」`}</div>
       <div>她：${escapeHtml(fatal.reply)}</div>
     </div>
-    ${
-      reached
-        ? `<hr class="hr" />
-    <p class="kicker">结局</p>
-    <div class="ending-card">${escapeHtml(p.ending)}</div>`
-        : ""
-    }
+    <hr class="hr" />
+    <p class="kicker">后来</p>
+    <div class="ending-card">${escapeHtml(story)}</div>
     <hr class="hr" />
     <div class="share-row">
       <button type="button" class="btn-main" id="btnAgain">再来一局</button>
