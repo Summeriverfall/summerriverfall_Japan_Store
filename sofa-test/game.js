@@ -449,7 +449,7 @@ function showResult(reached) {
     <hr class="hr" />
     <p class="kicker">判决</p>
     <h2 class="verdict">${reached ? "她来找你了" : "今天先到这"}</h2>
-    <p class="verdict-sub">${reached ? "她说好感满了，要上门来收抱抱和亲亲。" : "她没有生气。只是这一局，还没走到门口。"}</p>
+    <p class="verdict-sub">${reached ? "她说好感满了，要上门来收抱抱和亲亲。" : "她没有生气。只是好感还没满，这一局她没过来。"}</p>
     <div class="meter" style="margin:16px 0 8px">
       <span class="meter-label">最终好感</span>
       <div class="meter-track" id="resultMeter"></div>
