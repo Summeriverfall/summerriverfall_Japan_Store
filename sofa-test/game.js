@@ -324,7 +324,7 @@ function playEnding(reached) {
     setTimeout(() => {
       addChat(`<div class="bubble her">我现在就出门。你在家等我，不准跑。</div>`);
       setTimeout(() => {
-        addChat(`<div class="bubble her">开门，我要亲你。</div>`);
+        addChat(`<div class="bubble her">开门，我要吃掉你。</div>`);
         setTimeout(() => showResult(true), 900);
       }, 700);
     }, 600);
@@ -445,7 +445,7 @@ function showResult(reached) {
   result.innerHTML = `
     <div class="result-lang"><span>简体中文</span><span>♪</span></div>
     <p class="result-end">对话结束</p>
-    <p class="fail-note success"><span>● ${reached ? "消息已读。她说她到门口了，要亲你。" : "消息已读。她说回头找你。"}</span><span>${reached ? "等待开门" : "已读"}</span></p>
+    <p class="fail-note success"><span>● ${reached ? "消息已读。她说她到门口了，要吃掉你。" : "消息已读。她说回头找你。"}</span><span>${reached ? "等待开门" : "已读"}</span></p>
     <hr class="hr" />
     <p class="kicker">判决</p>
     <h2 class="verdict">${reached ? "她来找你了" : "今天先到这"}</h2>
