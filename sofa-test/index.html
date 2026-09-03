@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>羁绊对话 · 好感度闯关</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600&family=Noto+Serif+SC:wght@600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="app">
+    <div class="phone">
+      <section id="start" class="screen start-screen active">
+        <div class="lang-row">
+          <span>简体中文</span>
+          <button type="button" id="btnMuteStart" class="icon-btn" aria-label="声音">♪</button>
+        </div>
+        <div class="start-hero">
+          <p class="start-kicker">BOND CHAT</p>
+          <h1 class="start-title">羁绊对话</h1>
+        </div>
+        <div class="start-actions">
+          <button type="button" class="btn-main" id="btnStart">开始对话</button>
+        </div>
+      </section>
+
+      <section id="play" class="screen">
+        <header class="hud">
+          <div class="nav">
+            <div class="nav-left">
+              <button type="button" class="icon-btn" id="btnBack" aria-label="返回">‹</button>
+              <span>羁绊对话</span>
+            </div>
+            <button type="button" class="icon-btn" id="btnMute" aria-label="声音">♪</button>
+          </div>
+          <div class="status-row">
+            <div class="online"><span class="dot"></span>对方 在线</div>
+            <div class="progress-meta" id="progressMeta">1 / 12</div>
+            <div class="countdown" id="countdown">12</div>
+          </div>
+          <div class="meter">
+            <span class="meter-label">好感</span>
+            <div class="meter-track" id="meterTrack"></div>
+            <span class="meter-num" id="meterNum">18</span>
+          </div>
+        </header>
+        <div class="thread" id="thread">
+        <div class="chat" id="chat"></div>
+        <div class="choice-wrap" id="choiceWrap">
+          <p class="choice-hint" id="choiceHint">你要回什么</p>
+          <div class="options" id="options"></div>
+        </div>
+        </div>
+      </section>
+
+      <section id="result" class="screen result-screen"></section>
+    </div>
+  </div>
+  <script src="questions.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>
