@@ -8,6 +8,9 @@ Each shop lives in its own subfolder:
 - `rirasuma-miyamasusaka/` — リラスマ宮益坂店（RIRASUMA）
 - `rifurete-dogenzaka/` — リフレーテ道玄坂本店（Rifurete）
 - `ariran-dogenzaka/` — 阿里郎(アリラン) リラクゼーション渋谷道玄坂店
+- `hyakue-kichijoji/` — 吉祥寺 百会（Hyakue）
+- `ichioshi-koenji/` — いちおし健康館 高円寺
+- `ichioshi-higashikoenji/` — いちおし健康館 東高円寺
 
 Pages URL pattern:
 
