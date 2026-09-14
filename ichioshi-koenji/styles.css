@@ -1207,7 +1207,6 @@ ul { list-style: none; }
 
 @media (max-width: 600px) {
   .section-title br { display: none; }
-  .hero h1 br { display: none; }
   .opt-row:not(.opt-choice) {
     grid-template-columns: minmax(0, 1fr) auto;
     grid-template-areas:

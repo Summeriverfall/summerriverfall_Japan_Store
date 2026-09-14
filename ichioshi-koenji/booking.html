@@ -242,50 +242,36 @@
     var currentLang = 'en';
 
             var serviceInfo = {
-      'Head Spa 30 min': 3300, 'Head Spa 45 min': 4400, 'Head Spa 60 min': 5500,
-      'Seitai 30 min': 3300, 'Seitai 45 min': 4200, 'Seitai 60 min': 5300, 'Seitai 75 min': 6500, 'Seitai 90 min': 7500,
-      'Aroma Oil 45 min': 6000, 'Aroma Oil 60 min': 7200, 'Aroma Oil 90 min': 10800, 'Aroma Oil 120 min': 14400,
-      'Foot 30 min': 3300, 'Foot 45 min': 4400, 'Foot 60 min': 5500,
-      'Head+Shoulder 60 min': 5500, 'Head30+Foot30 60 min': 5500, 'Head30+Body60 90 min': 7500,
-      'Combo A 60 min': 5500, 'Combo B 75 min': 6500, 'Combo C 90 min': 7500,
-      'Set 120 min': 10800, 'Set 140 min': 13200, 'Aroma Set 120 min': 14000, 'Head30+Aroma60 90 min': 10800
+      'Body Care 30 min': 3300,
+      'Body Care 60 min': 6000,
+      'Body Care 90 min': 8400,
+      'Foot 30 min': 3300,
+      'Foot 60 min': 6000,
+      'Aroma Oil 45 min': 6000,
+      'Aroma Oil 60 min': 7200,
+      'Foot30+Body30 60 min': 6000,
+      'Foot45+Body45 90 min': 8400,
+      'Foot45+Aroma45 90 min': 10000
     };
 
             var serviceGroups = [
-      { label: { en: 'Head Spa', jp: 'ヘッドスパ', cn: '头部' }, items: [
-        { value: 'Head Spa 30 min', dur: 30, price: 3300, en: 'Head spa 30 min', jp: 'ヘッド 30分', cn: '头部 30分' },
-        { value: 'Head Spa 45 min', dur: 45, price: 4400, en: 'Head spa 45 min', jp: 'ヘッド 45分', cn: '头部 45分' },
-        { value: 'Head Spa 60 min', dur: 60, price: 5500, en: 'Head spa 60 min', jp: 'ヘッド 60分', cn: '头部 60分' }
+      { label: { en: 'Body Care', jp: 'ボディケア', cn: '身体护理' }, items: [
+        { value: 'Body Care 30 min', dur: 30, price: 3300, en: 'Body Care 30 min', jp: 'ボディケア 30分', cn: '身体护理 30分' },
+        { value: 'Body Care 60 min', dur: 60, price: 6000, en: 'Body Care 60 min', jp: 'ボディケア 60分', cn: '身体护理 60分' },
+        { value: 'Body Care 90 min', dur: 90, price: 8400, en: 'Body Care 90 min', jp: 'ボディケア 90分', cn: '身体护理 90分' }
       ]},
-      { label: { en: 'Body Care', jp: '整体', cn: '整体' }, items: [
-        { value: 'Seitai 30 min', dur: 30, price: 3300, en: 'Seitai 30 min', jp: '整体 30分', cn: '整体 30分' },
-        { value: 'Seitai 45 min', dur: 45, price: 4200, en: 'Seitai 45 min', jp: '整体 45分', cn: '整体 45分' },
-        { value: 'Seitai 60 min', dur: 60, price: 5300, en: 'Seitai 60 min', jp: '整体 60分', cn: '整体 60分' },
-        { value: 'Seitai 75 min', dur: 75, price: 6500, en: 'Seitai 75 min', jp: '整体 75分', cn: '整体 75分' },
-        { value: 'Seitai 90 min', dur: 90, price: 7500, en: 'Seitai 90 min', jp: '整体 90分', cn: '整体 90分' }
+      { label: { en: 'Foot Massage', jp: '足裏', cn: '足底按摩' }, items: [
+        { value: 'Foot 30 min', dur: 30, price: 3300, en: 'Foot 30 min', jp: '足裏 30分', cn: '足底按摩 30分' },
+        { value: 'Foot 60 min', dur: 60, price: 6000, en: 'Foot 60 min', jp: '足裏 60分', cn: '足底按摩 60分' }
       ]},
-      { label: { en: 'Aroma Oil', jp: 'アロマ', cn: '精油' }, items: [
-        { value: 'Aroma Oil 45 min', dur: 45, price: 6000, en: 'Aroma 45 min', jp: 'アロマ 45分', cn: '精油 45分' },
-        { value: 'Aroma Oil 60 min', dur: 60, price: 7200, en: 'Aroma 60 min', jp: 'アロマ 60分', cn: '精油 60分' },
-        { value: 'Aroma Oil 90 min', dur: 90, price: 10800, en: 'Aroma 90 min', jp: 'アロマ 90分', cn: '精油 90分' },
-        { value: 'Aroma Oil 120 min', dur: 120, price: 14400, en: 'Aroma 120 min', jp: 'アロマ 120分', cn: '精油 120分' }
+      { label: { en: 'Aroma Oil', jp: 'アロマオイル', cn: '精油按摩' }, items: [
+        { value: 'Aroma Oil 45 min', dur: 45, price: 6000, en: 'Aroma Oil 45 min', jp: 'アロマオイル 45分', cn: '精油按摩 45分' },
+        { value: 'Aroma Oil 60 min', dur: 60, price: 7200, en: 'Aroma Oil 60 min', jp: 'アロマオイル 60分', cn: '精油按摩 60分' }
       ]},
-      { label: { en: 'Foot', jp: '足つぼ', cn: '足底' }, items: [
-        { value: 'Foot 30 min', dur: 30, price: 3300, en: 'Foot 30 min', jp: '足つぼ 30分', cn: '足底 30分' },
-        { value: 'Foot 45 min', dur: 45, price: 4400, en: 'Foot 45 min', jp: '足つぼ 45分', cn: '足底 45分' },
-        { value: 'Foot 60 min', dur: 60, price: 5500, en: 'Foot 60 min', jp: '足つぼ 60分', cn: '足底 60分' }
-      ]},
-      { label: { en: 'Sets', jp: 'セット', cn: '套餐' }, items: [
-        { value: 'Head+Shoulder 60 min', dur: 60, price: 5500, en: 'Head+shoulder 60', jp: 'ヘッド＋首肩60', cn: '头＋肩颈60' },
-        { value: 'Head30+Foot30 60 min', dur: 60, price: 5500, en: 'Head+foot 30+30', jp: 'ヘッド30＋足30', cn: '头30＋足30' },
-        { value: 'Head30+Body60 90 min', dur: 90, price: 7500, en: 'Head30+body60', jp: 'ヘッド30＋全身60', cn: '头30＋全身60' },
-        { value: 'Combo A 60 min', dur: 60, price: 5500, en: 'Combo A 60', jp: '組合せA 60', cn: '套餐A 60' },
-        { value: 'Combo B 75 min', dur: 75, price: 6500, en: 'Combo B 75', jp: '組合せB 75', cn: '套餐B 75' },
-        { value: 'Combo C 90 min', dur: 90, price: 7500, en: 'Combo C 90', jp: '組合せC 90', cn: '套餐C 90' },
-        { value: 'Set 120 min', dur: 120, price: 10800, en: 'Set 120', jp: 'セット120', cn: '套餐120' },
-        { value: 'Set 140 min', dur: 140, price: 13200, en: 'Set 140', jp: 'セット140', cn: '套餐140' },
-        { value: 'Aroma Set 120 min', dur: 120, price: 14000, en: 'Aroma set 120', jp: 'アロマセット120', cn: '精油套餐120' },
-        { value: 'Head30+Aroma60 90 min', dur: 90, price: 10800, en: 'Head30+aroma60', jp: 'ヘッド30＋アロマ60', cn: '头30＋精油60' }
+      { label: { en: 'Sets', jp: 'セット', cn: '组合套餐' }, items: [
+        { value: 'Foot30+Body30 60 min', dur: 60, price: 6000, en: 'Foot+Body 30+30', jp: '足裏30＋ボディ30', cn: '足底30＋身体30' },
+        { value: 'Foot45+Body45 90 min', dur: 90, price: 8400, en: 'Foot+Body 45+45', jp: '足裏45＋ボディ45', cn: '足底45＋身体45' },
+        { value: 'Foot45+Aroma45 90 min', dur: 90, price: 10000, en: 'Foot+Aroma Oil 45+45', jp: '足裏45＋アロマ45', cn: '足底45＋精油45' }
       ]}
     ];
 
