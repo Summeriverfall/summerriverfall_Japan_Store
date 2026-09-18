@@ -298,7 +298,7 @@ ul { list-style: none; }
   font-weight: 500;
   line-height: 1.2;
   letter-spacing: 0.02em;
-  text-wrap: balance;
+  text-wrap: wrap;
   margin-bottom: 1rem;
 }
 .hero-sub {
@@ -1291,7 +1291,6 @@ ul { list-style: none; }
 
 @media (max-width: 600px) {
   .section-title br { display: none; }
-  .hero h1 br { display: none; }
   .opt-group-media {
     aspect-ratio: 2 / 1;
     max-height: 180px;
