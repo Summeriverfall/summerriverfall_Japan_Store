@@ -282,6 +282,10 @@ function parseAddonIndexes(params, addonsList) {
   return set;
 }
 
+function isTouchBooking() {
+  return window.matchMedia("(pointer: coarse)").matches || window.matchMedia("(max-width: 720px)").matches;
+}
+
 function fullNameIfTruncated(option) {
   if (!option) return "";
   const full = optionLabel(option);
@@ -289,10 +293,8 @@ function fullNameIfTruncated(option) {
 }
 
 function renderCourseOptions(list, selectedIndex, copy) {
-  const optionTag = (option, index) => {
-    const full = optionLabel(option);
-    return `<option value="${index}" title="${escapeHtml(full)}"${index === selectedIndex ? " selected" : ""}>${escapeHtml(shortOptionLabel(option))}</option>`;
-  };
+  const optionTag = (option, index) =>
+    `<option value="${index}"${index === selectedIndex ? " selected" : ""}>${escapeHtml(shortOptionLabel(option))}</option>`;
   const groupTag = (group, label) => {
     const options = list
       .map((option, index) => (option.group === group ? optionTag(option, index) : ""))
@@ -305,6 +307,108 @@ function renderCourseOptions(list, selectedIndex, copy) {
     groupTag("single", copy.singleGroup),
     groupTag("combo", copy.comboGroup)
   ].join("");
+}
+
+function renderPickerMenu(list, copy) {
+  const item = (option, index) => {
+    if (!fullNameIfTruncated(option)) {
+      return `<button type="button" class="booking-picker__option" role="option" data-index="${index}">${escapeHtml(optionLabel(option))}</button>`;
+    }
+    return `
+    <button type="button" class="booking-picker__option is-long" role="option" data-index="${index}">
+      <span class="booking-picker__name">${escapeHtml(option.service)}</span>
+      <span class="booking-picker__meta">${escapeHtml([option.duration, option.price].filter(Boolean).join(" · "))}</span>
+    </button>`;
+  };
+  const group = (key, label) => {
+    const body = list.map((option, index) => (option.group === key ? item(option, index) : "")).join("");
+    return body ? `<p class="booking-picker__group">${escapeHtml(label)}</p>${body}` : "";
+  };
+  return [
+    list.map((option, index) => (option.group === "custom" ? item(option, index) : "")).join(""),
+    group("single", copy.singleGroup),
+    group("combo", copy.comboGroup)
+  ].join("");
+}
+
+function coursePickerMarkup(selectName, selectId, selectedIndex, list, copy) {
+  const idAttr = selectId ? ` id="${selectId}"` : "";
+  return `
+    <div class="booking-select-tip booking-picker">
+      <select class="booking-picker__native" name="${selectName}"${idAttr} required>
+        ${renderCourseOptions(list, selectedIndex, copy)}
+      </select>
+      <button type="button" class="booking-picker__button" aria-haspopup="listbox" aria-expanded="false">
+        <span class="booking-picker__label">${escapeHtml(copy.choose)}</span>
+      </button>
+      <div class="booking-picker__menu" hidden role="listbox">
+        ${renderPickerMenu(list, copy)}
+      </div>
+    </div>`;
+}
+
+function closeCoursePicker(root) {
+  if (!root) return;
+  root.classList.remove("is-open");
+  const menu = root.querySelector(".booking-picker__menu");
+  const button = root.querySelector(".booking-picker__button");
+  if (menu) menu.hidden = true;
+  if (button) button.setAttribute("aria-expanded", "false");
+}
+
+function bindCoursePickers(scope, list, copy) {
+  scope.querySelectorAll(".booking-picker").forEach((root) => {
+    if (root.dataset.bound === "1") return;
+    root.dataset.bound = "1";
+    const select = root.querySelector("select");
+    const button = root.querySelector(".booking-picker__button");
+    const menu = root.querySelector(".booking-picker__menu");
+    const labelEl = root.querySelector(".booking-picker__label");
+    if (!select || !button || !menu || !labelEl) return;
+
+    const sync = () => {
+      const option = select.value === "" ? null : list[Number(select.value)] || null;
+      const long = !!(option && fullNameIfTruncated(option));
+      button.classList.toggle("is-placeholder", !option);
+      button.classList.toggle("is-long", long);
+      if (!option) {
+        labelEl.textContent = copy.choose;
+      } else if (!long) {
+        labelEl.textContent = optionLabel(option);
+      } else {
+        labelEl.innerHTML = `<span class="booking-picker__name">${escapeHtml(option.service)}</span><span class="booking-picker__meta">${escapeHtml([option.duration, option.price].filter(Boolean).join(" · "))}</span>`;
+      }
+      menu.querySelectorAll(".booking-picker__option").forEach((el) => {
+        el.classList.toggle("is-selected", el.dataset.index === select.value);
+      });
+    };
+
+    button.addEventListener("click", (event) => {
+      event.preventDefault();
+      const willOpen = menu.hidden;
+      document.querySelectorAll(".booking-picker.is-open").forEach((other) => {
+        if (other !== root) closeCoursePicker(other);
+      });
+      if (willOpen) {
+        menu.hidden = false;
+        root.classList.add("is-open");
+        button.setAttribute("aria-expanded", "true");
+      } else {
+        closeCoursePicker(root);
+      }
+    });
+
+    menu.addEventListener("click", (event) => {
+      const optionBtn = event.target.closest(".booking-picker__option");
+      if (!optionBtn) return;
+      select.value = optionBtn.dataset.index;
+      select.dispatchEvent(new Event("change", { bubbles: true }));
+      closeCoursePicker(root);
+    });
+
+    select.addEventListener("change", sync);
+    sync();
+  });
 }
 
 function pad2(n) {
@@ -389,6 +493,8 @@ function renderBooking() {
   const { list, selectedIndex, hasCustom } = buildCourseList(params);
   const addonsList = addonOptions(params.lang);
   const preselectedAddons = parseAddonIndexes(params, addonsList);
+  const touchBooking = isTouchBooking();
+  document.documentElement.classList.toggle("is-touch-booking", touchBooking);
   document.documentElement.lang = params.lang === "jp" ? "ja" : params.lang === "kr" ? "ko" : params.lang === "tw" ? "zh-Hant" : params.lang === "cn" ? "zh-CN" : "en";
 
   const languageLinks = BOOKING_LANGS.map(([key, label]) => {
@@ -413,14 +519,10 @@ function renderBooking() {
           <span>${copy.name}</span>
           <input type="text" name="name" placeholder="${escapeHtml(copy.namePlaceholder)}" value="${escapeHtml(params.name)}" autocomplete="name" required>
         </label>
-        <label class="booking-field">
+        <div class="booking-field">
           <span>${copy.service}</span>
-          <div class="booking-select-tip">
-            <select name="course" id="booking-course" required>
-              ${renderCourseOptions(list, selectedIndex, copy)}
-            </select>
-          </div>
-        </label>
+          ${coursePickerMarkup("course", "booking-course", selectedIndex, list, copy)}
+        </div>
         <div class="booking-summary" aria-label="${copy.selected}">
           <dl>
             <div class="booking-summary__stacked"><dt>${copy.service}</dt><dd id="summary-service">-</dd></div>
@@ -432,11 +534,14 @@ function renderBooking() {
           <h2>${copy.addonsTitle}</h2>
           <p class="booking-addons__hint">${copy.addonsHint}</p>
           ${addonsList.map((addon, index) => {
-            const tip = fullNameIfTruncated(addon);
+            const long = !!fullNameIfTruncated(addon);
+            const body = long
+              ? `<span class="booking-addon__text is-long"><span class="booking-addon__name">${escapeHtml(addon.service)}</span><span class="booking-addon__meta">${escapeHtml([addon.duration, addon.price].filter(Boolean).join(" · "))}</span></span>`
+              : `<span>${escapeHtml(optionLabel(addon))}</span>`;
             return `
-            <label class="booking-addon"${tip ? ` data-tip="${escapeHtml(tip)}"` : ""}>
+            <label class="booking-addon">
               <input type="checkbox" name="addon" value="${index}"${preselectedAddons.has(String(index)) ? " checked" : ""}>
-              <span>${escapeHtml(shortOptionLabel(addon))}</span>
+              ${body}
             </label>
           `;
           }).join("")}
@@ -531,14 +636,10 @@ function renderBooking() {
     }
     const oldValues = Array.from(additionalCourseFields.querySelectorAll("select")).map((select) => select.value);
     additionalCourseFields.innerHTML = Array.from({ length: requiredFields }, (_, index) => `
-      <label class="booking-field">
+      <div class="booking-field">
         <span>${copy.guestCourse(index + 2)}</span>
-        <div class="booking-select-tip">
-          <select name="guestCourse${index + 2}" required>
-            ${renderCourseOptions(list, Number(oldValues[index] ?? params.guestCourses[index] ?? -1), copy)}
-          </select>
-        </div>
-      </label>
+        ${coursePickerMarkup(`guestCourse${index + 2}`, "", Number(oldValues[index] ?? params.guestCourses[index] ?? -1), list, copy)}
+      </div>
     `).join("");
     additionalCourseFields.dataset.count = String(requiredFields);
   }
@@ -569,14 +670,34 @@ function renderBooking() {
     const wrap = select && select.closest(".booking-select-tip");
     if (!wrap) return;
     const option = select.value === "" ? null : list[Number(select.value)] || null;
+    const full = option ? optionLabel(option) : "";
     const tip = fullNameIfTruncated(option);
+    const note = wrap.querySelector(".booking-fullname");
+    if (isTouchBooking()) {
+      wrap.removeAttribute("data-tip");
+      if (note) {
+        if (tip) {
+          note.hidden = false;
+          note.textContent = full;
+        } else {
+          note.hidden = true;
+          note.textContent = "";
+        }
+      }
+      return;
+    }
     if (tip) wrap.setAttribute("data-tip", tip);
     else wrap.removeAttribute("data-tip");
+    if (note) {
+      note.hidden = true;
+      note.textContent = "";
+    }
   }
 
   function refresh() {
     syncDateFilled();
     syncGuestCourseFields();
+    bindCoursePickers(bookingForm, list, copy);
     const course = selectedCourse();
     document.getElementById("summary-service").textContent = course ? course.service : "-";
     document.getElementById("summary-service").title = course ? course.service : "";
@@ -611,6 +732,11 @@ function renderBooking() {
 
   bookingForm.addEventListener("input", refresh);
   bookingForm.addEventListener("change", refresh);
+  document.addEventListener("pointerdown", (event) => {
+    document.querySelectorAll(".booking-picker.is-open").forEach((picker) => {
+      if (!picker.contains(event.target)) closeCoursePicker(picker);
+    });
+  });
   refresh();
 
   document.getElementById("booking-langs").addEventListener("click", (event) => {
