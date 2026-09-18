@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- <script src="/shops/pv-track.js"></script> -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-FCMYZE0ERW"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-FCMYZE0ERW', {
+      store: 'ashiyu-kagurazaka',
+      page_type: 'booking'
+    });
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Book your appointment at ashiyu">
+  <title>Book Appointment — ashiyu</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;600&family=Noto+Sans+SC:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --ink: #2c2c2c; --ink-soft: #666666; --brand: #8b6f47; --brand-deep: #6b5538;
+      --gold: #d4a574; --gold-pale: #e8d4b8; --cream: #fafafa; --white: #ffffff;
+      --font-display: "Playfair Display", serif;
+      --font-body: "Noto Sans JP", "Noto Sans SC", sans-serif;
+    }
+    html[lang="zh-CN"] { --font-body: "Noto Sans SC", "Noto Sans JP", sans-serif; }
+    body {
+      font-family: var(--font-body); font-weight: 400;
+      background: radial-gradient(circle at 15% 10%, rgba(212,165,116,0.16), transparent 40%),
+        radial-gradient(circle at 88% 90%, rgba(139,111,71,0.10), transparent 45%), var(--cream);
+      color: var(--ink); min-height: 100vh; padding: 40px 20px; overflow-x: hidden;
+    }
+    .booking-container { max-width: 620px; width: 100%; margin: 0 auto; min-width: 0; }
+    .booking-top { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 2rem; }
+    .back-link { display: inline-flex; align-items: center; gap: 8px; color: var(--ink-soft); text-decoration: none; font-size: 0.9rem; }
+    .lang-switch { display: flex; align-items: center; gap: 0.2rem; }
+    .lang-switch button { font-size: 0.7rem; letter-spacing: 0.08em; color: var(--ink-soft); padding: 0.35rem 0.55rem; border: none; background: transparent; cursor: pointer; font-family: inherit; }
+    .lang-switch button.active { color: var(--brand); border-bottom: 1px solid var(--gold); }
+    .booking-header { text-align: center; margin-bottom: 2.4rem; }
+    .brand-badge { display: inline-block; border: 1px solid var(--gold); padding: 7px 18px; margin-bottom: 1.1rem; font-size: 0.66rem; color: var(--brand); font-weight: 500; letter-spacing: 0.3em; text-transform: uppercase; }
+    .booking-title { font-family: var(--font-display); font-size: clamp(2rem, 5vw, 2.6rem); font-weight: 500; letter-spacing: 0.06em; margin-bottom: 0.4rem; }
+    .booking-subtitle { font-size: 0.92rem; color: var(--ink-soft); }
+    .booking-card { background: var(--white); border: 1px solid var(--gold-pale); padding: 2.5rem; box-shadow: 0 24px 60px rgba(36,26,18,0.1); min-width: 0; max-width: 100%; overflow-x: hidden; }
+    .form-group { margin-bottom: 1.6rem; }
+    .form-label { display: block; font-size: 0.74rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: var(--brand); margin-bottom: 0.5rem; }
+    .form-input, .form-select { width: 100%; padding: 13px 15px; border: 1px solid var(--gold-pale); font-size: 1rem; font-family: inherit; color: var(--ink); background: var(--cream); }
+    #serviceGroup { overflow-x: hidden; }
+    #service, .guest-service-row .form-select { font-size: 1rem; line-height: 1.35; padding-right: 2rem; max-width: 100%; }
+    .date-wrap { display: grid; width: 100%; border: 1px solid var(--gold-pale); background: var(--cream); }
+    .date-wrap .form-input { border: 0; background: transparent; }
+    #date { color: var(--ink-soft); font-weight: 300; }
+    #date.is-filled { color: var(--ink); font-weight: 400; }
+    #hintTime { display: none; }
+    .form-input:focus, .form-select:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px rgba(212,165,116,0.18); background: var(--white); }
+    .form-error { display: none; color: #b42318; font-size: 0.78rem; margin-top: 0.4rem; }
+    .form-group.error .form-error { display: block; }
+    .form-hint { font-size: 0.78rem; font-weight: 300; line-height: 1.55; color: var(--ink-soft); }
+    .message-preview { margin: 1.6rem 0; padding: 1rem 1.1rem; border: 1px dashed var(--gold-pale); background: #fcfaf6; }
+    .message-preview-head { display: flex; align-items: center; gap: 8px; font-size: 0.78rem; color: var(--brand); margin-bottom: 0.6rem; }
+    .message-preview-head svg { width: 16px; height: 16px; fill: #25D366; }
+    .message-preview-body { white-space: pre-wrap; font-size: 0.86rem; line-height: 1.6; display: none; }
+    .message-preview-hint { font-size: 0.8rem; color: var(--ink-soft); }
+    .message-preview.ready .message-preview-body { display: block; }
+    .message-preview.ready .message-preview-hint { display: none; }
+    .booking-notice { display: none; }
+    .payment-note { font-size: 0.82rem; color: var(--ink-soft); line-height: 1.6; margin: 1.2rem 0 1.4rem; text-align: center; }
+    .submit-button { width: 100%; border: 0; background: #25D366; color: #fff; padding: 14px 16px; font-size: 1rem; font-family: inherit; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; }
+    .submit-button svg { width: 20px; height: 20px; fill: #fff; }
+    .success-message { display: none; background: #e8f7ee; color: #146c2e; padding: 0.8rem 1rem; margin-bottom: 1rem; font-size: 0.88rem; }
+    .success-message.show { display: block; }
+    .additional-services { display: none; margin-bottom: 1rem; }
+    .additional-services.show { display: block; }
+    .additional-services h4 { font-size: 0.85rem; font-weight: 500; color: var(--brand); margin-bottom: 1rem; }
+    .guest-service-row { background: var(--cream); padding: 1rem; margin-bottom: 0.7rem; }
+    .guest-label { font-size: 0.8rem; color: var(--ink-soft); margin-bottom: 0.45rem; font-weight: 500; }
+    .same-package-label { display: flex; align-items: center; gap: 8px; font-size: 0.88rem; }
+    @media (max-width: 768px) { body { padding: 24px 15px; } .booking-card { padding: 2rem 1.4rem; } }
+  </style>
+</head>
+<body>
+  <div class="booking-container">
+    <div class="booking-top">
+      <a href="landing.html" class="back-link" id="backLink">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span id="backLinkText">Back to Home</span>
+      </a>
+      <div class="lang-switch" role="group" aria-label="Language">
+        <button type="button" data-lang="cn">中文</button>
+        <button type="button" data-lang="en" class="active">EN</button>
+        <button type="button" data-lang="jp">日本語</button>
+      </div>
+    </div>
+    <div class="booking-header">
+      <div class="brand-badge" id="brandBadge">Book Your Appointment</div>
+      <h1 class="booking-title">ashiyu</h1>
+      <p class="booking-subtitle" id="bookingSubtitle">Fill in the form below to book your appointment</p>
+    </div>
+    <div class="booking-card">
+      <div class="success-message" id="successMessage"></div>
+      <form id="bookingForm">
+        <div class="form-group" id="serviceGroup">
+          <label for="service" class="form-label" id="labelService">Course *</label>
+          <select id="service" name="service" class="form-select" required></select>
+          <div class="form-error" id="errorService">Please select a course</div>
+        </div>
+        <div class="form-group" id="dateGroup">
+          <label for="date" class="form-label" id="labelDate">Date *</label>
+          <div class="date-wrap"><input type="date" id="date" name="date" class="form-input" required></div>
+          <div class="form-error" id="errorDate">Please select a date</div>
+        </div>
+        <div class="form-group" id="timeGroup">
+          <label for="time" class="form-label" id="labelTime">Time *</label>
+          <select id="time" name="time" class="form-select" required></select>
+          <div class="form-hint" id="hintTime" hidden></div>
+          <div class="form-error" id="errorTime">Please select a time</div>
+        </div>
+        <div class="form-group" id="guestsGroup">
+          <label for="guests" class="form-label" id="labelGuests">Number of Guests *</label>
+          <select id="guests" name="guests" class="form-select" required></select>
+          <div class="form-error" id="errorGuests">Please select number of guests</div>
+        </div>
+        <div class="form-group" id="nameGroup">
+          <label for="name" class="form-label" id="labelName">Name *</label>
+          <input type="text" id="name" name="name" class="form-input" placeholder="Enter your name" required>
+          <div class="form-error" id="errorName">Please enter your name</div>
+        </div>
+        <div class="form-group" id="samePackageGroup" style="display:none;">
+          <label class="same-package-label">
+            <input type="checkbox" id="samePackage" name="samePackage" checked>
+            <span id="samePackageText">All guests choose the same course</span>
+          </label>
+        </div>
+        <div class="additional-services" id="additionalServices">
+          <h4 id="additionalServicesTitle">Additional Guests' Courses</h4>
+          <div id="additionalServicesContainer"></div>
+        </div>
+        <div class="message-preview" id="messagePreview">
+          <div class="message-preview-head"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.884-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg><span id="previewTitle">WhatsApp Message Preview</span></div>
+          <pre class="message-preview-body" id="previewBody"></pre>
+          <p class="message-preview-hint" id="previewHint">Complete all required fields above to preview your message.</p>
+        </div>
+        <aside class="booking-notice" hidden></aside>
+        <p class="payment-note" id="paymentNote">11:00 – 23:00 · Last booking 22:30 · Closed 1–3 Jan<br>Tel <a href="tel:+81332680966" style="color:inherit">03-3268-0966</a></p>
+        <button type="submit" class="submit-button" id="submitButton">
+          <span class="whatsapp-icon"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.884-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg></span>
+          <span id="submitButtonText">Submit &amp; Open WhatsApp</span>
+        </button>
+      </form>
+    </div>
+  </div>
+  <script>
+    var WHATSAPP_NUMBER = '85290744644';
+    fetch('whatsapp-config.json', { cache: 'no-store' })
+      .then(function (r) { return r.json(); })
+      .then(function (c) { var num = c && c[c.use]; if (num && /^\d{8,15}$/.test(num)) WHATSAPP_NUMBER = num; })
+      .catch(function () {});
+    var currentLang = 'en';
+    var serviceInfo = {
+      "Foot 45 min": 5000,
+      "Foot 60 min": 6000,
+      "Foot 90 min": 9000,
+      "Seitai 45 min": 5000,
+      "Seitai 60 min": 6000,
+      "Seitai 90 min": 9000,
+      "Oil 60 min": 8000,
+      "Oil 90 min": 11000,
+      "Oil 120 min": 13000,
+      "Ginger Seitai 60 min": 7000,
+      "Manager Ginger 90 min": 9400,
+      "Warm Fatigue 120 min": 12000,
+      "Anti-Swelling 90 min": 10300,
+      "Warm Detox 120 min": 13000,
+      "Calf Oil Foot 65 min": 7000,
+      "Foot HandHead 65 min": 7000,
+      "Foot Body 60 min": 6800,
+      "Foot Body 90 min": 8900,
+      "Foot Oil 90 min": 10500,
+      "Premium Custom 150 min": 16500
+    };
+    var serviceGroups = [
+      { label: { en: "Foot Reflexology", jp: "足つぼ", cn: "足部反射" }, items: [
+        { value: "Foot 45 min", dur: 45, price: 5000, en: "45 min", jp: "45分", cn: "45分钟" },
+        { value: "Foot 60 min", dur: 60, price: 6000, en: "60 min", jp: "60分", cn: "60分钟" },
+        { value: "Foot 90 min", dur: 90, price: 9000, en: "90 min", jp: "90分", cn: "90分钟" }
+      ]},
+      { label: { en: "Shiatsu", jp: "整体", cn: "整体" }, items: [
+        { value: "Seitai 45 min", dur: 45, price: 5000, en: "45 min", jp: "45分", cn: "45分钟" },
+        { value: "Seitai 60 min", dur: 60, price: 6000, en: "60 min", jp: "60分", cn: "60分钟" },
+        { value: "Seitai 90 min", dur: 90, price: 9000, en: "90 min", jp: "90分", cn: "90分钟" }
+      ]},
+      { label: { en: "Oil Massage", jp: "オイル", cn: "精油" }, items: [
+        { value: "Oil 60 min", dur: 60, price: 8000, en: "60 min", jp: "60分", cn: "60分钟" },
+        { value: "Oil 90 min", dur: 90, price: 11000, en: "90 min", jp: "90分", cn: "90分钟" },
+        { value: "Oil 120 min", dur: 120, price: 13000, en: "120 min", jp: "120分", cn: "120分钟" }
+      ]},
+      { label: { en: "Ginger Detox", jp: "生姜発汗コース", cn: "生姜发汗" }, items: [
+        { value: "Ginger Seitai 60 min", dur: 60, price: 7000, en: "Seitai & Ginger", jp: "整体＋生姜", cn: "整体＋生姜" },
+        { value: "Manager Ginger 90 min", dur: 90, price: 9400, en: "Manager's Ginger", jp: "店長おすすめ生姜", cn: "店长推荐生姜" },
+        { value: "Warm Fatigue 120 min", dur: 120, price: 12000, en: "Warm Fatigue", jp: "温活＋疲労回復", cn: "温活＋疲劳恢复" },
+        { value: "Anti-Swelling 90 min", dur: 90, price: 10300, en: "Swelling & Warm", jp: "むくみと冷え対策", cn: "浮肿与冷感护理" },
+        { value: "Warm Detox 120 min", dur: 120, price: 13000, en: "Warming & Detox", jp: "温活＋デトックス", cn: "温活＋排毒" }
+      ]},
+      { label: { en: "Combination", jp: "組合せコース", cn: "组合课程" }, items: [
+        { value: "Calf Oil Foot 65 min", dur: 65, price: 7000, en: "Calf oil + Foot", jp: "脹脛オイル＋足つぼ", cn: "小腿精油＋足部" },
+        { value: "Foot HandHead 65 min", dur: 65, price: 7000, en: "Foot + Hand/Head", jp: "足つぼ＋手または頭", cn: "足部＋手或头" },
+        { value: "Foot Body 60 min", dur: 60, price: 6800, en: "Foot + Body", jp: "足つぼ＋整体", cn: "足部＋整体" },
+        { value: "Foot Body 90 min", dur: 90, price: 8900, en: "Foot + Body", jp: "足つぼ＋整体", cn: "足部＋整体" },
+        { value: "Foot Oil 90 min", dur: 90, price: 10500, en: "Foot + Oil", jp: "足つぼ＋オイル", cn: "足部＋精油" }
+      ]},
+      { label: { en: "Premium Custom", jp: "贅沢ご褒美コース", cn: "豪华自选" }, items: [
+        { value: "Premium Custom 150 min", dur: 150, price: 16500, en: "Premium Custom", jp: "贅沢ご褒美", cn: "豪华自选" }
+      ]}
+    ];
+    var i18n = {
+      en: { htmlLang:'en', title:'Book Appointment — ashiyu', backLink:'Back to Home', brandBadge:'Book Your Appointment',
+        bookingSubtitle:'Fill in the form below to book your appointment',
+        successMessage:'Your booking information has been prepared. You will be redirected to WhatsApp shortly...',
+        labelService:'Course *', labelDate:'Date *', labelTime:'Time *', labelGuests:'Number of Guests *', labelName:'Name *',
+        selectCourse:'Select a course', selectTime:'Select a time', selectGuests:'Select number of guests', namePlaceholder:'Enter your name',
+        hintTime:'', errorService:'Please select a course', errorDate:'Please select a date', errorTime:'Please select a time',
+        errorTimeRange:'Please choose a time between 11:00 and 22:30.', errorClosed:'Closed 1–3 January. Please choose another date.',
+        errorGuests:'Please select number of guests', errorName:'Please enter your name',
+        samePackageText:'All guests choose the same course', additionalServicesTitle:"Additional Guests' Courses (if different)",
+        submitButton:'Submit & Open WhatsApp', redirecting:'Redirecting...',
+        previewTitle:'WhatsApp Message Preview', previewHint:'Complete all required fields above to preview your message.',
+        paymentNote:"11:00 – 23:00 · Last booking 22:30 · Closed 1–3 Jan<br>Tel <a href=\"tel:+81332680966\" style=\"color:inherit\">03-3268-0966</a>",
+        guestUnit: function(n){ return n + (n>1?' Guests':' Guest'); },
+        waIntro:"Hello, I would like to make a reservation at ashiyu Kagurazaka.\n\n",
+        waName:'Name', waDate:'Date', waTime:'Time', waGuests:'Number of Guests', waMainGuest:'Course',
+        waShop:'Shop', waShopValue:'ashiyu',
+        waAddress:'Address', waAddressValue:"〒162-0825 Tokyo, Shinjuku City, Kagurazaka, 3 Chome−2−12 摩耶ビル6F",
+        waSameCourse:'All guests choose the same course', waGuest:'Guest',
+        waGuestCourse: function(n){ return 'Guest '+n+' course'; }, waTotal:'Total', dateLocale:'en-US' },
+      jp: { htmlLang:'ja', title:'ご予約 — ashiyu', backLink:'ホームに戻る', brandBadge:'ご予約',
+        bookingSubtitle:'以下のフォームにご記入のうえ、ご予約ください',
+        successMessage:'予約内容を作成しました。まもなく WhatsApp へ移動します…',
+        labelService:'コース *', labelDate:'日付 *', labelTime:'時間 *', labelGuests:'人数 *', labelName:'お名前 *',
+        selectCourse:'コースを選択', selectTime:'時間を選択', selectGuests:'人数を選択', namePlaceholder:'お名前を入力',
+        hintTime:'', errorService:'コースを選択してください', errorDate:'日付を選択してください', errorTime:'時間を選択してください',
+        errorTimeRange:'最終受付（11:00〜22:30）の時間を選択してください。', errorClosed:'年始（1/1〜1/3）は休みです。別の日を選択してください。',
+        errorGuests:'人数を選択してください', errorName:'お名前を入力してください',
+        samePackageText:'全員同じコースを選択', additionalServicesTitle:'追加ゲストのコース（異なる場合）',
+        submitButton:'送信して WhatsApp を開く', redirecting:'移動中…',
+        previewTitle:'WhatsApp メッセージプレビュー', previewHint:'送信内容を確認するため、上記の必須項目をすべてご記入ください。',
+        paymentNote:"11:00〜23:00 · 最終受付 22:30 · 年始 1/1〜1/3 休み<br>Tel <a href=\"tel:+81332680966\" style=\"color:inherit\">03-3268-0966</a>",
+        guestUnit: function(n){ return n + '名'; },
+        waIntro:"こんにちは、ashiyu 神楽坂店のご予約を希望します。\n\n",
+        waName:'お名前', waDate:'日付', waTime:'時間', waGuests:'人数', waMainGuest:'コース',
+        waShop:'店舗', waShopValue:'ashiyu',
+        waAddress:'住所', waAddressValue:"〒162-0825 東京都新宿区神楽坂3-2-12 摩耶ビル6F",
+        waSameCourse:'全員同じコース', waGuest:'ゲスト',
+        waGuestCourse: function(n){ return 'ゲスト'+n+'のコース'; }, waTotal:'合計', dateLocale:'ja-JP' },
+      cn: { htmlLang:'zh-CN', title:'预约 — ashiyu', backLink:'返回首页', brandBadge:'在线预约',
+        bookingSubtitle:'请填写以下信息完成预约',
+        successMessage:'预约信息已生成，即将跳转至 WhatsApp…',
+        labelService:'项目 *', labelDate:'日期 *', labelTime:'时间 *', labelGuests:'人数 *', labelName:'姓名 *',
+        selectCourse:'请选择项目', selectTime:'请选择时间', selectGuests:'请选择人数', namePlaceholder:'请输入您的姓名',
+        hintTime:'', errorService:'请选择项目', errorDate:'请选择日期', errorTime:'请选择时间',
+        errorTimeRange:'请选择最终接待时间内（11:00〜22:30）的时间。', errorClosed:'年始 1/1–1/3 休息，请选择其他日期。',
+        errorGuests:'请选择人数', errorName:'请输入姓名',
+        samePackageText:'所有客人都选择相同项目', additionalServicesTitle:'其他客人的项目（如不同）',
+        submitButton:'提交并打开 WhatsApp', redirecting:'跳转中…',
+        previewTitle:'WhatsApp 消息预览', previewHint:'请先填写上方所有必填项，即可预览消息内容。',
+        paymentNote:"每天 11:00〜23:00 · 最终接待 22:30 · 年始 1/1–1/3 休息<br>Tel <a href=\"tel:+81332680966\" style=\"color:inherit\">03-3268-0966</a>",
+        guestUnit: function(n){ return n + ' 人'; },
+        waIntro:"您好，我想预约 ashiyu 神乐坂店。\n\n",
+        waName:'姓名', waDate:'日期', waTime:'时间', waGuests:'人数', waMainGuest:'项目',
+        waShop:'门店', waShopValue:'ashiyu',
+        waAddress:'地址', waAddressValue:"〒162-0825 东京都新宿区神乐坂3-2-12 摩耶ビル6F",
+        waSameCourse:'所有客人都选择相同项目', waGuest:'客人',
+        waGuestCourse: function(n){ return '客人'+n+'项目'; }, waTotal:'合计', dateLocale:'zh-CN' }
+    };
+    function t(k){ return i18n[currentLang][k]; }
+    function durLabel(dur){ return dur + (currentLang==='en' ? ' min' : (currentLang==='cn' ? '分钟' : '分')); }
+    function buildServiceOptionsHTML(selectedValue){
+      var html = '<option value="">' + t('selectCourse') + '</option>';
+      serviceGroups.forEach(function(g){
+        html += '<optgroup label="' + g.label[currentLang] + '">';
+        g.items.forEach(function(it){
+          var sel = it.value === selectedValue ? ' selected' : '';
+          html += '<option value="' + it.value + '"' + sel + '>' + it[currentLang] + ' ' + durLabel(it.dur) + ' — ¥' + it.price.toLocaleString() + '</option>';
+        });
+        html += '</optgroup>';
+      });
+      return html;
+    }
+    function buildGuestsOptionsHTML(selectedValue){
+      var html = '<option value="">' + t('selectGuests') + '</option>';
+      for (var i=1;i<=10;i++){
+        var sel = String(i)===selectedValue ? ' selected' : '';
+        html += '<option value="'+i+'"'+sel+'>'+t('guestUnit')(i)+'</option>';
+      }
+      return html;
+    }
+    function pad2(n){ return n<10 ? '0'+n : ''+n; }
+    function buildTimeOptions(selectedValue){
+      var html = '<option value="">' + t('selectTime') + '</option>';
+      var h, m;
+      for (h=11; h<=22; h++){
+        for (m=0;m<60;m+=5){
+          if (h===22 && m>30) break;
+          var v = pad2(h)+':'+pad2(m);
+          html += '<option value="'+v+'"'+(v===selectedValue?' selected':'')+'>'+v+'</option>';
+        }
+      }
+      return html;
+    }
+    function getInitialLang(){
+      var p = new URLSearchParams(window.location.search); var lang = p.get('lang');
+      if (lang==='cn'||lang==='jp'||lang==='en') return lang;
+      var ref = document.referrer;
+      if (ref.indexOf('/cn/')!==-1) return 'cn';
+      if (ref.indexOf('/jp/')!==-1) return 'jp';
+      return 'en';
+    }
+    function applyLang(lang){
+      currentLang = lang; var o = i18n[lang];
+      var sv = document.getElementById('service').value;
+      var gv = document.getElementById('guests').value;
+      var tv = document.getElementById('time').value;
+      document.documentElement.lang = o.htmlLang;
+      document.title = o.title;
+      document.getElementById('backLinkText').textContent = o.backLink;
+      document.getElementById('brandBadge').textContent = o.brandBadge;
+      document.getElementById('bookingSubtitle').textContent = o.bookingSubtitle;
+      document.getElementById('successMessage').textContent = o.successMessage;
+      document.getElementById('labelService').textContent = o.labelService;
+      document.getElementById('labelDate').textContent = o.labelDate;
+      document.getElementById('labelTime').textContent = o.labelTime;
+      document.getElementById('labelGuests').textContent = o.labelGuests;
+      document.getElementById('labelName').textContent = o.labelName;
+      document.getElementById('errorService').textContent = o.errorService;
+      document.getElementById('errorDate').textContent = o.errorDate;
+      document.getElementById('errorTime').textContent = o.errorTime;
+      document.getElementById('errorGuests').textContent = o.errorGuests;
+      document.getElementById('errorName').textContent = o.errorName;
+      document.getElementById('name').placeholder = o.namePlaceholder;
+      document.getElementById('samePackageText').textContent = o.samePackageText;
+      document.getElementById('additionalServicesTitle').textContent = o.additionalServicesTitle;
+      document.getElementById('submitButtonText').textContent = o.submitButton;
+      document.getElementById('previewTitle').textContent = o.previewTitle;
+      document.getElementById('previewHint').textContent = o.previewHint;
+      document.getElementById('paymentNote').innerHTML = o.paymentNote;
+      document.getElementById('service').innerHTML = buildServiceOptionsHTML(sv);
+      document.getElementById('guests').innerHTML = buildGuestsOptionsHTML(gv);
+      document.getElementById('time').innerHTML = buildTimeOptions(tv);
+      document.querySelectorAll('.lang-switch button').forEach(function(b){ b.classList.toggle('active', b.getAttribute('data-lang')===lang); });
+      document.getElementById('backLink').setAttribute('href', lang==='en' ? 'en/index.html' : (lang==='jp' ? 'jp/index.html' : 'cn/index.html'));
+      var url = new URL(window.location.href); url.searchParams.set('lang', lang); history.replaceState(null,'',url);
+      updateAdditionalServices();
+      updateMessagePreview();
+    }
+    var dateInput = document.getElementById('date');
+    dateInput.setAttribute('min', new Date().toISOString().split('T')[0]);
+    function isClosedDate(ds){
+      if (!ds) return false;
+      var d = new Date(ds+'T00:00:00');
+      return d.getMonth()===0 && d.getDate()>=1 && d.getDate()<=3;
+    }
+    function syncDateFilled(){
+      dateInput.classList.toggle('is-filled', !!dateInput.value);
+      if (isClosedDate(dateInput.value)){
+        document.getElementById('errorDate').textContent = t('errorClosed');
+        document.getElementById('dateGroup').classList.add('error');
+      } else if (dateInput.value) {
+        document.getElementById('errorDate').textContent = t('errorDate');
+        document.getElementById('dateGroup').classList.remove('error');
+      }
+    }
+    dateInput.addEventListener('input', syncDateFilled);
+    dateInput.addEventListener('change', syncDateFilled);
+    applyLang(getInitialLang());
+    syncDateFilled();
+    document.querySelectorAll('.lang-switch button').forEach(function(btn){
+      btn.addEventListener('click', function(){ applyLang(this.getAttribute('data-lang')); });
+    });
+    (function(){
+      var p = new URLSearchParams(window.location.search);
+      var svc = p.get('service');
+      if (svc){ var sel=document.getElementById('service'); for(var i=0;i<sel.options.length;i++){ if(sel.options[i].value===svc){ sel.options[i].selected=true; break; } } }
+      updateMessagePreview();
+    })();
+    document.getElementById('guests').addEventListener('change', updateAdditionalServices);
+    document.getElementById('samePackage').addEventListener('change', updateAdditionalServices);
+    function updateAdditionalServices(){
+      var guests = document.getElementById('guests').value;
+      var add = document.getElementById('additionalServices');
+      var cont = document.getElementById('additionalServicesContainer');
+      var spg = document.getElementById('samePackageGroup');
+      var spc = document.getElementById('samePackage');
+      if (!guests || guests==='1'){ add.classList.remove('show'); cont.innerHTML=''; spg.style.display='none'; updateMessagePreview(); return; }
+      spg.style.display='block';
+      if (spc.checked){ add.classList.remove('show'); cont.innerHTML=''; updateMessagePreview(); return; }
+      var n = parseInt(guests)-1, html='';
+      for (var i=1;i<=n;i++){
+        html += '<div class="guest-service-row"><div class="guest-label">'+t('waGuestCourse')(i+1)+'</div>' +
+                '<select name="guest'+i+'Service" class="form-select">'+buildServiceOptionsHTML('')+'</select></div>';
+      }
+      cont.innerHTML = html; add.classList.add('show'); updateMessagePreview();
+    }
+    function servicePrice(s){ return serviceInfo[s] || 0; }
+    function findItem(value){
+      for (var g=0;g<serviceGroups.length;g++){
+        for (var i=0;i<serviceGroups[g].items.length;i++){
+          if (serviceGroups[g].items[i].value===value) return serviceGroups[g].items[i];
+        }
+      }
+      return null;
+    }
+    function serviceLine(value){
+      var it = findItem(value);
+      if (!it) return value;
+      return it[currentLang] + ' ' + durLabel(it.dur);
+    }
+    function isTimeInHours(ts){
+      if (!ts) return false;
+      var p = ts.split(':'); var h = parseInt(p[0],10), m = parseInt(p[1],10);
+      return h>=11 && (h<22 || (h===22 && m<=30));
+    }
+    function validateForm(){
+      var ok = true;
+      document.querySelectorAll('.form-group').forEach(function(g){ g.classList.remove('error'); });
+      if (!document.getElementById('name').value.trim()){ document.getElementById('nameGroup').classList.add('error'); ok=false; }
+      if (!document.getElementById('date').value){
+        document.getElementById('errorDate').textContent = t('errorDate');
+        document.getElementById('dateGroup').classList.add('error'); ok=false;
+      } else if (isClosedDate(document.getElementById('date').value)){
+        document.getElementById('errorDate').textContent = t('errorClosed');
+        document.getElementById('dateGroup').classList.add('error'); ok=false;
+      }
+      var timeVal = document.getElementById('time').value;
+      if (!timeVal){ document.getElementById('errorTime').textContent = t('errorTime'); document.getElementById('timeGroup').classList.add('error'); ok=false; }
+      else if (!isTimeInHours(timeVal)){ document.getElementById('errorTime').textContent = t('errorTimeRange'); document.getElementById('timeGroup').classList.add('error'); ok=false; }
+      if (!document.getElementById('guests').value){ document.getElementById('guestsGroup').classList.add('error'); ok=false; }
+      if (!document.getElementById('service').value){ document.getElementById('serviceGroup').classList.add('error'); ok=false; }
+      return ok;
+    }
+    function formatDate(ds){ var d=new Date(ds+'T00:00:00'); return d.toLocaleDateString(t('dateLocale'),{year:'numeric',month:'long',day:'numeric'}); }
+    function isFormComplete(){
+      var ds = document.getElementById('date').value;
+      return document.getElementById('name').value.trim() && ds && !isClosedDate(ds) &&
+             document.getElementById('time').value && document.getElementById('guests').value && document.getElementById('service').value;
+    }
+    function buildWhatsAppMessage(fd){
+      var name=fd.get('name'), date=formatDate(fd.get('date')), time=fd.get('time');
+      var guests=fd.get('guests'), gc=parseInt(guests), main=fd.get('service');
+      var m = t('waIntro');
+      m += t('waShop')+': '+t('waShopValue')+'\n';
+      m += t('waName')+': '+name+'\n';
+      m += t('waDate')+': '+date+'\n';
+      m += t('waTime')+': '+time+'\n';
+      m += t('waGuests')+': '+guests+'\n';
+      var same = fd.get('samePackage')==='on';
+      var total = servicePrice(main);
+      if (gc>1 && !same){
+        m += t('waGuestCourse')(1)+': '+serviceLine(main)+' (¥'+servicePrice(main).toLocaleString()+')\n';
+        for (var i=1;i<gc;i++){
+          var gs=fd.get('guest'+i+'Service');
+          if(gs&&gs.trim()){
+            m += t('waGuestCourse')(i+1)+': '+serviceLine(gs)+' (¥'+servicePrice(gs).toLocaleString()+')\n';
+            total += servicePrice(gs);
+          }
+        }
+      } else {
+        m += t('waMainGuest')+': '+serviceLine(main)+' (¥'+servicePrice(main).toLocaleString()+')\n';
+        if (gc>1 && same){ m += t('waSameCourse')+'\n'; total = servicePrice(main)*gc; }
+      }
+      m += t('waAddress')+': '+t('waAddressValue')+'\n';
+      if (total>0){ m += '\n'+t('waTotal')+': ¥'+total.toLocaleString(); }
+      return m;
+    }
+    function updateMessagePreview(){
+      var ps=document.getElementById('messagePreview'), pb=document.getElementById('previewBody');
+      if (!isFormComplete()){ ps.classList.remove('ready'); pb.textContent=''; return; }
+      pb.textContent = buildWhatsAppMessage(new FormData(document.getElementById('bookingForm')));
+      ps.classList.add('ready');
+    }
+    document.getElementById('bookingForm').addEventListener('submit', function(e){
+      e.preventDefault();
+      if (!validateForm()) return;
+      var msg = encodeURIComponent(buildWhatsAppMessage(new FormData(this)));
+      var url = 'https://api.whatsapp.com/send/?phone=' + WHATSAPP_NUMBER + '&text=' + msg + '&type=phone_number&app_absent=0';
+      document.getElementById('successMessage').classList.add('show');
+      document.getElementById('submitButton').disabled = true;
+      document.getElementById('submitButtonText').textContent = t('redirecting');
+      setTimeout(function(){ window.open(url,'_blank'); }, 500);
+    });
+    document.getElementById('bookingForm').addEventListener('input', updateMessagePreview);
+    document.getElementById('bookingForm').addEventListener('change', updateMessagePreview);
+  </script>
+</body>
+</html>
