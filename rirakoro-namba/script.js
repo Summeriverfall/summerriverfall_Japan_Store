@@ -298,8 +298,15 @@ function bookingUrl(lang, service, duration, price) {
   return shopBookingHref(new URLSearchParams({ lang, service, duration, price }));
 }
 
-function bookingButton(lang, service, duration, price) {
+function bookingButton(lang, service, duration, price, type) {
   const label = BOOKING_LABELS[lang] || BOOKING_LABELS.en;
+  if (typeof isAddonItem === "function" && isAddonItem(duration, type)) {
+    const addons = addonOptions(lang);
+    const index = addons.findIndex((item) => item.service === service && item.duration === duration && item.price === price);
+    const query = new URLSearchParams({ lang });
+    if (index >= 0) query.set("addons", String(index));
+    return `<a class="menu-book-btn" href="${shopBookingHref(query)}">${label}</a>`;
+  }
   return `<a class="menu-book-btn" href="${bookingUrl(lang, service, duration, price)}">${label}</a>`;
 }
 
@@ -312,7 +319,7 @@ function renderSingleRow(copy, lang, service, duration, price, type) {
     <div class="menu-row">
       <span>${duration}${badge(type, copy)}</span>
       <strong>${price}</strong>
-      ${bookingButton(lang, service, duration, price)}
+      ${bookingButton(lang, service, duration, price, type)}
     </div>
   `;
 }

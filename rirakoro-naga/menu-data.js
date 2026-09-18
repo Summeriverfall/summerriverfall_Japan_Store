@@ -79,12 +79,17 @@ function localizeName(name, lang) {
   return name[lang] || name.en || "";
 }
 
+function isAddonItem(duration, type) {
+  return type === "extension" || /^\s*10\s*min/i.test(String(duration || ""));
+}
+
 function menuOptions(lang) {
   const options = [];
 
   SINGLE_MENU.forEach((group) => {
     const groupLabel = MENU_LABELS[group.key][lang] || MENU_LABELS[group.key].en;
-    group.items.forEach(([duration, price]) => {
+    group.items.forEach(([duration, price, type]) => {
+      if (isAddonItem(duration, type)) return;
       options.push({ group: "single", service: groupLabel, duration, price });
     });
   });
@@ -101,5 +106,17 @@ function menuOptions(lang) {
     });
   });
 
+  return options;
+}
+
+function addonOptions(lang) {
+  const options = [];
+  SINGLE_MENU.forEach((group) => {
+    const groupLabel = MENU_LABELS[group.key][lang] || MENU_LABELS[group.key].en;
+    group.items.forEach(([duration, price, type]) => {
+      if (!isAddonItem(duration, type)) return;
+      options.push({ group: "addon", service: groupLabel, duration, price });
+    });
+  });
   return options;
 }
