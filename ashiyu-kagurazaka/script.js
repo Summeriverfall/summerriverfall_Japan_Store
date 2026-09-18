@@ -100,14 +100,68 @@
     var book = group.querySelector(".opt-group-book");
     if (!book) return;
     var lang = book.getAttribute("data-lang") || "en";
+    var pickBox = group.querySelector(".premium-picks");
+    var countEl = group.querySelector(".premium-pick-count");
+    var hintEl = group.querySelector(".premium-pick-hint");
+    var hintWait = {
+      cn: "请先勾选 4 项，再点预约",
+      jp: "4つ選んでからご予約ください",
+      en: "Select 4 items, then book"
+    };
+    var hintOk = {
+      cn: "已选满 4 项",
+      jp: "4つ選択済み",
+      en: "4 items selected"
+    };
+    function selectedPicks() {
+      if (!pickBox) return [];
+      return Array.prototype.map.call(pickBox.querySelectorAll("input:checked"), function (el) {
+        return el.value;
+      });
+    }
+    function syncPicks() {
+      if (!pickBox) return;
+      var picks = selectedPicks();
+      var n = picks.length;
+      if (countEl) countEl.textContent = String(n);
+      pickBox.querySelectorAll("input").forEach(function (inp) {
+        var lab = inp.closest(".premium-pick");
+        var lock = !inp.checked && n >= 4;
+        inp.disabled = lock;
+        if (lab) lab.classList.toggle("is-disabled", lock);
+      });
+      if (hintEl) {
+        hintEl.textContent = n === 4 ? (hintOk[lang] || hintOk.en) : (hintWait[lang] || hintWait.en);
+        hintEl.classList.toggle("ok", n === 4);
+      }
+      book.classList.toggle("is-wait", n !== 4);
+    }
     function syncBook() {
       var selected = group.querySelector('input[type="radio"]:checked');
       if (!selected) return;
-      book.href = "../booking.html?lang=" + encodeURIComponent(lang) + "&service=" + encodeURIComponent(selected.value);
+      var href = "../booking.html?lang=" + encodeURIComponent(lang) + "&service=" + encodeURIComponent(selected.value);
+      if (pickBox) {
+        var picks = selectedPicks();
+        if (picks.length === 4) href += "&picks=" + encodeURIComponent(picks.join(","));
+      }
+      book.href = href;
     }
     group.querySelectorAll('input[type="radio"]').forEach(function (radio) {
       radio.addEventListener("change", syncBook);
     });
+    if (pickBox) {
+      pickBox.addEventListener("change", function () {
+        syncPicks();
+        syncBook();
+      });
+      book.addEventListener("click", function (e) {
+        if (selectedPicks().length !== 4) {
+          e.preventDefault();
+          if (hintEl) hintEl.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        }
+      });
+      syncPicks();
+    }
     syncBook();
   });
 

@@ -78,6 +78,14 @@
     .guest-service-row { background: var(--cream); padding: 1rem; margin-bottom: 0.7rem; }
     .guest-label { font-size: 0.8rem; color: var(--ink-soft); margin-bottom: 0.45rem; font-weight: 500; }
     .same-package-label { display: flex; align-items: center; gap: 8px; font-size: 0.88rem; }
+    .premium-pick-list { display: grid; gap: 0.35rem; }
+    .premium-pick-item { display: flex; align-items: center; gap: 0.65rem; padding: 0.7rem 0.85rem; background: var(--cream); border: 1px solid var(--gold-pale); cursor: pointer; font-size: 1rem; line-height: 1.35; }
+    .premium-pick-item input { appearance: none; -webkit-appearance: none; width: 1.1rem; height: 1.1rem; border: 1.5px solid var(--gold); border-radius: 3px; background: var(--white); flex-shrink: 0; display: grid; place-items: center; margin: 0; }
+    .premium-pick-item input:checked { background: var(--brand); border-color: var(--brand); }
+    .premium-pick-item input:checked::after { content: ""; width: 0.32rem; height: 0.52rem; border: solid #fff; border-width: 0 1.6px 1.6px 0; transform: rotate(45deg) translateY(-1px); }
+    .premium-pick-item.is-disabled { opacity: 0.4; pointer-events: none; }
+    #premiumPickHint { margin-bottom: 0.55rem; }
+    #premiumPickGroup { overflow-x: hidden; }
     @media (max-width: 768px) { body { padding: 24px 15px; } .booking-card { padding: 2rem 1.4rem; } }
   </style>
 </head>
@@ -106,6 +114,12 @@
           <label for="service" class="form-label" id="labelService">Course *</label>
           <select id="service" name="service" class="form-select" required></select>
           <div class="form-error" id="errorService">Please select a course</div>
+        </div>
+        <div class="form-group" id="premiumPickGroup" hidden>
+          <label class="form-label" id="labelPremiumPicks">Choose 4 items *</label>
+          <p class="form-hint" id="premiumPickHint">Select exactly 4 options</p>
+          <div class="premium-pick-list" id="premiumPickList"></div>
+          <div class="form-error" id="errorPremiumPicks">Please select exactly 4 items</div>
         </div>
         <div class="form-group" id="dateGroup">
           <label for="date" class="form-label" id="labelDate">Date *</label>
@@ -181,6 +195,16 @@
       "Foot Oil 90 min": 10500,
       "Premium Custom 150 min": 16500
     };
+    var PREMIUM_VALUE = "Premium Custom 150 min";
+    var PREMIUM_PICKS = [
+      { id: "foot", en: "Foot Reflexology", jp: "足つぼ", cn: "足部按摩" },
+      { id: "seitai", en: "Shiatsu Massage", jp: "整体", cn: "整体按摩" },
+      { id: "oil", en: "Oil Massage", jp: "オイル", cn: "精油按摩" },
+      { id: "head", en: "Head Massage", jp: "頭部・眼精疲労", cn: "头部・眼部疲劳缓解" },
+      { id: "hand", en: "Hand Massage", jp: "手・腕", cn: "手・臂按摩" },
+      { id: "ginger", en: "Ginger Compress", jp: "生姜湿布", cn: "生姜湿布" },
+      { id: "scrub", en: "Foot Scrub Care", jp: "角質ケア", cn: "角质护理" }
+    ];
     var serviceGroups = [
       { label: { en: "Foot Reflexology", jp: "足つぼ", cn: "足部按摩" }, items: [
         { value: "Foot 45 min", dur: 45, price: 5000, en: "45 min", jp: "45分", cn: "45分钟" },
@@ -234,7 +258,9 @@
         waShop:'Shop', waShopValue:'ashiyu',
         waAddress:'Address', waAddressValue:"〒162-0825 Tokyo, Shinjuku City, Kagurazaka, 3 Chome−2−12 摩耶ビル6F",
         waSameCourse:'All guests choose the same course', waGuest:'Guest',
-        waGuestCourse: function(n){ return 'Guest '+n+' course'; }, waTotal:'Total', dateLocale:'en-US' },
+        waGuestCourse: function(n){ return 'Guest '+n+' course'; }, waTotal:'Total', dateLocale:'en-US',
+        labelPremiumPicks:'Choose 4 items *', premiumPickHint:'Select exactly 4 options',
+        errorPremiumPicks:'Please select exactly 4 items', waPicks:'Selected items' },
       jp: { htmlLang:'ja', title:'ご予約 — ashiyu', backLink:'ホームに戻る', brandBadge:'ご予約',
         bookingSubtitle:'以下のフォームにご記入のうえ、ご予約ください',
         successMessage:'予約内容を作成しました。まもなく WhatsApp へ移動します…',
@@ -253,7 +279,9 @@
         waShop:'店舗', waShopValue:'ashiyu',
         waAddress:'住所', waAddressValue:"〒162-0825 東京都新宿区神楽坂3-2-12 摩耶ビル6F",
         waSameCourse:'全員同じコース', waGuest:'ゲスト',
-        waGuestCourse: function(n){ return 'ゲスト'+n+'のコース'; }, waTotal:'合計', dateLocale:'ja-JP' },
+        waGuestCourse: function(n){ return 'ゲスト'+n+'のコース'; }, waTotal:'合計', dateLocale:'ja-JP',
+        labelPremiumPicks:'4つ選択 *', premiumPickHint:'7種から4つお選びください',
+        errorPremiumPicks:'4つ選択してください', waPicks:'選択メニュー' },
       cn: { htmlLang:'zh-CN', title:'预约 — ashiyu', backLink:'返回首页', brandBadge:'在线预约',
         bookingSubtitle:'请填写以下信息完成预约',
         successMessage:'预约信息已生成，即将跳转至 WhatsApp…',
@@ -272,7 +300,9 @@
         waShop:'门店', waShopValue:'ashiyu',
         waAddress:'地址', waAddressValue:"〒162-0825 东京都新宿区神乐坂3-2-12 摩耶ビル6F",
         waSameCourse:'所有客人都选择相同项目', waGuest:'客人',
-        waGuestCourse: function(n){ return '客人'+n+'项目'; }, waTotal:'合计', dateLocale:'zh-CN' }
+        waGuestCourse: function(n){ return '客人'+n+'项目'; }, waTotal:'合计', dateLocale:'zh-CN',
+        labelPremiumPicks:'自选 4 项 *', premiumPickHint:'请从 7 项中勾选 4 项',
+        errorPremiumPicks:'请勾选正好 4 项', waPicks:'自选项目' }
     };
     function t(k){ return i18n[currentLang][k]; }
     function durLabel(dur){ return dur + (currentLang==='en' ? ' min' : (currentLang==='cn' ? '分钟' : '分')); }
@@ -317,11 +347,73 @@
       if (ref.indexOf('/jp/')!==-1) return 'jp';
       return 'en';
     }
+    function pickLabel(id){
+      for (var i=0;i<PREMIUM_PICKS.length;i++){
+        if (PREMIUM_PICKS[i].id===id) return PREMIUM_PICKS[i][currentLang] || PREMIUM_PICKS[i].en;
+      }
+      return id;
+    }
+    function isPremiumService(val){
+      return !!val && (val === PREMIUM_VALUE || String(val).indexOf('Premium Custom') !== -1);
+    }
+    function parsePicksParam(raw){
+      return String(raw || '').split(',').map(function(s){ return s.trim(); }).filter(function(id){
+        return PREMIUM_PICKS.some(function(x){ return x.id === id; });
+      }).slice(0, 4);
+    }
+    function selectedPremiumPicks(){
+      var fromDom = Array.prototype.map.call(document.querySelectorAll('#premiumPickList input:checked'), function(el){ return el.value; });
+      if (fromDom.length) return fromDom;
+      var form = document.getElementById('bookingForm');
+      if (form){
+        var all = new FormData(form).getAll('premiumPick');
+        if (all && all.length) return all;
+      }
+      return parsePicksParam(new URLSearchParams(window.location.search).get('picks'));
+    }
+    function premiumPicksBlock(){
+      var picks = selectedPremiumPicks();
+      if (!picks.length) return '';
+      var bullet = currentLang === 'en' ? '- ' : '・';
+      return t('waPicks') + ':\n' + picks.map(function(id){ return bullet + pickLabel(id); }).join('\n') + '\n';
+    }
+    function syncPremiumPickLock(){
+      var n = selectedPremiumPicks().length;
+      document.querySelectorAll('#premiumPickList input').forEach(function(inp){
+        var lab = inp.closest('.premium-pick-item');
+        var lock = !inp.checked && n >= 4;
+        inp.disabled = lock;
+        if (lab) lab.classList.toggle('is-disabled', lock);
+      });
+      var hint = document.getElementById('premiumPickHint');
+      if (hint) hint.textContent = t('premiumPickHint') + '（' + n + '/4）';
+    }
+    function renderPremiumPicks(keepIds){
+      var list = document.getElementById('premiumPickList');
+      if (!list) return;
+      var keep = keepIds || selectedPremiumPicks();
+      var html = '';
+      PREMIUM_PICKS.forEach(function(p){
+        var checked = keep.indexOf(p.id) !== -1 ? ' checked' : '';
+        html += '<label class="premium-pick-item"><input type="checkbox" name="premiumPick" value="'+p.id+'"'+checked+'> '+p[currentLang]+'</label>';
+      });
+      list.innerHTML = html;
+      syncPremiumPickLock();
+    }
+    function togglePremiumPickGroup(){
+      var show = isPremiumService(document.getElementById('service').value);
+      document.getElementById('premiumPickGroup').hidden = !show;
+      if (show){
+        if (!document.getElementById('premiumPickList').children.length) renderPremiumPicks();
+        else syncPremiumPickLock();
+      }
+    }
     function applyLang(lang){
       currentLang = lang; var o = i18n[lang];
       var sv = document.getElementById('service').value;
       var gv = document.getElementById('guests').value;
       var tv = document.getElementById('time').value;
+      var picksKeep = selectedPremiumPicks();
       document.documentElement.lang = o.htmlLang;
       document.title = o.title;
       document.getElementById('backLinkText').textContent = o.backLink;
@@ -333,6 +425,8 @@
       document.getElementById('labelTime').textContent = o.labelTime;
       document.getElementById('labelGuests').textContent = o.labelGuests;
       document.getElementById('labelName').textContent = o.labelName;
+      document.getElementById('labelPremiumPicks').textContent = o.labelPremiumPicks;
+      document.getElementById('errorPremiumPicks').textContent = o.errorPremiumPicks;
       document.getElementById('errorService').textContent = o.errorService;
       document.getElementById('errorDate').textContent = o.errorDate;
       document.getElementById('errorTime').textContent = o.errorTime;
@@ -348,6 +442,8 @@
       document.getElementById('service').innerHTML = buildServiceOptionsHTML(sv);
       document.getElementById('guests').innerHTML = buildGuestsOptionsHTML(gv);
       document.getElementById('time').innerHTML = buildTimeOptions(tv);
+      renderPremiumPicks(picksKeep);
+      togglePremiumPickGroup();
       document.querySelectorAll('.lang-switch button').forEach(function(b){ b.classList.toggle('active', b.getAttribute('data-lang')===lang); });
       document.getElementById('backLink').setAttribute('href', lang==='en' ? 'en/index.html' : (lang==='jp' ? 'jp/index.html' : 'cn/index.html'));
       var url = new URL(window.location.href); url.searchParams.set('lang', lang); history.replaceState(null,'',url);
@@ -382,8 +478,25 @@
       var p = new URLSearchParams(window.location.search);
       var svc = p.get('service');
       if (svc){ var sel=document.getElementById('service'); for(var i=0;i<sel.options.length;i++){ if(sel.options[i].value===svc){ sel.options[i].selected=true; break; } } }
+      var picks = parsePicksParam(p.get('picks'));
+      if (picks.length) renderPremiumPicks(picks);
+      togglePremiumPickGroup();
       updateMessagePreview();
     })();
+    document.getElementById('service').addEventListener('change', function(){
+      document.getElementById('premiumPickGroup').classList.remove('error');
+      togglePremiumPickGroup();
+      updateMessagePreview();
+    });
+    document.getElementById('premiumPickList').addEventListener('change', function(){
+      document.getElementById('premiumPickGroup').classList.remove('error');
+      syncPremiumPickLock();
+      var url = new URL(window.location.href);
+      var picks = selectedPremiumPicks();
+      if (picks.length) url.searchParams.set('picks', picks.join(','));
+      else url.searchParams.delete('picks');
+      history.replaceState(null,'',url);
+    });
     document.getElementById('guests').addEventListener('change', updateAdditionalServices);
     document.getElementById('samePackage').addEventListener('change', updateAdditionalServices);
     function updateAdditionalServices(){
@@ -437,13 +550,19 @@
       else if (!isTimeInHours(timeVal)){ document.getElementById('errorTime').textContent = t('errorTimeRange'); document.getElementById('timeGroup').classList.add('error'); ok=false; }
       if (!document.getElementById('guests').value){ document.getElementById('guestsGroup').classList.add('error'); ok=false; }
       if (!document.getElementById('service').value){ document.getElementById('serviceGroup').classList.add('error'); ok=false; }
+      if (isPremiumService(document.getElementById('service').value) && selectedPremiumPicks().length !== 4){
+        document.getElementById('premiumPickGroup').classList.add('error'); ok=false;
+      }
       return ok;
     }
     function formatDate(ds){ var d=new Date(ds+'T00:00:00'); return d.toLocaleDateString(t('dateLocale'),{year:'numeric',month:'long',day:'numeric'}); }
     function isFormComplete(){
       var ds = document.getElementById('date').value;
-      return document.getElementById('name').value.trim() && ds && !isClosedDate(ds) &&
-             document.getElementById('time').value && document.getElementById('guests').value && document.getElementById('service').value;
+      var svc = document.getElementById('service').value;
+      if (!(document.getElementById('name').value.trim() && ds && !isClosedDate(ds) &&
+             document.getElementById('time').value && document.getElementById('guests').value && svc)) return false;
+      if (isPremiumService(svc) && selectedPremiumPicks().length !== 4) return false;
+      return true;
     }
     function buildWhatsAppMessage(fd){
       var name=fd.get('name'), date=formatDate(fd.get('date')), time=fd.get('time');
@@ -458,6 +577,7 @@
       var total = servicePrice(main);
       if (gc>1 && !same){
         m += t('waGuestCourse')(1)+': '+serviceLine(main)+' (¥'+servicePrice(main).toLocaleString()+')\n';
+        if (isPremiumService(main)) m += premiumPicksBlock();
         for (var i=1;i<gc;i++){
           var gs=fd.get('guest'+i+'Service');
           if(gs&&gs.trim()){
@@ -467,6 +587,7 @@
         }
       } else {
         m += t('waMainGuest')+': '+serviceLine(main)+' (¥'+servicePrice(main).toLocaleString()+')\n';
+        if (isPremiumService(main)) m += premiumPicksBlock();
         if (gc>1 && same){ m += t('waSameCourse')+'\n'; total = servicePrice(main)*gc; }
       }
       m += t('waAddress')+': '+t('waAddressValue')+'\n';
