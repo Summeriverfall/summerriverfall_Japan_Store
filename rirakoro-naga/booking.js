@@ -46,9 +46,6 @@ const BOOKING_COPY = {
     previewTitle: "WhatsApp message preview",
     previewHint: "Fill in every field above to preview the message we will send.",
     noticeNominate: "Staff nomination fee: ¥200.",
-    addonsTitle: "Add-ons",
-    addonsHint: "10-minute extensions cannot be booked as a main course.",
-    addonLabel: "Add-on",
     messageIntro: "Hello, I would like to make a reservation at rirakoro Nagahoribashi."
   },
   jp: {
@@ -82,9 +79,6 @@ const BOOKING_COPY = {
     previewTitle: "WhatsApp メッセージのプレビュー",
     previewHint: "上のすべての項目を入力すると、送信内容をプレビューできます。",
     noticeNominate: "指名料：¥200。",
-    addonsTitle: "延長オプション",
-    addonsHint: "10分の延長は主メニューとしては選べません。",
-    addonLabel: "延長",
     messageIntro: "こんにちは。rirakoro 長堀橋店の予約を希望します。"
   },
   cn: {
@@ -118,9 +112,6 @@ const BOOKING_COPY = {
     previewTitle: "WhatsApp 消息预览",
     previewHint: "填写上方全部内容后，可预览将要发送的消息。",
     noticeNominate: "指名费：¥200。",
-    addonsTitle: "附加项",
-    addonsHint: "10分钟为延长加项，不能单独作为主项目。",
-    addonLabel: "附加项",
     messageIntro: "您好，我想预约 rirakoro 长堀桥店。"
   },
   tw: {
@@ -154,9 +145,6 @@ const BOOKING_COPY = {
     previewTitle: "WhatsApp 訊息預覽",
     previewHint: "填寫上方全部內容後，可預覽將要傳送的訊息。",
     noticeNominate: "指名費：¥200。",
-    addonsTitle: "附加項",
-    addonsHint: "10分鐘為延長加項，不能單獨作為主項目。",
-    addonLabel: "附加項",
     messageIntro: "您好，我想預約 rirakoro 長堀橋店。"
   },
   kr: {
@@ -190,9 +178,6 @@ const BOOKING_COPY = {
     previewTitle: "WhatsApp 메시지 미리보기",
     previewHint: "위 항목을 모두 입력하면 보낼 메시지를 미리 볼 수 있습니다.",
     noticeNominate: "지명료: ¥200.",
-    addonsTitle: "추가 옵션",
-    addonsHint: "10분 연장은 메인 코스로 선택할 수 없습니다.",
-    addonLabel: "추가",
     messageIntro: "안녕하세요. rirakoro 나가호리바시점을 예약하고 싶습니다."
   }
 };
@@ -219,8 +204,7 @@ function getParams() {
     people: params.get("people") || "1",
     name: params.get("name") || "",
     sameCourse: params.get("sameCourse") !== "0",
-    guestCourses: (params.get("guestCourses") || "").split(",").filter(Boolean),
-    addons: (params.get("addons") || "").split(",").filter(Boolean)
+    guestCourses: (params.get("guestCourses") || "").split(",").filter(Boolean)
   };
 }
 
@@ -268,18 +252,6 @@ function buildCourseList(params) {
   if (matchIndex >= 0) return { list, selectedIndex: matchIndex, hasCustom: false };
   list.unshift({ group: "custom", service: params.service, duration: params.duration, price: params.price });
   return { list, selectedIndex: 0, hasCustom: true };
-}
-
-function parseAddonIndexes(params, addonsList) {
-  const set = new Set((params.addons || []).map(String));
-  if (!params.service || !(typeof isAddonItem === "function" && isAddonItem(params.duration))) return set;
-  let index = addonsList.findIndex((option) =>
-    option.service === params.service && option.duration === params.duration && (!params.price || option.price === params.price));
-  if (index < 0) {
-    index = addonsList.findIndex((option) => option.duration === params.duration && option.price === params.price);
-  }
-  if (index >= 0) set.add(String(index));
-  return set;
 }
 
 function isTouchBooking() {
@@ -458,7 +430,7 @@ function courseLine(copy, course, label) {
   return `${label}: ${body}${price}`;
 }
 
-function buildMessage(copy, courses, sameCourse, name, date, time, people, lang, addons) {
+function buildMessage(copy, courses, sameCourse, name, date, time, people, lang) {
   const lines = [
     copy.messageIntro,
     `${copy.shop}: ${BOOKING_STORE.shopValue}`,
@@ -478,10 +450,6 @@ function buildMessage(copy, courses, sameCourse, name, date, time, people, lang,
     if (people > 1 && sameCourse) lines.push(copy.sameCourse);
     total = priceValue(courses[0].price) * people;
   }
-  (addons || []).forEach((addon) => {
-    lines.push(courseLine(copy, addon, copy.addonLabel));
-    total += priceValue(addon.price);
-  });
   lines.push(`${copy.address}: ${BOOKING_STORE.address[lang]}`);
   if (total > 0) lines.push(`${copy.total}: ${formatPrice(total)}`);
   return lines.filter(Boolean).join("\n");
@@ -491,8 +459,6 @@ function renderBooking() {
   const params = getParams();
   const copy = BOOKING_COPY[params.lang];
   const { list, selectedIndex, hasCustom } = buildCourseList(params);
-  const addonsList = addonOptions(params.lang);
-  const preselectedAddons = parseAddonIndexes(params, addonsList);
   const touchBooking = isTouchBooking();
   document.documentElement.classList.toggle("is-touch-booking", touchBooking);
   document.documentElement.lang = params.lang === "jp" ? "ja" : params.lang === "kr" ? "ko" : params.lang === "tw" ? "zh-Hant" : params.lang === "cn" ? "zh-CN" : "en";
@@ -530,22 +496,6 @@ function renderBooking() {
             <div><dt>${copy.price}</dt><dd id="summary-price">-</dd></div>
           </dl>
         </div>
-        <section class="booking-addons" id="booking-addons">
-          <h2>${copy.addonsTitle}</h2>
-          <p class="booking-addons__hint">${copy.addonsHint}</p>
-          ${addonsList.map((addon, index) => {
-            const long = !!fullNameIfTruncated(addon);
-            const body = long
-              ? `<span class="booking-addon__text is-long"><span class="booking-addon__name">${escapeHtml(addon.service)}</span><span class="booking-addon__meta">${escapeHtml([addon.duration, addon.price].filter(Boolean).join(" · "))}</span></span>`
-              : `<span>${escapeHtml(optionLabel(addon))}</span>`;
-            return `
-            <label class="booking-addon">
-              <input type="checkbox" name="addon" value="${index}"${preselectedAddons.has(String(index)) ? " checked" : ""}>
-              ${body}
-            </label>
-          `;
-          }).join("")}
-        </section>
         <div class="booking-grid">
           <label class="booking-field">
             <span>${copy.date}</span>
@@ -644,16 +594,6 @@ function renderBooking() {
     additionalCourseFields.dataset.count = String(requiredFields);
   }
 
-  function selectedAddons() {
-    return Array.from(bookingForm.querySelectorAll('input[name="addon"]:checked'))
-      .map((input) => addonsList[Number(input.value)] || null)
-      .filter(Boolean);
-  }
-
-  function selectedAddonValues() {
-    return Array.from(bookingForm.querySelectorAll('input[name="addon"]:checked')).map((input) => input.value);
-  }
-
   function selectedCourses() {
     const mainCourse = selectedCourse();
     if (!mainCourse) return [];
@@ -709,7 +649,6 @@ function renderBooking() {
     const name = String(data.get("name") || "").trim();
     const people = guestCount();
     const courses = selectedCourses();
-    const addons = selectedAddons();
     const sameCourse = people <= 1 || sameCourseInput.checked;
     const ready = Boolean(
       course &&
@@ -722,7 +661,7 @@ function renderBooking() {
     preview.classList.add("has-prefill");
     preview.classList.toggle("is-ready", ready);
     document.getElementById("preview-body").textContent = ready
-      ? buildMessage(copy, courses, sameCourse, name, data.get("date"), data.get("time"), people, params.lang, addons)
+      ? buildMessage(copy, courses, sameCourse, name, data.get("date"), data.get("time"), people, params.lang)
       : [
           `${copy.shop}: ${BOOKING_STORE.shopValue}`,
           name ? `${copy.name}: ${name}` : "",
@@ -764,8 +703,6 @@ function renderBooking() {
         .filter(Boolean);
       if (guestCourses.length) next.set("guestCourses", guestCourses.join(","));
     }
-    const addonVals = selectedAddonValues();
-    if (addonVals.length) next.set("addons", addonVals.join(","));
     window.location.href = `booking.html?${next.toString()}`;
   });
 
@@ -780,7 +717,7 @@ function renderBooking() {
     const sameCourse = people <= 1 || sameCourseInput.checked;
     const courses = selectedCourses();
     if (!sameCourse && courses.length !== people) return;
-    const message = buildMessage(copy, courses, sameCourse, name, data.get("date"), data.get("time"), people, params.lang, selectedAddons());
+    const message = buildMessage(copy, courses, sameCourse, name, data.get("date"), data.get("time"), people, params.lang);
     window.location.href = `https://api.whatsapp.com/send/?phone=${BOOKING_STORE.whatsapp}&text=${encodeURIComponent(message)}`;
   });
 }

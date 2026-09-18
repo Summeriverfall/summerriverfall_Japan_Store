@@ -1112,8 +1112,7 @@ html.is-touch-booking .booking-select-tip:focus-within::after {
   content: none;
 }
 
-.booking-select-tip[data-tip]:hover::after,
-.booking-addon[data-tip]:hover::after {
+.booking-select-tip[data-tip]:hover::after {
   content: attr(data-tip);
   position: absolute;
   left: 0;
@@ -1214,75 +1213,6 @@ html.is-touch-booking .booking-select-tip:focus-within::after {
 .booking-same-course span {
   font-size: 0.9rem;
   font-weight: 700;
-}
-
-.booking-addons {
-  display: grid;
-  gap: 10px;
-  padding: 16px;
-  border: 1px solid var(--line);
-  border-radius: 16px;
-  background: rgba(33, 29, 25, 0.03);
-}
-
-.booking-addons h2 {
-  margin: 0;
-  font-size: 0.9rem;
-}
-
-.booking-addons__hint {
-  margin: 0;
-  font-size: 0.78rem;
-  font-weight: 300;
-  line-height: 1.55;
-  color: var(--muted);
-}
-
-.booking-addon {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  position: relative;
-  padding: 12px 14px;
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  background: #fff;
-  cursor: pointer;
-}
-
-.booking-form .booking-addon input[type="checkbox"] {
-  width: 18px;
-  min-height: 18px;
-  height: 18px;
-  margin: 0;
-  padding: 0;
-  accent-color: var(--accent);
-  flex: 0 0 auto;
-}
-
-.booking-addon span {
-  font-size: 1rem;
-  font-weight: 600;
-}
-
-.booking-addon__text.is-long {
-  display: grid;
-  gap: 2px;
-  min-width: 0;
-}
-
-.booking-addon__name {
-  font-size: 1rem;
-  font-weight: 600;
-  line-height: 1.35;
-  word-break: keep-all;
-}
-
-.booking-addon__meta,
-.booking-picker__button.is-long .booking-picker__meta {
-  color: var(--muted);
-  font-size: 0.92rem;
-  font-weight: 500;
 }
 
 .booking-additional-courses {

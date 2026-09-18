@@ -299,14 +299,8 @@ function bookingUrl(lang, service, duration, price) {
 }
 
 function bookingButton(lang, service, duration, price, type) {
+  if (typeof isAddonItem === "function" && isAddonItem(duration, type)) return "";
   const label = BOOKING_LABELS[lang] || BOOKING_LABELS.en;
-  if (typeof isAddonItem === "function" && isAddonItem(duration, type)) {
-    const addons = addonOptions(lang);
-    const index = addons.findIndex((item) => item.service === service && item.duration === duration && item.price === price);
-    const query = new URLSearchParams({ lang });
-    if (index >= 0) query.set("addons", String(index));
-    return `<a class="menu-book-btn" href="${shopBookingHref(query)}">${label}</a>`;
-  }
   return `<a class="menu-book-btn" href="${bookingUrl(lang, service, duration, price)}">${label}</a>`;
 }
 
