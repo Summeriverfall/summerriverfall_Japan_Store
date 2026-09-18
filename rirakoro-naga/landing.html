@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- ✅ PV 自建统计 -->
+  <script src="/shops/pv-track.js"></script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>リラころ 長堀橋店 | Language Selection</title>
+  <meta name="description" content="Select a language for Rirakoro Nagahoribashi. Open daily 12:00–00:00; no regular closing days. Phone 06-6244-1830. WhatsApp booking and Google Maps.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="landing-page">
+  <main class="landing-shell">
+    <section class="landing-hero">
+      <div class="landing-copy">
+        <p class="eyebrow">Nagahoribashi Massage Salon</p>
+        <h1>リラころ <span class="u-nowrap">長堀橋店</span></h1>
+        <p class="lead">About 1 min walk from Nagahoribashi Station Exit 4.</p>
+        <div class="quick-actions" aria-label="Quick actions">
+          <a class="btn btn-whatsapp" id="landing-book" href="booking.html">WhatsApp Booking</a>
+          <a class="btn btn-outline" href="tel:+81662441830">お電話 06-6244-1830</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="language-panel" aria-labelledby="language-title">
+      <div class="language-panel__intro">
+        <h2 id="language-title">Select Language</h2>
+        <p class="eyebrow">选择语言 &nbsp;·&nbsp; 繁體選擇 &nbsp;·&nbsp; 언어 선택</p>
+      </div>
+      <nav class="language-grid" aria-label="Language options">
+        <a class="language-grid__primary" href="en/index.html"><span>English</span></a>
+        <a href="jp/index.html"><span>日本語</span></a>
+        <a href="cn/index.html"><span>简体中文</span></a>
+        <a href="tw/index.html"><span>繁體中文</span></a>
+        <a href="kr/index.html"><span>한국어</span></a>
+      </nav>
+    </section>
+
+    <aside class="landing-info" aria-label="Store information">
+      <div>
+        <span>Hours</span>
+        <strong>12:00–00:00</strong>
+        <small>Mon–Sun · open daily</small>
+      </div>
+      <div>
+        <span>Location</span>
+        <strong>〒542-0082 Shimanouchi 1-19-15</strong>
+        <small>Takayoshi Sakaisuji Bldg 2F</small>
+      </div>
+    </aside>
+  </main>
+
+  <footer class="landing-footer">
+    <p>
+      © 2026 リラころ Relaxation. All rights reserved. Powered by
+      <a class="landing-footer__credit" href="https://reserveinjp.com/#/" target="_blank" rel="noopener noreferrer">reserveinjp</a>.
+    </p>
+  </footer>
+  <script>
+    (function () {
+      var a = document.getElementById("landing-book");
+      var m = location.pathname.match(/\/shops\/([^/]+)/);
+      if (a && m) a.href = "/shops/" + m[1] + "/booking.html";
+    })();
+  </script>
+</body>
+</html>
