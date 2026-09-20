@@ -165,6 +165,7 @@
           <h3 class="booking-notice-title" id="noticeTitle">Before you book</h3>
           <ul class="booking-notice-list">
             <li id="noticeNom">Nomination fee ¥500</li>
+            <li id="noticeChange">Changing fee ¥300</li>
             <li id="noticeLate">Late-night fee ¥500 after 23:00</li>
           </ul>
         </aside>
@@ -216,7 +217,7 @@
         { value: "Choice 90 min", dur: 90, price: 9350, en: "Choice mix", jp: "チョイス組合せ", cn: "自选组合" }
       ]},
       { label: { en: "90 min sets", jp: "90分コース", cn: "90分钟套餐" }, items: [
-        { value: "Body Foot 90 min", dur: 90, price: 8800, en: "Body 60 + Foot 30", jp: "整体60＋足裏30", cn: "整体60＋足底30" },
+        { value: "Body Foot 90 min", dur: 90, price: 8800, en: "Body + Foot", jp: "整体＋足裏", cn: "整体＋足底" },
         { value: "Aroma Foot Head 90 min", dur: 90, price: 9900, en: "Aroma + foot + head", jp: "アロマ＋足＋頭", cn: "精油＋足＋头" }
       ]},
       { label: { en: "60 min sets", jp: "おすすめ60分", cn: "推荐60分钟" }, items: [
@@ -230,25 +231,25 @@
         { value: "King 120 min", dur: 120, price: 12100, en: "King", jp: "キング", cn: "国王套餐" }
       ]},
       { label: { en: "Foot", jp: "足裏", cn: "足底" }, items: [
-        { value: "Foot 30 min", dur: 30, price: 3300, en: "Foot", jp: "足裏", cn: "足底" },
-        { value: "Foot 45 min", dur: 45, price: 4950, en: "Foot", jp: "足裏", cn: "足底" },
-        { value: "Foot 60 min", dur: 60, price: 6600, en: "Foot", jp: "足裏", cn: "足底" },
-        { value: "Foot 90 min", dur: 90, price: 9900, en: "Foot", jp: "足裏", cn: "足底" },
-        { value: "Foot 120 min", dur: 120, price: 13200, en: "Foot", jp: "足裏", cn: "足底" }
+        { value: "Foot 30 min", dur: 30, price: 3300, en: "", jp: "", cn: "" },
+        { value: "Foot 45 min", dur: 45, price: 4950, en: "", jp: "", cn: "" },
+        { value: "Foot 60 min", dur: 60, price: 6600, en: "", jp: "", cn: "" },
+        { value: "Foot 90 min", dur: 90, price: 9900, en: "", jp: "", cn: "" },
+        { value: "Foot 120 min", dur: 120, price: 13200, en: "", jp: "", cn: "" }
       ]},
       { label: { en: "Body", jp: "整体", cn: "整体" }, items: [
-        { value: "Seitai 30 min", dur: 30, price: 3300, en: "Body", jp: "整体", cn: "整体" },
-        { value: "Seitai 45 min", dur: 45, price: 4950, en: "Body", jp: "整体", cn: "整体" },
-        { value: "Seitai 60 min", dur: 60, price: 5500, en: "Body", jp: "整体", cn: "整体" },
-        { value: "Seitai 90 min", dur: 90, price: 8800, en: "Body", jp: "整体", cn: "整体" },
-        { value: "Seitai 120 min", dur: 120, price: 12100, en: "Body", jp: "整体", cn: "整体" }
+        { value: "Seitai 30 min", dur: 30, price: 3300, en: "", jp: "", cn: "" },
+        { value: "Seitai 45 min", dur: 45, price: 4950, en: "", jp: "", cn: "" },
+        { value: "Seitai 60 min", dur: 60, price: 5500, en: "", jp: "", cn: "" },
+        { value: "Seitai 90 min", dur: 90, price: 8800, en: "", jp: "", cn: "" },
+        { value: "Seitai 120 min", dur: 120, price: 12100, en: "", jp: "", cn: "" }
       ]},
       { label: { en: "Aroma", jp: "アロマ", cn: "精油" }, items: [
-        { value: "Aroma 40 min", dur: 40, price: 6600, en: "Aroma", jp: "アロマ", cn: "精油" },
-        { value: "Aroma 60 min", dur: 60, price: 8800, en: "Aroma", jp: "アロマ", cn: "精油" },
-        { value: "Aroma 90 min", dur: 90, price: 12100, en: "Aroma", jp: "アロマ", cn: "精油" },
-        { value: "Aroma 120 min", dur: 120, price: 15400, en: "Aroma", jp: "アロマ", cn: "精油" },
-        { value: "Aroma 180 min", dur: 180, price: 22000, en: "Aroma", jp: "アロマ", cn: "精油" }
+        { value: "Aroma 40 min", dur: 40, price: 6600, en: "", jp: "", cn: "" },
+        { value: "Aroma 60 min", dur: 60, price: 8800, en: "", jp: "", cn: "" },
+        { value: "Aroma 90 min", dur: 90, price: 12100, en: "", jp: "", cn: "" },
+        { value: "Aroma 120 min", dur: 120, price: 15400, en: "", jp: "", cn: "" },
+        { value: "Aroma 180 min", dur: 180, price: 22000, en: "", jp: "", cn: "" }
       ]}
     ];
     var i18n = {
@@ -263,7 +264,7 @@
         samePackageText:'All guests choose the same course', additionalServicesTitle:"Additional Guests' Courses (if different)",
         submitButton:'Submit & Open WhatsApp', redirecting:'Redirecting...',
         previewTitle:'WhatsApp Message Preview', previewHint:'Complete all required fields above to preview your message.',
-        paymentNote:"Weekdays 11:00–24:00 · Weekends 10:00–24:30<br>Tel <a href=\"tel:+81356870888\" style=\"color:inherit\">03-5687-0888</a>", noticeTitle:"Before you book", noticeNom:"Nomination fee ¥500", noticeLate:"Late-night fee ¥500 after 23:00",
+        paymentNote:"Weekdays 11:00–24:00 · Weekends 10:00–24:30<br>Tel <a href=\"tel:+81356870888\" style=\"color:inherit\">03-5687-0888</a>", noticeTitle:"Before you book", noticeNom:"Nomination fee ¥500", noticeChange:"Changing fee ¥300", noticeLate:"Late-night fee ¥500 after 23:00",
         guestUnit: function(n){ return n + (n>1?' Guests':' Guest'); },
         waIntro:"Hello, I would like to make a reservation at RAN-TAN Asakusabashi.\n\n",
         waName:'Name', waDate:'Date', waTime:'Time', waGuests:'Number of Guests', waMainGuest:'Course',
@@ -284,7 +285,7 @@
         samePackageText:'全員同じコースを選択', additionalServicesTitle:'追加ゲストのコース（異なる場合）',
         submitButton:'送信して WhatsApp を開く', redirecting:'移動中…',
         previewTitle:'WhatsApp メッセージプレビュー', previewHint:'送信内容を確認するため、上記の必須項目をすべてご記入ください。',
-        paymentNote:"平日 11:00–24:00 · 土日祝 10:00–24:30<br>Tel <a href=\"tel:+81356870888\" style=\"color:inherit\">03-5687-0888</a>", noticeTitle:"ご予約の前に", noticeNom:"指名料 ¥500", noticeLate:"23:00以降の予約は深夜料金 ¥500",
+        paymentNote:"平日 11:00–24:00 · 土日祝 10:00–24:30<br>Tel <a href=\"tel:+81356870888\" style=\"color:inherit\">03-5687-0888</a>", noticeTitle:"ご予約の前に", noticeNom:"指名料 ¥500", noticeChange:"お着替え代 ¥300", noticeLate:"23:00以降の予約は深夜料金 ¥500",
         guestUnit: function(n){ return n + '名'; },
         waIntro:"こんにちは、RAN-TAN浅草橋店のご予約を希望します。\n\n",
         waName:'お名前', waDate:'日付', waTime:'時間', waGuests:'人数', waMainGuest:'コース',
@@ -305,7 +306,7 @@
         samePackageText:'所有客人都选择相同项目', additionalServicesTitle:'其他客人的项目（如不同）',
         submitButton:'提交并打开 WhatsApp', redirecting:'跳转中…',
         previewTitle:'WhatsApp 消息预览', previewHint:'请先填写上方所有必填项，即可预览消息内容。',
-        paymentNote:"平日 11:00–24:00 · 土日祝 10:00–24:30<br>Tel <a href=\"tel:+81356870888\" style=\"color:inherit\">03-5687-0888</a>", noticeTitle:"预约前提示", noticeNom:"指名费 ¥500", noticeLate:"23:00 以后预约加收深夜费 ¥500",
+        paymentNote:"平日 11:00–24:00 · 土日祝 10:00–24:30<br>Tel <a href=\"tel:+81356870888\" style=\"color:inherit\">03-5687-0888</a>", noticeTitle:"预约前提示", noticeNom:"指名费 ¥500", noticeChange:"换衣费 ¥300", noticeLate:"23:00 以后预约加收深夜费 ¥500",
         guestUnit: function(n){ return n + ' 人'; },
         waIntro:"您好，我想预约 RAN-TAN 浅草桥店。\n\n",
         waName:'姓名', waDate:'日期', waTime:'时间', waGuests:'人数', waMainGuest:'项目',
@@ -324,7 +325,7 @@
         html += '<optgroup label="' + g.label[currentLang] + '">';
         g.items.forEach(function(it){
           var sel = it.value === selectedValue ? ' selected' : '';
-          html += '<option value="' + it.value + '"' + sel + '>' + it[currentLang] + ' ' + durLabel(it.dur) + ' — ¥' + it.price.toLocaleString() + '</option>';
+          html += '<option value="' + it.value + '"' + sel + '>' + (it[currentLang] ? it[currentLang] + ' ' : '') + durLabel(it.dur) + ' — ¥' + it.price.toLocaleString() + '</option>';
         });
         html += '</optgroup>';
       });
@@ -453,6 +454,7 @@
       document.getElementById('paymentNote').innerHTML = o.paymentNote;
       if (document.getElementById('noticeTitle')) document.getElementById('noticeTitle').textContent = o.noticeTitle;
       if (document.getElementById('noticeNom')) document.getElementById('noticeNom').textContent = o.noticeNom;
+      if (document.getElementById('noticeChange')) document.getElementById('noticeChange').textContent = o.noticeChange;
       if (document.getElementById('noticeLate')) document.getElementById('noticeLate').textContent = o.noticeLate;
       document.getElementById('service').innerHTML = buildServiceOptionsHTML(sv);
       document.getElementById('guests').innerHTML = buildGuestsOptionsHTML(gv);
@@ -538,7 +540,7 @@
     function serviceLine(value){
       var it = findItem(value);
       if (!it) return value;
-      return it[currentLang] + ' ' + durLabel(it.dur);
+      return (it[currentLang] ? it[currentLang] + ' ' : '') + durLabel(it.dur);
     }
     function isTimeInHours(ts){
       if (!ts) return false;
