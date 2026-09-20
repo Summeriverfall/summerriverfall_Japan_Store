@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- <script src="/shops/pv-track.js"></script> -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-FCMYZE0ERW"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-FCMYZE0ERW', {
+      store: 'rantan-asakusabashi',
+      page_type: 'booking'
+    });
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Book your appointment at RAN-TAN Asakusabashi">
+  <title>Book Appointment — RAN-TAN</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;600&family=Noto+Sans+SC:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --ink: #2c2c2c; --ink-soft: #666666; --brand: #8b6f47; --brand-deep: #6b5538;
+      --gold: #d4a574; --gold-pale: #e8d4b8; --cream: #fafafa; --white: #ffffff;
+      --font-display: "Playfair Display", serif;
+      --font-body: "Noto Sans JP", "Noto Sans SC", sans-serif;
+    }
+    html[lang="zh-CN"] { --font-body: "Noto Sans SC", "Noto Sans JP", sans-serif; }
+    body {
+      font-family: var(--font-body); font-weight: 400;
+      background: radial-gradient(circle at 15% 10%, rgba(212,165,116,0.16), transparent 40%),
+        radial-gradient(circle at 88% 90%, rgba(139,111,71,0.10), transparent 45%), var(--cream);
+      color: var(--ink); min-height: 100vh; padding: 40px 20px; overflow-x: hidden;
+    }
+    .booking-container { max-width: 620px; width: 100%; margin: 0 auto; min-width: 0; }
+    .booking-top { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 2rem; }
+    .back-link { display: inline-flex; align-items: center; gap: 8px; color: var(--ink-soft); text-decoration: none; font-size: 0.9rem; }
+    .lang-switch { display: flex; align-items: center; gap: 0.2rem; }
+    .lang-switch button { font-size: 0.7rem; letter-spacing: 0.08em; color: var(--ink-soft); padding: 0.35rem 0.55rem; border: none; background: transparent; cursor: pointer; font-family: inherit; }
+    .lang-switch button.active { color: var(--brand); border-bottom: 1px solid var(--gold); }
+    .booking-header { text-align: center; margin-bottom: 2.4rem; }
+    .brand-badge { display: inline-block; border: 1px solid var(--gold); padding: 7px 18px; margin-bottom: 1.1rem; font-size: 0.66rem; color: var(--brand); font-weight: 500; letter-spacing: 0.3em; text-transform: uppercase; }
+    .booking-title { font-family: var(--font-display); font-size: clamp(2rem, 5vw, 2.6rem); font-weight: 500; letter-spacing: 0.06em; margin-bottom: 0.4rem; }
+    .booking-subtitle { font-size: 0.92rem; color: var(--ink-soft); }
+    .booking-card { background: var(--white); border: 1px solid var(--gold-pale); padding: 2.5rem; box-shadow: 0 24px 60px rgba(36,26,18,0.1); min-width: 0; max-width: 100%; overflow-x: hidden; }
+    .form-group { margin-bottom: 1.6rem; }
+    .form-label { display: block; font-size: 0.74rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: var(--brand); margin-bottom: 0.5rem; }
+    .form-input, .form-select { width: 100%; padding: 13px 15px; border: 1px solid var(--gold-pale); font-size: 1rem; font-family: inherit; color: var(--ink); background: var(--cream); }
+    #serviceGroup { overflow-x: hidden; }
+    #service, .guest-service-row .form-select { font-size: 1rem; line-height: 1.35; padding-right: 2rem; max-width: 100%; }
+    .date-wrap { display: grid; width: 100%; border: 1px solid var(--gold-pale); background: var(--cream); }
+    .date-wrap .form-input { border: 0; background: transparent; }
+    #date { color: var(--ink-soft); font-weight: 300; }
+    #date.is-filled { color: var(--ink); font-weight: 400; }
+    #hintTime { display: none; }
+    .form-input:focus, .form-select:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px rgba(212,165,116,0.18); background: var(--white); }
+    .form-error { display: none; color: #b42318; font-size: 0.78rem; margin-top: 0.4rem; }
+    .form-group.error .form-error { display: block; }
+    .form-hint { font-size: 0.78rem; font-weight: 300; line-height: 1.55; color: var(--ink-soft); }
+    .message-preview { margin: 1.6rem 0; padding: 1rem 1.1rem; border: 1px dashed var(--gold-pale); background: #fcfaf6; }
+    .message-preview-head { display: flex; align-items: center; gap: 8px; font-size: 0.78rem; color: var(--brand); margin-bottom: 0.6rem; }
+    .message-preview-head svg { width: 16px; height: 16px; fill: #25D366; }
+    .message-preview-body { white-space: pre-wrap; font-size: 0.86rem; line-height: 1.6; display: none; }
+    .message-preview-hint { font-size: 0.8rem; color: var(--ink-soft); }
+    .message-preview.ready .message-preview-body { display: block; }
+    .message-preview.ready .message-preview-hint { display: none; }
+    .booking-notice { margin: 0 0 1.2rem; padding: 0.9rem 1rem 0.85rem; border: 1px solid var(--gold-pale); background: #fcfaf6; }
+    .booking-notice-title { font-size: 0.74rem; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--brand); margin-bottom: 0.45rem; }
+    .booking-notice-list { list-style: none; padding: 0; margin: 0; }
+    .booking-notice-list li { position: relative; padding-left: 1rem; font-size: 0.85rem; line-height: 1.55; color: var(--ink); opacity: 0.85; margin: 0.2rem 0; }
+    .booking-notice-list li::before { content: ""; position: absolute; left: 0.15rem; top: 0.55em; width: 0.28rem; height: 0.28rem; border-radius: 50%; background: var(--gold); }
+    .payment-note { font-size: 0.82rem; color: var(--ink-soft); line-height: 1.6; margin: 1.2rem 0 1.4rem; text-align: center; }
+    .submit-button { width: 100%; border: 0; background: #25D366; color: #fff; padding: 14px 16px; font-size: 1rem; font-family: inherit; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; }
+    .submit-button svg { width: 20px; height: 20px; fill: #fff; }
+    .success-message { display: none; background: #e8f7ee; color: #146c2e; padding: 0.8rem 1rem; margin-bottom: 1rem; font-size: 0.88rem; }
+    .success-message.show { display: block; }
+    .additional-services { display: none; margin-bottom: 1rem; }
+    .additional-services.show { display: block; }
+    .additional-services h4 { font-size: 0.85rem; font-weight: 500; color: var(--brand); margin-bottom: 1rem; }
+    .guest-service-row { background: var(--cream); padding: 1rem; margin-bottom: 0.7rem; }
+    .guest-label { font-size: 0.8rem; color: var(--ink-soft); margin-bottom: 0.45rem; font-weight: 500; }
+    .same-package-label { display: flex; align-items: center; gap: 8px; font-size: 0.88rem; }
+    .premium-pick-list { display: grid; gap: 0.35rem; }
+    .premium-pick-item { display: flex; align-items: center; gap: 0.65rem; padding: 0.7rem 0.85rem; background: var(--cream); border: 1px solid var(--gold-pale); cursor: pointer; font-size: 1rem; line-height: 1.35; }
+    .premium-pick-item input { appearance: none; -webkit-appearance: none; width: 1.1rem; height: 1.1rem; border: 1.5px solid var(--gold); border-radius: 3px; background: var(--white); flex-shrink: 0; display: grid; place-items: center; margin: 0; }
+    .premium-pick-item input:checked { background: var(--brand); border-color: var(--brand); }
+    .premium-pick-item input:checked::after { content: ""; width: 0.32rem; height: 0.52rem; border: solid #fff; border-width: 0 1.6px 1.6px 0; transform: rotate(45deg) translateY(-1px); }
+    .premium-pick-item.is-disabled { opacity: 0.4; pointer-events: none; }
+    #premiumPickHint { margin-bottom: 0.55rem; }
+    #premiumPickGroup { overflow-x: hidden; }
+    @media (max-width: 768px) { body { padding: 24px 15px; } .booking-card { padding: 2rem 1.4rem; } }
+  </style>
+</head>
+<body>
+  <div class="booking-container">
+    <div class="booking-top">
+      <a href="landing.html" class="back-link" id="backLink">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span id="backLinkText">Back to Home</span>
+      </a>
+      <div class="lang-switch" role="group" aria-label="Language">
+        <button type="button" data-lang="cn">中文</button>
+        <button type="button" data-lang="en" class="active">EN</button>
+        <button type="button" data-lang="jp">日本語</button>
+      </div>
+    </div>
+    <div class="booking-header">
+      <div class="brand-badge" id="brandBadge">Book Your Appointment</div>
+      <h1 class="booking-title">RAN-TAN</h1>
+      <p class="booking-subtitle" id="bookingSubtitle">Fill in the form below to book your appointment</p>
+    </div>
+    <div class="booking-card">
+      <div class="success-message" id="successMessage"></div>
+      <form id="bookingForm">
+        <div class="form-group" id="serviceGroup">
+          <label for="service" class="form-label" id="labelService">Course *</label>
+          <select id="service" name="service" class="form-select" required></select>
+          <div class="form-error" id="errorService">Please select a course</div>
+        </div>
+        <div class="form-group" id="premiumPickGroup" hidden>
+          <label class="form-label" id="labelPremiumPicks">Choose 4 items *</label>
+          <p class="form-hint" id="premiumPickHint">Select exactly 4 options</p>
+          <div class="premium-pick-list" id="premiumPickList"></div>
+          <div class="form-error" id="errorPremiumPicks">Please select exactly 4 items</div>
+        </div>
+        <div class="form-group" id="dateGroup">
+          <label for="date" class="form-label" id="labelDate">Date *</label>
+          <div class="date-wrap"><input type="date" id="date" name="date" class="form-input" required></div>
+          <div class="form-error" id="errorDate">Please select a date</div>
+        </div>
+        <div class="form-group" id="timeGroup">
+          <label for="time" class="form-label" id="labelTime">Time *</label>
+          <select id="time" name="time" class="form-select" required></select>
+          <div class="form-hint" id="hintTime" hidden></div>
+          <div class="form-error" id="errorTime">Please select a time</div>
+        </div>
+        <div class="form-group" id="guestsGroup">
+          <label for="guests" class="form-label" id="labelGuests">Number of Guests *</label>
+          <select id="guests" name="guests" class="form-select" required></select>
+          <div class="form-error" id="errorGuests">Please select number of guests</div>
+        </div>
+        <div class="form-group" id="nameGroup">
+          <label for="name" class="form-label" id="labelName">Name *</label>
+          <input type="text" id="name" name="name" class="form-input" placeholder="Enter your name" required>
+          <div class="form-error" id="errorName">Please enter your name</div>
+        </div>
+        <div class="form-group" id="samePackageGroup" style="display:none;">
+          <label class="same-package-label">
+            <input type="checkbox" id="samePackage" name="samePackage" checked>
+            <span id="samePackageText">All guests choose the same course</span>
+          </label>
+        </div>
+        <div class="additional-services" id="additionalServices">
+          <h4 id="additionalServicesTitle">Additional Guests' Courses</h4>
+          <div id="additionalServicesContainer"></div>
+        </div>
+        <div class="message-preview" id="messagePreview">
+          <div class="message-preview-head"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.884-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg><span id="previewTitle">WhatsApp Message Preview</span></div>
+          <pre class="message-preview-body" id="previewBody"></pre>
+          <p class="message-preview-hint" id="previewHint">Complete all required fields above to preview your message.</p>
+        </div>
+        <aside class="booking-notice" aria-labelledby="noticeTitle">
+          <h3 class="booking-notice-title" id="noticeTitle">Before you book</h3>
+          <ul class="booking-notice-list">
+            <li id="noticeNom">Nomination fee ¥500</li>
+            <li id="noticeLate">Late-night fee ¥500 after 23:00</li>
+          </ul>
+        </aside>
+        <p class="payment-note" id="paymentNote">Weekdays 11:00–24:00 · Weekends 10:00–24:30<br>Tel <a href="tel:+81356870888" style="color:inherit">03-5687-0888</a></p>
+        <button type="submit" class="submit-button" id="submitButton">
+          <span class="whatsapp-icon"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.884-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg></span>
+          <span id="submitButtonText">Submit &amp; Open WhatsApp</span>
+        </button>
+      </form>
+    </div>
+  </div>
+  <script>
+    var WHATSAPP_NUMBER = '85290744644';
+    fetch('whatsapp-config.json', { cache: 'no-store' })
+      .then(function (r) { return r.json(); })
+      .then(function (c) { var num = c && c[c.use]; if (num && /^\d{8,15}$/.test(num)) WHATSAPP_NUMBER = num; })
+      .catch(function () {});
+    var currentLang = 'en';
+    var serviceInfo = {
+      "Choice 90 min": 9350,
+      "Body Foot 90 min": 8800,
+      "Aroma Foot Head 90 min": 9900,
+      "Refresh 60 min": 6600,
+      "Fatigue 60 min": 6600,
+      "Calf 60 min": 6600,
+      "Leg Beauty 60 min": 6600,
+      "Princess 120 min": 14300,
+      "King 120 min": 12100,
+      "Foot 30 min": 3300,
+      "Foot 45 min": 4950,
+      "Foot 60 min": 6600,
+      "Foot 90 min": 9900,
+      "Foot 120 min": 13200,
+      "Seitai 30 min": 3300,
+      "Seitai 45 min": 4950,
+      "Seitai 60 min": 5500,
+      "Seitai 90 min": 8800,
+      "Seitai 120 min": 12100,
+      "Aroma 40 min": 6600,
+      "Aroma 60 min": 8800,
+      "Aroma 90 min": 12100,
+      "Aroma 120 min": 15400,
+      "Aroma 180 min": 22000
+    };
+    var PREMIUM_VALUE = "";
+    var PREMIUM_PICKS = [];
+    var serviceGroups = [
+      { label: { en: "Choice", jp: "チョイス", cn: "自选" }, items: [
+        { value: "Choice 90 min", dur: 90, price: 9350, en: "Choice mix", jp: "チョイス組合せ", cn: "自选组合" }
+      ]},
+      { label: { en: "90 min sets", jp: "90分コース", cn: "90分钟套餐" }, items: [
+        { value: "Body Foot 90 min", dur: 90, price: 8800, en: "Body 60 + Foot 30", jp: "整体60＋足裏30", cn: "整体60＋足底30" },
+        { value: "Aroma Foot Head 90 min", dur: 90, price: 9900, en: "Aroma + foot + head", jp: "アロマ＋足＋頭", cn: "精油＋足＋头" }
+      ]},
+      { label: { en: "60 min sets", jp: "おすすめ60分", cn: "推荐60分钟" }, items: [
+        { value: "Refresh 60 min", dur: 60, price: 6600, en: "Full-body refresh", jp: "全身スッキリ", cn: "全身舒畅" },
+        { value: "Fatigue 60 min", dur: 60, price: 6600, en: "Fatigue recovery", jp: "疲れ回復", cn: "疲劳恢复" },
+        { value: "Calf 60 min", dur: 60, price: 6600, en: "Calf care", jp: "ふくらはぎ", cn: "小腿护理" },
+        { value: "Leg Beauty 60 min", dur: 60, price: 6600, en: "Foot scrub", jp: "美脚スペス", cn: "美腿去角质" }
+      ]},
+      { label: { en: "Special", jp: "スペシャル", cn: "特别套餐" }, items: [
+        { value: "Princess 120 min", dur: 120, price: 14300, en: "Princess", jp: "プリンセス", cn: "公主套餐" },
+        { value: "King 120 min", dur: 120, price: 12100, en: "King", jp: "キング", cn: "国王套餐" }
+      ]},
+      { label: { en: "Foot", jp: "足裏", cn: "足底" }, items: [
+        { value: "Foot 30 min", dur: 30, price: 3300, en: "Foot", jp: "足裏", cn: "足底" },
+        { value: "Foot 45 min", dur: 45, price: 4950, en: "Foot", jp: "足裏", cn: "足底" },
+        { value: "Foot 60 min", dur: 60, price: 6600, en: "Foot", jp: "足裏", cn: "足底" },
+        { value: "Foot 90 min", dur: 90, price: 9900, en: "Foot", jp: "足裏", cn: "足底" },
+        { value: "Foot 120 min", dur: 120, price: 13200, en: "Foot", jp: "足裏", cn: "足底" }
+      ]},
+      { label: { en: "Body", jp: "整体", cn: "整体" }, items: [
+        { value: "Seitai 30 min", dur: 30, price: 3300, en: "Body", jp: "整体", cn: "整体" },
+        { value: "Seitai 45 min", dur: 45, price: 4950, en: "Body", jp: "整体", cn: "整体" },
+        { value: "Seitai 60 min", dur: 60, price: 5500, en: "Body", jp: "整体", cn: "整体" },
+        { value: "Seitai 90 min", dur: 90, price: 8800, en: "Body", jp: "整体", cn: "整体" },
+        { value: "Seitai 120 min", dur: 120, price: 12100, en: "Body", jp: "整体", cn: "整体" }
+      ]},
+      { label: { en: "Aroma", jp: "アロマ", cn: "精油" }, items: [
+        { value: "Aroma 40 min", dur: 40, price: 6600, en: "Aroma", jp: "アロマ", cn: "精油" },
+        { value: "Aroma 60 min", dur: 60, price: 8800, en: "Aroma", jp: "アロマ", cn: "精油" },
+        { value: "Aroma 90 min", dur: 90, price: 12100, en: "Aroma", jp: "アロマ", cn: "精油" },
+        { value: "Aroma 120 min", dur: 120, price: 15400, en: "Aroma", jp: "アロマ", cn: "精油" },
+        { value: "Aroma 180 min", dur: 180, price: 22000, en: "Aroma", jp: "アロマ", cn: "精油" }
+      ]}
+    ];
+    var i18n = {
+      en: { htmlLang:'en', title:'Book Appointment — RAN-TAN', backLink:'Back to Home', brandBadge:'Book Your Appointment',
+        bookingSubtitle:'Fill in the form below to book your appointment',
+        successMessage:'Your booking information has been prepared. You will be redirected to WhatsApp shortly...',
+        labelService:'Course *', labelDate:'Date *', labelTime:'Time *', labelGuests:'Number of Guests *', labelName:'Name *',
+        selectCourse:'Select a course', selectTime:'Select a time', selectGuests:'Select number of guests', namePlaceholder:'Enter your name',
+        hintTime:'', errorService:'Please select a course', errorDate:'Please select a date', errorTime:'Please select a time',
+        errorTimeRange:'Please choose a time between 10:00 and 24:30.', errorClosed:'Closed 1–3 January. Please choose another date.',
+        errorGuests:'Please select number of guests', errorName:'Please enter your name',
+        samePackageText:'All guests choose the same course', additionalServicesTitle:"Additional Guests' Courses (if different)",
+        submitButton:'Submit & Open WhatsApp', redirecting:'Redirecting...',
+        previewTitle:'WhatsApp Message Preview', previewHint:'Complete all required fields above to preview your message.',
+        paymentNote:"Weekdays 11:00–24:00 · Weekends 10:00–24:30<br>Tel <a href=\"tel:+81356870888\" style=\"color:inherit\">03-5687-0888</a>", noticeTitle:"Before you book", noticeNom:"Nomination fee ¥500", noticeLate:"Late-night fee ¥500 after 23:00",
+        guestUnit: function(n){ return n + (n>1?' Guests':' Guest'); },
+        waIntro:"Hello, I would like to make a reservation at RAN-TAN Asakusabashi.\n\n",
+        waName:'Name', waDate:'Date', waTime:'Time', waGuests:'Number of Guests', waMainGuest:'Course',
+        waShop:'Shop', waShopValue:'RAN-TAN',
+        waAddress:'Address', waAddressValue:"〒111-0053 Tokyo, Taito City, Asakusabashi, 1 Chome−30−11 光雲堂ビル4F",
+        waSameCourse:'All guests choose the same course', waGuest:'Guest',
+        waGuestCourse: function(n){ return 'Guest '+n+' course'; }, waTotal:'Total', dateLocale:'en-US',
+        labelPremiumPicks:'Choose 4 items *', premiumPickHint:'Select exactly 4 options',
+        errorPremiumPicks:'Please select exactly 4 items', waPicks:'Selected items' },
+      jp: { htmlLang:'ja', title:'ご予約 — RAN-TAN', backLink:'ホームに戻る', brandBadge:'ご予約',
+        bookingSubtitle:'以下のフォームにご記入のうえ、ご予約ください',
+        successMessage:'予約内容を作成しました。まもなく WhatsApp へ移動します…',
+        labelService:'コース *', labelDate:'日付 *', labelTime:'時間 *', labelGuests:'人数 *', labelName:'お名前 *',
+        selectCourse:'コースを選択', selectTime:'時間を選択', selectGuests:'人数を選択', namePlaceholder:'お名前を入力',
+        hintTime:'', errorService:'コースを選択してください', errorDate:'日付を選択してください', errorTime:'時間を選択してください',
+        errorTimeRange:'10:00〜24:30の時間を選択してください。', errorClosed:'年始（1/1〜1/3）は休みです。別の日を選択してください。',
+        errorGuests:'人数を選択してください', errorName:'お名前を入力してください',
+        samePackageText:'全員同じコースを選択', additionalServicesTitle:'追加ゲストのコース（異なる場合）',
+        submitButton:'送信して WhatsApp を開く', redirecting:'移動中…',
+        previewTitle:'WhatsApp メッセージプレビュー', previewHint:'送信内容を確認するため、上記の必須項目をすべてご記入ください。',
+        paymentNote:"平日 11:00–24:00 · 土日祝 10:00–24:30<br>Tel <a href=\"tel:+81356870888\" style=\"color:inherit\">03-5687-0888</a>", noticeTitle:"ご予約の前に", noticeNom:"指名料 ¥500", noticeLate:"23:00以降の予約は深夜料金 ¥500",
+        guestUnit: function(n){ return n + '名'; },
+        waIntro:"こんにちは、RAN-TAN浅草橋店のご予約を希望します。\n\n",
+        waName:'お名前', waDate:'日付', waTime:'時間', waGuests:'人数', waMainGuest:'コース',
+        waShop:'店舗', waShopValue:'RAN-TAN',
+        waAddress:'住所', waAddressValue:"〒111-0053 東京都台東区浅草橋1-30-11 光雲堂ビル4F",
+        waSameCourse:'全員同じコース', waGuest:'ゲスト',
+        waGuestCourse: function(n){ return 'ゲスト'+n+'のコース'; }, waTotal:'合計', dateLocale:'ja-JP',
+        labelPremiumPicks:'4つ選択 *', premiumPickHint:'7種から4つお選びください',
+        errorPremiumPicks:'4つ選択してください', waPicks:'選択メニュー' },
+      cn: { htmlLang:'zh-CN', title:'预约 — RAN-TAN', backLink:'返回首页', brandBadge:'在线预约',
+        bookingSubtitle:'请填写以下信息完成预约',
+        successMessage:'预约信息已生成，即将跳转至 WhatsApp…',
+        labelService:'项目 *', labelDate:'日期 *', labelTime:'时间 *', labelGuests:'人数 *', labelName:'姓名 *',
+        selectCourse:'请选择项目', selectTime:'请选择时间', selectGuests:'请选择人数', namePlaceholder:'请输入您的姓名',
+        hintTime:'', errorService:'请选择项目', errorDate:'请选择日期', errorTime:'请选择时间',
+        errorTimeRange:'请选择 10:00–24:30 之间的时间。', errorClosed:'年始 1/1–1/3 休息，请选择其他日期。',
+        errorGuests:'请选择人数', errorName:'请输入姓名',
+        samePackageText:'所有客人都选择相同项目', additionalServicesTitle:'其他客人的项目（如不同）',
+        submitButton:'提交并打开 WhatsApp', redirecting:'跳转中…',
+        previewTitle:'WhatsApp 消息预览', previewHint:'请先填写上方所有必填项，即可预览消息内容。',
+        paymentNote:"平日 11:00–24:00 · 土日祝 10:00–24:30<br>Tel <a href=\"tel:+81356870888\" style=\"color:inherit\">03-5687-0888</a>", noticeTitle:"预约前提示", noticeNom:"指名费 ¥500", noticeLate:"23:00 以后预约加收深夜费 ¥500",
+        guestUnit: function(n){ return n + ' 人'; },
+        waIntro:"您好，我想预约 RAN-TAN 浅草桥店。\n\n",
+        waName:'姓名', waDate:'日期', waTime:'时间', waGuests:'人数', waMainGuest:'项目',
+        waShop:'门店', waShopValue:'RAN-TAN',
+        waAddress:'地址', waAddressValue:"〒111-0053 东京都台东区浅草桥1-30-11 光雲堂ビル4F",
+        waSameCourse:'所有客人都选择相同项目', waGuest:'客人',
+        waGuestCourse: function(n){ return '客人'+n+'项目'; }, waTotal:'合计', dateLocale:'zh-CN',
+        labelPremiumPicks:'自选 4 项 *', premiumPickHint:'请从 7 项中勾选 4 项',
+        errorPremiumPicks:'请勾选正好 4 项', waPicks:'自选项目' }
+    };
+    function t(k){ return i18n[currentLang][k]; }
+    function durLabel(dur){ return dur + (currentLang==='en' ? ' min' : (currentLang==='cn' ? '分钟' : '分')); }
+    function buildServiceOptionsHTML(selectedValue){
+      var html = '<option value="">' + t('selectCourse') + '</option>';
+      serviceGroups.forEach(function(g){
+        html += '<optgroup label="' + g.label[currentLang] + '">';
+        g.items.forEach(function(it){
+          var sel = it.value === selectedValue ? ' selected' : '';
+          html += '<option value="' + it.value + '"' + sel + '>' + it[currentLang] + ' ' + durLabel(it.dur) + ' — ¥' + it.price.toLocaleString() + '</option>';
+        });
+        html += '</optgroup>';
+      });
+      return html;
+    }
+    function buildGuestsOptionsHTML(selectedValue){
+      var html = '<option value="">' + t('selectGuests') + '</option>';
+      for (var i=1;i<=10;i++){
+        var sel = String(i)===selectedValue ? ' selected' : '';
+        html += '<option value="'+i+'"'+sel+'>'+t('guestUnit')(i)+'</option>';
+      }
+      return html;
+    }
+    function pad2(n){ return n<10 ? '0'+n : ''+n; }
+    function buildTimeOptions(selectedValue){
+      var html = '<option value="">' + t('selectTime') + '</option>';
+      var h, m;
+      for (h=10; h<=24; h++){
+        for (m=0;m<60;m+=5){
+          if (h===24 && m>30) break;
+          var v = pad2(h)+':'+pad2(m);
+          html += '<option value="'+v+'"'+(v===selectedValue?' selected':'')+'>'+v+'</option>';
+        }
+      }
+      return html;
+    }
+    function getInitialLang(){
+      var p = new URLSearchParams(window.location.search); var lang = p.get('lang');
+      if (lang==='cn'||lang==='jp'||lang==='en') return lang;
+      var ref = document.referrer;
+      if (ref.indexOf('/cn/')!==-1) return 'cn';
+      if (ref.indexOf('/jp/')!==-1) return 'jp';
+      return 'en';
+    }
+    function pickLabel(id){
+      for (var i=0;i<PREMIUM_PICKS.length;i++){
+        if (PREMIUM_PICKS[i].id===id) return PREMIUM_PICKS[i][currentLang] || PREMIUM_PICKS[i].en;
+      }
+      return id;
+    }
+    function isPremiumService(val){
+      return !!val && (val === PREMIUM_VALUE || String(val).indexOf('Premium Custom') !== -1);
+    }
+    function parsePicksParam(raw){
+      return String(raw || '').split(',').map(function(s){ return s.trim(); }).filter(function(id){
+        return PREMIUM_PICKS.some(function(x){ return x.id === id; });
+      }).slice(0, 4);
+    }
+    function selectedPremiumPicks(){
+      var fromDom = Array.prototype.map.call(document.querySelectorAll('#premiumPickList input:checked'), function(el){ return el.value; });
+      if (fromDom.length) return fromDom;
+      var form = document.getElementById('bookingForm');
+      if (form){
+        var all = new FormData(form).getAll('premiumPick');
+        if (all && all.length) return all;
+      }
+      return parsePicksParam(new URLSearchParams(window.location.search).get('picks'));
+    }
+    function premiumPicksBlock(){
+      var picks = selectedPremiumPicks();
+      if (!picks.length) return '';
+      var bullet = currentLang === 'en' ? '- ' : '・';
+      return t('waPicks') + ':\n' + picks.map(function(id){ return bullet + pickLabel(id); }).join('\n') + '\n';
+    }
+    function syncPremiumPickLock(){
+      var n = selectedPremiumPicks().length;
+      document.querySelectorAll('#premiumPickList input').forEach(function(inp){
+        var lab = inp.closest('.premium-pick-item');
+        var lock = !inp.checked && n >= 4;
+        inp.disabled = lock;
+        if (lab) lab.classList.toggle('is-disabled', lock);
+      });
+      var hint = document.getElementById('premiumPickHint');
+      if (hint) hint.textContent = t('premiumPickHint') + '（' + n + '/4）';
+    }
+    function renderPremiumPicks(keepIds){
+      var list = document.getElementById('premiumPickList');
+      if (!list) return;
+      var keep = keepIds || selectedPremiumPicks();
+      var html = '';
+      PREMIUM_PICKS.forEach(function(p){
+        var checked = keep.indexOf(p.id) !== -1 ? ' checked' : '';
+        html += '<label class="premium-pick-item"><input type="checkbox" name="premiumPick" value="'+p.id+'"'+checked+'> '+p[currentLang]+'</label>';
+      });
+      list.innerHTML = html;
+      syncPremiumPickLock();
+    }
+    function togglePremiumPickGroup(){
+      var show = isPremiumService(document.getElementById('service').value);
+      document.getElementById('premiumPickGroup').hidden = !show;
+      if (show){
+        if (!document.getElementById('premiumPickList').children.length) renderPremiumPicks();
+        else syncPremiumPickLock();
+      }
+    }
+    function applyLang(lang){
+      currentLang = lang; var o = i18n[lang];
+      var sv = document.getElementById('service').value;
+      var gv = document.getElementById('guests').value;
+      var tv = document.getElementById('time').value;
+      var picksKeep = selectedPremiumPicks();
+      document.documentElement.lang = o.htmlLang;
+      document.title = o.title;
+      document.getElementById('backLinkText').textContent = o.backLink;
+      document.getElementById('brandBadge').textContent = o.brandBadge;
+      document.getElementById('bookingSubtitle').textContent = o.bookingSubtitle;
+      document.getElementById('successMessage').textContent = o.successMessage;
+      document.getElementById('labelService').textContent = o.labelService;
+      document.getElementById('labelDate').textContent = o.labelDate;
+      document.getElementById('labelTime').textContent = o.labelTime;
+      document.getElementById('labelGuests').textContent = o.labelGuests;
+      document.getElementById('labelName').textContent = o.labelName;
+      document.getElementById('labelPremiumPicks').textContent = o.labelPremiumPicks;
+      document.getElementById('errorPremiumPicks').textContent = o.errorPremiumPicks;
+      document.getElementById('errorService').textContent = o.errorService;
+      document.getElementById('errorDate').textContent = o.errorDate;
+      document.getElementById('errorTime').textContent = o.errorTime;
+      document.getElementById('errorGuests').textContent = o.errorGuests;
+      document.getElementById('errorName').textContent = o.errorName;
+      document.getElementById('name').placeholder = o.namePlaceholder;
+      document.getElementById('samePackageText').textContent = o.samePackageText;
+      document.getElementById('additionalServicesTitle').textContent = o.additionalServicesTitle;
+      document.getElementById('submitButtonText').textContent = o.submitButton;
+      document.getElementById('previewTitle').textContent = o.previewTitle;
+      document.getElementById('previewHint').textContent = o.previewHint;
+      document.getElementById('paymentNote').innerHTML = o.paymentNote;
+      if (document.getElementById('noticeTitle')) document.getElementById('noticeTitle').textContent = o.noticeTitle;
+      if (document.getElementById('noticeNom')) document.getElementById('noticeNom').textContent = o.noticeNom;
+      if (document.getElementById('noticeLate')) document.getElementById('noticeLate').textContent = o.noticeLate;
+      document.getElementById('service').innerHTML = buildServiceOptionsHTML(sv);
+      document.getElementById('guests').innerHTML = buildGuestsOptionsHTML(gv);
+      document.getElementById('time').innerHTML = buildTimeOptions(tv);
+      renderPremiumPicks(picksKeep);
+      togglePremiumPickGroup();
+      document.querySelectorAll('.lang-switch button').forEach(function(b){ b.classList.toggle('active', b.getAttribute('data-lang')===lang); });
+      document.getElementById('backLink').setAttribute('href', lang==='en' ? 'en/index.html' : (lang==='jp' ? 'jp/index.html' : 'cn/index.html'));
+      var url = new URL(window.location.href); url.searchParams.set('lang', lang); history.replaceState(null,'',url);
+      updateAdditionalServices();
+      updateMessagePreview();
+    }
+    var dateInput = document.getElementById('date');
+    dateInput.setAttribute('min', new Date().toISOString().split('T')[0]);
+    function isClosedDate(ds){ return false; }
+    function syncDateFilled(){
+      dateInput.classList.toggle('is-filled', !!dateInput.value);
+      if (isClosedDate(dateInput.value)){
+        document.getElementById('errorDate').textContent = t('errorClosed');
+        document.getElementById('dateGroup').classList.add('error');
+      } else if (dateInput.value) {
+        document.getElementById('errorDate').textContent = t('errorDate');
+        document.getElementById('dateGroup').classList.remove('error');
+      }
+    }
+    dateInput.addEventListener('input', syncDateFilled);
+    dateInput.addEventListener('change', syncDateFilled);
+    applyLang(getInitialLang());
+    syncDateFilled();
+    document.querySelectorAll('.lang-switch button').forEach(function(btn){
+      btn.addEventListener('click', function(){ applyLang(this.getAttribute('data-lang')); });
+    });
+    (function(){
+      var p = new URLSearchParams(window.location.search);
+      var svc = p.get('service');
+      if (svc){ var sel=document.getElementById('service'); for(var i=0;i<sel.options.length;i++){ if(sel.options[i].value===svc){ sel.options[i].selected=true; break; } } }
+      var picks = parsePicksParam(p.get('picks'));
+      if (picks.length) renderPremiumPicks(picks);
+      togglePremiumPickGroup();
+      updateMessagePreview();
+    })();
+    document.getElementById('service').addEventListener('change', function(){
+      document.getElementById('premiumPickGroup').classList.remove('error');
+      togglePremiumPickGroup();
+      updateMessagePreview();
+    });
+    document.getElementById('premiumPickList').addEventListener('change', function(){
+      document.getElementById('premiumPickGroup').classList.remove('error');
+      syncPremiumPickLock();
+      var url = new URL(window.location.href);
+      var picks = selectedPremiumPicks();
+      if (picks.length) url.searchParams.set('picks', picks.join(','));
+      else url.searchParams.delete('picks');
+      history.replaceState(null,'',url);
+    });
+    document.getElementById('guests').addEventListener('change', updateAdditionalServices);
+    document.getElementById('samePackage').addEventListener('change', updateAdditionalServices);
+    function updateAdditionalServices(){
+      var guests = document.getElementById('guests').value;
+      var add = document.getElementById('additionalServices');
+      var cont = document.getElementById('additionalServicesContainer');
+      var spg = document.getElementById('samePackageGroup');
+      var spc = document.getElementById('samePackage');
+      if (!guests || guests==='1'){ add.classList.remove('show'); cont.innerHTML=''; spg.style.display='none'; updateMessagePreview(); return; }
+      spg.style.display='block';
+      if (spc.checked){ add.classList.remove('show'); cont.innerHTML=''; updateMessagePreview(); return; }
+      var n = parseInt(guests)-1, html='';
+      for (var i=1;i<=n;i++){
+        html += '<div class="guest-service-row"><div class="guest-label">'+t('waGuestCourse')(i+1)+'</div>' +
+                '<select name="guest'+i+'Service" class="form-select">'+buildServiceOptionsHTML('')+'</select></div>';
+      }
+      cont.innerHTML = html; add.classList.add('show'); updateMessagePreview();
+    }
+    function servicePrice(s){ return serviceInfo[s] || 0; }
+    function findItem(value){
+      for (var g=0;g<serviceGroups.length;g++){
+        for (var i=0;i<serviceGroups[g].items.length;i++){
+          if (serviceGroups[g].items[i].value===value) return serviceGroups[g].items[i];
+        }
+      }
+      return null;
+    }
+    function serviceLine(value){
+      var it = findItem(value);
+      if (!it) return value;
+      return it[currentLang] + ' ' + durLabel(it.dur);
+    }
+    function isTimeInHours(ts){
+      if (!ts) return false;
+      var p = ts.split(':'); var h = parseInt(p[0],10), m = parseInt(p[1],10);
+      return h>=10 && (h<24 || (h===24 && m<=30));
+    }
+    function validateForm(){
+      var ok = true;
+      document.querySelectorAll('.form-group').forEach(function(g){ g.classList.remove('error'); });
+      if (!document.getElementById('name').value.trim()){ document.getElementById('nameGroup').classList.add('error'); ok=false; }
+      if (!document.getElementById('date').value){
+        document.getElementById('errorDate').textContent = t('errorDate');
+        document.getElementById('dateGroup').classList.add('error'); ok=false;
+      } else if (isClosedDate(document.getElementById('date').value)){
+        document.getElementById('errorDate').textContent = t('errorClosed');
+        document.getElementById('dateGroup').classList.add('error'); ok=false;
+      }
+      var timeVal = document.getElementById('time').value;
+      if (!timeVal){ document.getElementById('errorTime').textContent = t('errorTime'); document.getElementById('timeGroup').classList.add('error'); ok=false; }
+      else if (!isTimeInHours(timeVal)){ document.getElementById('errorTime').textContent = t('errorTimeRange'); document.getElementById('timeGroup').classList.add('error'); ok=false; }
+      if (!document.getElementById('guests').value){ document.getElementById('guestsGroup').classList.add('error'); ok=false; }
+      if (!document.getElementById('service').value){ document.getElementById('serviceGroup').classList.add('error'); ok=false; }
+      if (isPremiumService(document.getElementById('service').value) && selectedPremiumPicks().length !== 4){
+        document.getElementById('premiumPickGroup').classList.add('error'); ok=false;
+      }
+      return ok;
+    }
+    function formatDate(ds){ var d=new Date(ds+'T00:00:00'); return d.toLocaleDateString(t('dateLocale'),{year:'numeric',month:'long',day:'numeric'}); }
+    function isFormComplete(){
+      var ds = document.getElementById('date').value;
+      var svc = document.getElementById('service').value;
+      if (!(document.getElementById('name').value.trim() && ds && !isClosedDate(ds) &&
+             document.getElementById('time').value && document.getElementById('guests').value && svc)) return false;
+      if (isPremiumService(svc) && selectedPremiumPicks().length !== 4) return false;
+      return true;
+    }
+    function buildWhatsAppMessage(fd){
+      var name=fd.get('name'), date=formatDate(fd.get('date')), time=fd.get('time');
+      var guests=fd.get('guests'), gc=parseInt(guests), main=fd.get('service');
+      var m = t('waIntro');
+      m += t('waShop')+': '+t('waShopValue')+'\n';
+      m += t('waName')+': '+name+'\n';
+      m += t('waDate')+': '+date+'\n';
+      m += t('waTime')+': '+time+'\n';
+      m += t('waGuests')+': '+guests+'\n';
+      var same = fd.get('samePackage')==='on';
+      var total = servicePrice(main);
+      if (gc>1 && !same){
+        m += t('waGuestCourse')(1)+': '+serviceLine(main)+' (¥'+servicePrice(main).toLocaleString()+')\n';
+        if (isPremiumService(main)) m += premiumPicksBlock();
+        for (var i=1;i<gc;i++){
+          var gs=fd.get('guest'+i+'Service');
+          if(gs&&gs.trim()){
+            m += t('waGuestCourse')(i+1)+': '+serviceLine(gs)+' (¥'+servicePrice(gs).toLocaleString()+')\n';
+            total += servicePrice(gs);
+          }
+        }
+      } else {
+        m += t('waMainGuest')+': '+serviceLine(main)+' (¥'+servicePrice(main).toLocaleString()+')\n';
+        if (isPremiumService(main)) m += premiumPicksBlock();
+        if (gc>1 && same){ m += t('waSameCourse')+'\n'; total = servicePrice(main)*gc; }
+      }
+      m += t('waAddress')+': '+t('waAddressValue')+'\n';
+      if (total>0){ m += '\n'+t('waTotal')+': ¥'+total.toLocaleString(); }
+      return m;
+    }
+    function updateMessagePreview(){
+      var ps=document.getElementById('messagePreview'), pb=document.getElementById('previewBody');
+      if (!isFormComplete()){ ps.classList.remove('ready'); pb.textContent=''; return; }
+      pb.textContent = buildWhatsAppMessage(new FormData(document.getElementById('bookingForm')));
+      ps.classList.add('ready');
+    }
+    document.getElementById('bookingForm').addEventListener('submit', function(e){
+      e.preventDefault();
+      if (!validateForm()) return;
+      var msg = encodeURIComponent(buildWhatsAppMessage(new FormData(this)));
+      var url = 'https://api.whatsapp.com/send/?phone=' + WHATSAPP_NUMBER + '&text=' + msg + '&type=phone_number&app_absent=0';
+      document.getElementById('successMessage').classList.add('show');
+      document.getElementById('submitButton').disabled = true;
+      document.getElementById('submitButtonText').textContent = t('redirecting');
+      setTimeout(function(){ window.open(url,'_blank'); }, 500);
+    });
+    document.getElementById('bookingForm').addEventListener('input', updateMessagePreview);
+    document.getElementById('bookingForm').addEventListener('change', updateMessagePreview);
+  </script>
+</body>
+</html>
