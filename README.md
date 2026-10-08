@@ -12,6 +12,7 @@ Each shop lives in its own subfolder:
 - `ichioshi-koenji/` — いちおし健康館 高円寺
 - `ashiyu-kagurazaka/` — 足悠 神楽坂店（Ashiyu）
 - `ashiyu-azabujuban/` — 足悠 麻布十番店（Ashiyu）
+- `bigfoot-ueno/` — BIG FOOT SPA 上野・御徒町
 - `rantan-asakusabashi/` — RAN-TAN 浅草橋サロン（ランタン）
 - `rirakoro-naga/` — リラころ 長堀橋店（Rirakoro）
 - `rirakoro-namba/` — カヌン タイ リラクゼーション 南海難波店（Kanun）

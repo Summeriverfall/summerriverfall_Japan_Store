@@ -1,0 +1,7 @@
+{
+  "use": "center",
+  "center": "85290744644",
+  "_note": "Booking reads this file at runtime and falls back to 85290744644 if loading fails.",
+  "shop_phone": "81362844686",
+  "shop_phone_display": "+81 3-6284-4686"
+}
