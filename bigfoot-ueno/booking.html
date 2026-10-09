@@ -265,6 +265,7 @@
     .success-message.show { display: block; }
     .additional-services { display: none; margin-top: 1.4rem; padding-top: 1.4rem; border-top: 1px dashed var(--gold-pale); }
     .additional-services.show { display: block; }
+    .additional-services.error .form-error { display: block; }
     .additional-services h4 { font-size: 0.85rem; font-weight: 500; color: var(--brand); margin-bottom: 1rem; }
     .guest-service-row { background: var(--stone); padding: 1rem; margin-bottom: 0.7rem; border-radius: 6px; }
     .guest-label { font-size: 0.8rem; color: var(--ink-soft); margin-bottom: 0.45rem; font-weight: 500; }
@@ -352,8 +353,8 @@
           <select id="guests" name="guests" class="form-select" required></select>
           <div class="form-group" id="guestsExactGroup" style="display:none;margin:0.7rem 0 0;">
             <label for="guestsExact" class="form-label" id="labelGuestsExact">Exact number *</label>
-            <input type="number" id="guestsExact" name="guestsExact" class="form-input" min="5" max="30" step="1" inputmode="numeric" placeholder="5">
-            <div class="form-error" id="errorGuestsExact">Please enter 5 or more</div>
+            <input type="number" id="guestsExact" name="guestsExact" class="form-input" min="5" max="23" step="1" inputmode="numeric" placeholder="5">
+            <div class="form-error" id="errorGuestsExact">Please enter 5–23</div>
           </div>
           <div class="form-error" id="errorGuests">Please select number of guests</div>
         </div>
@@ -382,6 +383,7 @@
         <div class="additional-services" id="additionalServices">
           <h4 id="additionalServicesTitle">Additional Guests' Courses (if different)</h4>
           <div id="additionalServicesContainer"></div>
+          <div class="form-error" id="errorGuestCourses">Please choose a course for every guest</div>
         </div>
 
         <div class="message-preview" id="messagePreview">
@@ -537,7 +539,9 @@
         errorService:'Please select a course', errorDate:'Please select a date', errorTime:'Please select a time',
         errorTimeRange:'Please choose a valid time (Sun–Thu 11:00–1:00; Fri–Sat 11:00–4:00).',
         errorGuests:'Please select number of guests', errorName:'Please enter your name',
-        errorGuestsExact:'Please enter 5 or more', labelGuestsExact:'Exact number *', guestPlus:'5+',
+        errorGuestsExact:'Please enter 5–23 guests', labelGuestsExact:'Exact number *', guestPlus:'5+',
+        errorGuestCourses:'Please choose a course for every guest', waUnselected:'Not selected',
+        nextDayLabel:'Next day',
         samePackageText:'All guests choose the same course', additionalServicesTitle:"Additional Guests' Courses (if different)",
         disposableGownText:'Disposable gown needed (¥110 top / ¥110 bottom per guest)',
         submitButton:'Submit & Open WhatsApp', redirecting:'Redirecting...',
@@ -564,7 +568,9 @@
         errorService:'コースを選択してください', errorDate:'日付を選択してください', errorTime:'時間を選択してください',
         errorTimeRange:'予約枠（日～木11:00〜1:00／金土11:00〜4:00）の時間を選択してください。',
         errorGuests:'人数を選択してください', errorName:'お名前を入力してください',
-        errorGuestsExact:'5以上の人数を入力してください', labelGuestsExact:'正確な人数 *', guestPlus:'5+',
+        errorGuestsExact:'5〜23名で入力してください', labelGuestsExact:'正確な人数 *', guestPlus:'5+',
+        errorGuestCourses:'追加ゲスト全員のコースを選択してください', waUnselected:'未選択',
+        nextDayLabel:'翌',
         samePackageText:'全員同じコースを選択', additionalServicesTitle:'追加ゲストのコース（異なる場合）',
         disposableGownText:'着替えが必要（上下各110円／1名あたり）',
         submitButton:'送信して WhatsApp を開く', redirecting:'移動中…',
@@ -591,7 +597,9 @@
         errorService:'请选择项目', errorDate:'请选择日期', errorTime:'请选择时间',
         errorTimeRange:'请选择有效预约时间（周日～周四11:00–1:00；周五周六11:00–4:00）。',
         errorGuests:'请选择人数', errorName:'请输入姓名',
-        errorGuestsExact:'请输入5人或以上', labelGuestsExact:'准确人数 *', guestPlus:'5+',
+        errorGuestsExact:'请输入 5–23 人', labelGuestsExact:'准确人数 *', guestPlus:'5+',
+        errorGuestCourses:'请为每位附加客人选择项目', waUnselected:'未选',
+        nextDayLabel:'次日',
         samePackageText:'所有客人都选择相同项目', additionalServicesTitle:'其他客人的项目（如不同）',
         disposableGownText:'需要一次性服装（上衣·下衣各 ¥110／每位客人）',
         submitButton:'提交并打开 WhatsApp', redirecting:'跳转中…',
@@ -649,7 +657,7 @@
       var gv = document.getElementById('guests').value;
       if (gv === '5+') {
         var ex = parseInt(document.getElementById('guestsExact').value, 10);
-        return (!isNaN(ex) && ex >= 5) ? ex : 0;
+        return (!isNaN(ex) && ex >= 5 && ex <= 23) ? ex : 0;
       }
       return parseInt(gv, 10) || 0;
     }
@@ -706,6 +714,11 @@
       return holidays;
     }
 
+    function tokyoToday(){
+      return new Intl.DateTimeFormat('en-CA', {
+        timeZone: 'Asia/Tokyo', year: 'numeric', month: '2-digit', day: '2-digit'
+      }).format(new Date());
+    }
     function isFriSat(dateValue){
       if (!dateValue) return false;
       var parts = dateValue.split('-').map(Number);
@@ -713,29 +726,47 @@
       var day = date.getDay();
       return day === 5 || day === 6;
     }
-    function lastReception(dateValue){
-      return isFriSat(dateValue) ? { h: 4, m: 0 } : { h: 1, m: 0 };
+    function serviceDur(svc){
+      var dur = 0;
+      serviceGroups.forEach(function(g){
+        g.items.forEach(function(it){ if (it.value === svc) dur = Number(it.dur) || 0; });
+      });
+      return dur;
+    }
+    function lastStartMins(dateValue){
+      var rec = isFriSat(dateValue) ? (24 + 4) * 60 : (24 + 1) * 60;
+      var close = isFriSat(dateValue) ? (24 + 5) * 60 : (24 + 2) * 60;
+      var dur = serviceDur(document.getElementById('service').value);
+      if (dur > 0) rec = Math.min(rec, close - dur);
+      return rec;
+    }
+    function slotToMins(ts){
+      var p = String(ts || '').split(':');
+      var h = parseInt(p[0], 10), m = parseInt(p[1], 10);
+      if (isNaN(h) || isNaN(m)) return NaN;
+      return (h < 11 ? h + 24 : h) * 60 + m;
+    }
+    function formatTimeLabel(ts){
+      var p = String(ts || '').split(':');
+      var h = parseInt(p[0], 10);
+      if (!isNaN(h) && h < 11) return t('nextDayLabel') + ' ' + ts;
+      return ts;
     }
 
-    // Ueno: Sun–Thu 11:00–1:00; Fri–Sat 11:00–4:00. 5-min steps.
+    // Opening night of the selected date: Sun–Thu 11:00–翌2:00 (last start 1:00, or earlier so the course ends by close); Fri–Sat to 翌5:00 (last start 4:00).
     function buildTimeOptions(selectedValue){
       var html = '<option value="">' + t('selectTime') + '</option>';
       var dateValue = document.getElementById('date').value;
       if (!dateValue) return html;
-      var last = lastReception(dateValue);
-      var h, m, v;
-      for (h = 11; h <= 23; h++) {
-        for (m = 0; m < 60; m += 5) {
-          v = pad2(h) + ':' + pad2(m);
-          html += '<option value="'+v+'"'+(v===selectedValue?' selected':'')+'>'+v+'</option>';
-        }
-      }
-      for (h = 0; h <= last.h; h++) {
-        for (m = 0; m < 60; m += 5) {
-          if (h === last.h && m > last.m) break;
-          v = pad2(h) + ':' + pad2(m);
-          html += '<option value="'+v+'"'+(v===selectedValue?' selected':'')+'>'+v+'</option>';
-        }
+      var last = lastStartMins(dateValue);
+      var mins, clock, h, m, v, label;
+      for (mins = 11 * 60; mins <= last; mins += 5) {
+        clock = mins % (24 * 60);
+        h = Math.floor(clock / 60);
+        m = clock % 60;
+        v = pad2(h) + ':' + pad2(m);
+        label = mins >= 24 * 60 ? (t('nextDayLabel') + ' ' + v) : v;
+        html += '<option value="'+v+'"'+(v===selectedValue?' selected':'')+'>'+label+'</option>';
       }
       return html;
     }
@@ -776,6 +807,7 @@
       document.getElementById('errorTime').textContent = o.errorTime;
       document.getElementById('errorGuests').textContent = o.errorGuests;
       document.getElementById('errorGuestsExact').textContent = o.errorGuestsExact;
+      document.getElementById('errorGuestCourses').textContent = o.errorGuestCourses;
       document.getElementById('labelGuestsExact').textContent = o.labelGuestsExact;
       document.getElementById('errorName').textContent = o.errorName;
       document.getElementById('name').placeholder = o.namePlaceholder;
@@ -812,13 +844,20 @@
     }
 
     var dateInput = document.getElementById('date');
-    dateInput.setAttribute('min', new Date().toISOString().split('T')[0]);
+    dateInput.setAttribute('min', tokyoToday());
     applyLang(getInitialLang());
-    dateInput.addEventListener('change', function(){
+    function refreshTimeOptions(){
       var time = document.getElementById('time');
       var selected = time.value;
       time.innerHTML = buildTimeOptions(selected);
       if (selected && !isTimeInHours(selected)) time.value = '';
+    }
+    dateInput.addEventListener('change', function(){
+      refreshTimeOptions();
+      updateMessagePreview();
+    });
+    document.getElementById('service').addEventListener('change', function(){
+      refreshTimeOptions();
       updateMessagePreview();
     });
 
@@ -852,8 +891,8 @@
       if (spc.checked){ add.classList.remove('show'); cont.innerHTML=''; updateMessagePreview(); return; }
       var n = gc - 1, html='';
       for (var i=1;i<=n;i++){
-        html += '<div class="guest-service-row"><div class="guest-label">'+t('waGuestCourse')(i+1)+'</div>' +
-                '<select name="guest'+i+'Service" class="form-select">'+buildServiceOptionsHTML('')+'</select></div>';
+        html += '<div class="guest-service-row form-group"><div class="guest-label">'+t('waGuestCourse')(i+1)+'</div>' +
+                '<select name="guest'+i+'Service" class="form-select" required>'+buildServiceOptionsHTML('')+'</select></div>';
       }
       cont.innerHTML = html; add.classList.add('show'); updateMessagePreview();
     }
@@ -865,7 +904,7 @@
     }
 
     function needsAromaSheetFee(svc){
-      return !!(svc && /Aroma|Lulur/i.test(svc));
+      return !!(svc && /Aroma|Lulur|Detox Legs|Neck Decollete Head/i.test(svc));
     }
 
     function sheetFeeFor(svc){
@@ -890,14 +929,9 @@
       if (!ts) return false;
       var ds = document.getElementById('date').value;
       if (!ds) return false;
-      var p = ts.split(':'); var h = parseInt(p[0],10), m = parseInt(p[1],10);
-      if (isNaN(h) || isNaN(m) || m % 5 !== 0) return false;
-      var mins = h * 60 + m;
-      var last = lastReception(ds);
-      var lastMins = last.h * 60 + last.m;
-      if (mins >= 11 * 60) return true;
-      if (mins <= lastMins) return true;
-      return false;
+      var mins = slotToMins(ts);
+      if (isNaN(mins) || mins % 5 !== 0) return false;
+      return mins >= 11 * 60 && mins <= lastStartMins(ds);
     }
 
     function validateForm(){
@@ -911,9 +945,29 @@
       if (!document.getElementById('guests').value){ document.getElementById('guestsGroup').classList.add('error'); ok=false; }
       else if (document.getElementById('guests').value === '5+') {
         var ex = parseInt(document.getElementById('guestsExact').value, 10);
-        if (isNaN(ex) || ex < 5){ document.getElementById('guestsExactGroup').classList.add('error'); ok=false; }
+        if (isNaN(ex) || ex < 5 || ex > 23){ document.getElementById('guestsExactGroup').classList.add('error'); ok=false; }
       }
       if (!document.getElementById('service').value){ document.getElementById('serviceGroup').classList.add('error'); ok=false; }
+      var addBox = document.getElementById('additionalServices');
+      if (addBox) addBox.classList.remove('error');
+      var gcCheck = getGuestCount();
+      var sameOn = document.getElementById('samePackage').checked;
+      if (gcCheck > 1 && !sameOn) {
+        var missing = false;
+        for (var gi = 1; gi < gcCheck; gi++) {
+          var sel = document.querySelector('[name="guest'+gi+'Service"]');
+          var row = sel && sel.closest('.guest-service-row');
+          if (row) row.classList.remove('error');
+          if (!sel || !String(sel.value || '').trim()) {
+            if (row) row.classList.add('error');
+            missing = true;
+          }
+        }
+        if (missing) {
+          if (addBox) addBox.classList.add('error');
+          ok = false;
+        }
+      }
       return ok;
     }
 
@@ -934,14 +988,14 @@
       var m = t('waIntro');
       m += t('waName')+': '+name+'\n';
       m += t('waDate')+': '+date+'\n';
-      m += t('waTime')+': '+time+'\n';
+      m += t('waTime')+': '+formatTimeLabel(time)+'\n';
       m += t('waGuests')+': '+gc+'\n';
       m += t('waGuestCourse')(1)+' : '+main+' (¥'+servicePrice(main).toLocaleString()+')\n';
       var same = fd.get('samePackage')==='on';
       var total = servicePrice(main);
       var guestServices = [main];
       if (gc>1 && same){ m += t('waSameCourse')+'\n'; total = servicePrice(main)*gc; for (var si=1;si<gc;si++) guestServices.push(main); }
-      else { for (var i=1;i<gc;i++){ var gs=fd.get('guest'+i+'Service'); if(gs&&gs.trim()){ m += t('waGuestCourse')(i+1)+' : '+gs+' (¥'+servicePrice(gs).toLocaleString()+')\n'; total += servicePrice(gs); guestServices.push(gs); } } }
+      else { for (var i=1;i<gc;i++){ var gs=fd.get('guest'+i+'Service'); if(gs&&gs.trim()){ m += t('waGuestCourse')(i+1)+' : '+gs+' (¥'+servicePrice(gs).toLocaleString()+')\n'; total += servicePrice(gs); guestServices.push(gs); } else { m += t('waGuestCourse')(i+1)+' : '+t('waUnselected')+'\n'; } } }
       var sheetFees = guestServices.map(sheetFeeFor);
       var sheetTotal = sheetFees.reduce(function(a,b){ return a+b; }, 0);
       if (sheetTotal>0){

@@ -32,7 +32,6 @@
 }
 
 :lang(zh-CN) {
-  /* 对齐 歌舞伎町店 / 愈YOU */
   --font-display: "Playfair Display", "Noto Serif SC", "Songti SC", "SimSun", serif;
   --font-body: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
 }
@@ -57,7 +56,6 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* 歌舞伎町店：中日正文用 400，不用过细的 300（菜单数字更稳） */
 html[lang="ja"] body,
 html[lang="zh-CN"] body {
   font-weight: 400;
@@ -458,7 +456,6 @@ ul { list-style: none; }
   display: block;
 }
 .ogh-name {
-  /* 歌舞伎町店 .ogh-name */
   font-family: var(--font-body);
   font-size: 1.02rem;
   font-weight: 600;
@@ -631,7 +628,6 @@ ul { list-style: none; }
   overflow: hidden;
 }
 .opt-name {
-  /* 歌舞伎町店 .opt-row .opt-name — 500 / 1rem，不是加粗 600，也不是过细 300 */
   font-family: var(--font-body);
   font-weight: 500;
   font-size: 1rem;
@@ -674,7 +670,6 @@ ul { list-style: none; }
 .opt-price-solo,
 .opt-price-now,
 .opt-price-was {
-  /* 歌舞伎町店 .opt-row .opt-price / .price：无衬线数字，不用 Playfair */
   font-family: "Inter", "Noto Sans JP", "Noto Sans SC", sans-serif;
   font-weight: 500;
   font-style: normal;
