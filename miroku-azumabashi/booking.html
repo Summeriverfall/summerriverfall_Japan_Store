@@ -363,19 +363,19 @@
     var serviceGroups = [
       { label: { en: 'Popular', jp: '人気コース', cn: '人气套餐' }, items: [
         { value: 'Choice 90 min', dur: 90, price: 9350, en: 'Choice 90 min', jp: 'チョイス90分', cn: '人气自选90分钟' },
-        { value: 'Seitai Foot 90 min', dur: 90, price: 8800, en: 'Seitai 60 + Foot 30', jp: '整体60＋足裏30', cn: '整体60＋足底30' },
-        { value: 'Upper Aroma Foot Head 90 min', dur: 90, price: 9900, en: 'Upper aroma + foot + head', jp: '上半身アロマ＋足＋ヘッド', cn: '上半身精油＋足底＋头疗' },
-        { value: 'Seitai Foot 60 min', dur: 60, price: 6600, en: 'Seitai 30 + Foot 30', jp: '整体30＋足つぼ30', cn: '整体30＋足疗30' },
-        { value: 'Seitai Head 60 min', dur: 60, price: 6600, en: 'Seitai 40 + Head 20', jp: '整体40＋ヘッド20', cn: '整体40＋头疗20' },
-        { value: 'Calf Foot 60 min', dur: 60, price: 6600, en: 'Calf course 60 min', jp: 'ふくらはぎコース60分', cn: '小腿课程60分钟' },
-        { value: 'Callus Foot 60 min', dur: 60, price: 6600, en: 'Callus 20 + Foot 40', jp: '角質20＋足つぼ40', cn: '去角质20＋足疗40' }
+        { value: 'Seitai Foot 90 min', dur: 90, price: 8800, en: 'Seitai 60 + Foot 30', jp: '整体60＋足裏30', cn: '整体60分钟＋足疗30分钟' },
+        { value: 'Upper Aroma Foot Head 90 min', dur: 90, price: 9900, en: 'Upper aroma + foot + head', jp: '上半身アロマ＋足＋ヘッド', cn: '上半身精油40＋足疗40＋头疗10' },
+        { value: 'Seitai Foot 60 min', dur: 60, price: 6600, en: 'Seitai 30 + Foot 30', jp: '整体30＋足つぼ30', cn: '全身放松 整体30＋足疗30' },
+        { value: 'Seitai Head 60 min', dur: 60, price: 6600, en: 'Seitai 40 + Head 20', jp: '整体40＋ヘッド20', cn: '疲劳恢复 整体40＋头疗20' },
+        { value: 'Calf Foot 60 min', dur: 60, price: 6600, en: 'Calf course 60 min', jp: 'ふくらはぎコース60分', cn: '小腿舒缓60分钟' },
+        { value: 'Callus Foot 60 min', dur: 60, price: 6600, en: 'Callus 20 + Foot 40', jp: '角質20＋足つぼ40', cn: '腿部护理 去角质20＋足疗40' }
       ]},
       { label: { en: 'Foot', jp: '足つぼ', cn: '足疗' }, items: [
-        { value: 'Foot 30 min', dur: 30, price: 3300, en: 'Foot 30 min', jp: '足つぼ30分', cn: '足疗30分钟' },
-        { value: 'Foot 45 min', dur: 45, price: 4950, en: 'Foot 45 min', jp: '足つぼ45分', cn: '足疗45分钟' },
-        { value: 'Foot 60 min', dur: 60, price: 6600, en: 'Foot 60 min', jp: '足つぼ60分', cn: '足疗60分钟' },
-        { value: 'Foot 90 min', dur: 90, price: 9900, en: 'Foot 90 min', jp: '足つぼ90分', cn: '足疗90分钟' },
-        { value: 'Foot 120 min', dur: 120, price: 13200, en: 'Foot 120 min', jp: '足つぼ120分', cn: '足疗120分钟' }
+        { value: 'Foot 30 min', dur: 30, price: 3300, en: 'Foot 30 min', jp: '30分', cn: '足疗30分钟' },
+        { value: 'Foot 45 min', dur: 45, price: 4950, en: 'Foot 45 min', jp: '45分', cn: '足疗45分钟' },
+        { value: 'Foot 60 min', dur: 60, price: 6600, en: 'Foot 60 min', jp: '60分', cn: '足疗60分钟' },
+        { value: 'Foot 90 min', dur: 90, price: 9900, en: 'Foot 90 min', jp: '90分', cn: '足疗90分钟' },
+        { value: 'Foot 120 min', dur: 120, price: 13200, en: 'Foot 120 min', jp: '120分', cn: '足疗120分钟' }
       ]},
       { label: { en: 'Body', jp: '整体', cn: '整体' }, items: [
         { value: 'Seitai 30 min', dur: 30, price: 3300, en: 'Seitai 30 min', jp: '整体30分', cn: '整体30分钟' },
@@ -383,7 +383,7 @@
         { value: 'Seitai 60 min', dur: 60, price: 5500, en: 'Seitai 60 min', jp: '整体60分', cn: '整体60分钟' },
         { value: 'Seitai 90 min', dur: 90, price: 8800, en: 'Seitai 90 min', jp: '整体90分', cn: '整体90分钟' },
         { value: 'Seitai 120 min', dur: 120, price: 12100, en: 'Seitai 120 min', jp: '整体120分', cn: '整体120分钟' },
-        { value: 'King Course 120 min', dur: 120, price: 12100, en: 'King Course 120 min', jp: 'キングコース', cn: '国王套餐120分钟' }
+        { value: 'King Course 120 min', dur: 120, price: 12100, en: 'King Course 120 min', jp: 'キングコース', cn: '国王套餐 整体60＋足疗40＋头疗10＋手部护理10' }
       ]},
       { label: { en: 'Aroma', jp: 'アロマ', cn: '精油' }, items: [
         { value: 'Aroma 40 min', dur: 40, price: 6600, en: 'Aroma 40 min', jp: 'アロマ40分', cn: '精油40分钟' },
@@ -391,7 +391,7 @@
         { value: 'Aroma 90 min', dur: 90, price: 12100, en: 'Aroma 90 min', jp: 'アロマ90分', cn: '精油90分钟' },
         { value: 'Aroma 120 min', dur: 120, price: 15400, en: 'Aroma 120 min', jp: 'アロマ120分', cn: '精油120分钟' },
         { value: 'Aroma 180 min', dur: 180, price: 22000, en: 'Aroma 180 min', jp: 'アロマ180分', cn: '精油180分钟' },
-        { value: 'Princess Course 120 min', dur: 120, price: 14300, en: 'Princess Course 120 min', jp: 'プリンセスコース', cn: '公主套餐120分钟' }
+        { value: 'Princess Course 120 min', dur: 120, price: 14300, en: 'Princess Course 120 min', jp: 'プリンセスコース', cn: '公主套餐 精油60＋足疗40＋头疗10＋手部护理10' }
       ]}
     ];
 
@@ -436,7 +436,7 @@
         previewTitle:'WhatsApp メッセージプレビュー', previewHint:'送信内容を確認するため、上記の必須項目をすべてご記入ください。',
         noticeTitle:'ご予約前のご案内',
         noticeItems:[
-          '個人指名料500円',
+          '着替無料/個人指名料500円',
           '男女指名料200円',
           '22時以降10%深夜料金'
         ],
@@ -462,11 +462,11 @@
         previewTitle:'WhatsApp 消息预览', previewHint:'请先填写上方所有必填项，即可预览消息内容。',
         noticeTitle:'预约前提示',
         noticeItems:[
-          '个人指名料 ¥500',
+          '更衣免费／个人指名料 ¥500',
           '男女指名料 ¥200',
           '22:00起晚间附加费10%'
         ],
-        hoursLine:'平日 11:00–23:00／土日祝 10:00–23:00（年中无休）',
+        hoursLine:'周一至周五11:00–23:00／周末及节假日 10:00–23:00（年中无休）',
         mapLink:'在 Google 地图打开',
         guestUnit: function(n){ return n + ' 人'; },
         waIntro:'您好，我想预约 MIROKU 浅草吾妻桥店（コンドウビル3F）。\n\n',

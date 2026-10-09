@@ -555,6 +555,28 @@ ul { list-style: none; }
   align-self: center;
   justify-self: end;
 }
+/* 可展开菜单：长名称独占上行，时长+价格靠左并排（英文组合名尤其需要） */
+.opt-group[data-fold] .opt-choice.has-desc {
+  grid-template-columns: 1.35rem max-content minmax(0, 1fr);
+  grid-template-areas:
+    "radio name name"
+    ". desc price";
+}
+.opt-group[data-fold] .opt-choice.has-desc .opt-name {
+  grid-column: 2 / -1;
+  width: 0;
+  min-width: 100%;
+  text-wrap: wrap;
+  overflow-wrap: break-word;
+}
+.opt-group[data-fold] .opt-choice.has-desc .opt-desc {
+  justify-self: start;
+}
+.opt-group[data-fold] .opt-choice.has-desc .opt-price {
+  justify-self: start;
+  text-align: left;
+  min-width: 0;
+}
 .opt-choice .opt-desc {
   grid-area: desc;
 }
@@ -1495,6 +1517,26 @@ ul { list-style: none; }
     margin-top: -0.12rem;
     line-height: 1.3;
     font-size: 1rem;
+  }
+  .opt-group[data-fold] .opt-choice.has-desc {
+    grid-template-columns: 1.35rem max-content minmax(0, 1fr);
+    grid-template-areas:
+      "radio name name"
+      ". desc price";
+  }
+  .opt-group[data-fold] .opt-choice.has-desc .opt-name {
+    grid-column: 2 / -1;
+    width: 0;
+    min-width: 100%;
+    text-wrap: wrap;
+    overflow-wrap: break-word;
+  }
+  .opt-group[data-fold] .opt-choice.has-desc .opt-price {
+    text-align: left;
+    justify-self: start;
+    align-self: center;
+    margin-top: 0;
+    min-width: 0;
   }
   .opt-group-foot {
     justify-content: stretch;
