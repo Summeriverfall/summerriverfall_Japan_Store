@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- PV 自建统计（暂关：老板确认后再开） -->
-  <!-- <script src="/shops/pv-track.js"></script> -->
+  <script src="/shops/pv-track.js"></script>
 
   <script>
     var BOOKING_LANG = (function () {
@@ -29,6 +28,7 @@
   <meta name="robots" content="noindex, follow">
   <meta name="theme-color" content="#5a6d7a">
   <title>Book Appointment — 上野・御徒町 BIG FOOT SPA</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%235a6d7a'/%3E%3C/svg%3E">
   <link rel="canonical" href="https://reserveinjp.com/shops/bigfoot-ueno/booking.html">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="上野・御徒町 BIG FOOT SPA">
@@ -265,7 +265,6 @@
     .success-message.show { display: block; }
     .additional-services { display: none; margin-top: 1.4rem; padding-top: 1.4rem; border-top: 1px dashed var(--gold-pale); }
     .additional-services.show { display: block; }
-    .additional-services.error .form-error { display: block; }
     .additional-services h4 { font-size: 0.85rem; font-weight: 500; color: var(--brand); margin-bottom: 1rem; }
     .guest-service-row { background: var(--stone); padding: 1rem; margin-bottom: 0.7rem; border-radius: 6px; }
     .guest-label { font-size: 0.8rem; color: var(--ink-soft); margin-bottom: 0.45rem; font-weight: 500; }
@@ -354,7 +353,7 @@
           <div class="form-group" id="guestsExactGroup" style="display:none;margin:0.7rem 0 0;">
             <label for="guestsExact" class="form-label" id="labelGuestsExact">Exact number *</label>
             <input type="number" id="guestsExact" name="guestsExact" class="form-input" min="5" max="23" step="1" inputmode="numeric" placeholder="5">
-            <div class="form-error" id="errorGuestsExact">Please enter 5–23</div>
+            <div class="form-error" id="errorGuestsExact">Please enter 5 or more</div>
           </div>
           <div class="form-error" id="errorGuests">Please select number of guests</div>
         </div>
@@ -365,6 +364,13 @@
         </div>
 
         <div id="addonSection" aria-hidden="true"></div>
+
+        <div class="form-group" id="blowDryGroup" style="display: none;">
+          <label class="same-package-label">
+            <input type="checkbox" id="blowDry" name="blowDry">
+            <span id="blowDryText">Staff blow-dry (free)</span>
+          </label>
+        </div>
 
         <div class="form-group" id="gownGroup">
           <label class="same-package-label">
@@ -383,7 +389,6 @@
         <div class="additional-services" id="additionalServices">
           <h4 id="additionalServicesTitle">Additional Guests' Courses (if different)</h4>
           <div id="additionalServicesContainer"></div>
-          <div class="form-error" id="errorGuestCourses">Please choose a course for every guest</div>
         </div>
 
         <div class="message-preview" id="messagePreview">
@@ -420,6 +425,8 @@
     var AROMA_SHEET_FEE = 110;
     var GOWN_FEE_PER_PIECE = 110;
     var GOWN_PIECES_PER_GUEST = 2;
+    var MAX_PARTY = 23;
+    var OPEN_MIN = 11 * 60;
 
     var serviceInfo = {
       'Doctor Fish 10 min': 1100,
@@ -442,11 +449,13 @@
       'Aroma Intestine 90 min': 14000,
       'Detox Legs Intestine 120 min': 16500,
       'Aroma Lymph 180 min': 22000,
-      'Bali Cream Head 45 min': 8800,
-      'Bali Cream Head 60 min': 11800,
-      'Pore CICA Pack 60 min': 7800,
-      'Small Face Pack 40 min': 7800,
-      'Small Face Decollete 60 min': 10800,
+      'Bali Cream Head 45 min': 7800,
+      'Bali Cream Head 60 min': 10800,
+      'Small Face Lift 40 min': 7800,
+      'Face Cream Head 80 min': 12500,
+      'Facial 60 min': 10800,
+      'Herbal Steam Foot 60 min': 8800,
+      'Body Shiatsu Dry Head 180 min': 20000,
       'Body Shiatsu 40 min': 6050,
       'Body Shiatsu 60 min': 8250,
       'Dry Head Upper Body 60 min': 8800,
@@ -481,7 +490,8 @@
         { value: 'Foot Calf 60 min', dur: 60, price: 8800, en: 'Foot massage 40 min + calf 20 min', jp: '足マッサージ40分＋ふくらはぎ20分', cn: '足部按摩40分钟＋小腿20分钟' },
         { value: 'Foot Calf 90 min', dur: 90, price: 11000, en: 'Foot points 50 min + calf 40 min', jp: '足つぼ50分＋ふくらはぎ40分', cn: '足疗50分钟＋小腿40分钟' },
         { value: 'Callus Foot Beauty 60 min', dur: 60, price: 8800, en: 'Callus care 20 min + foot massage 40 min', jp: '足の角質ケア20分＋足マッサージ40分', cn: '足部角质20分钟＋足部按摩40分钟' },
-        { value: 'Foot Calf 40 min', dur: 40, price: 6600, en: 'Foot massage 25 min + calf 15 min', jp: '足マッサージ25分＋ふくらはぎ15分', cn: '足部按摩25分钟＋小腿15分钟' }
+        { value: 'Foot Calf 40 min', dur: 40, price: 6600, en: 'Foot massage 25 min + calf 15 min', jp: '足マッサージ25分＋ふくらはぎ15分', cn: '足部按摩25分钟＋小腿15分钟' },
+        { value: 'Herbal Steam Foot 60 min', dur: 60, price: 8800, en: 'Herbal steam barrel 15 min + foot massage 45 min', jp: '漢方蒸し桶15分＋足マッサージ45分', cn: '汉方蒸汽桶15分钟＋足部按摩45分钟' }
       ]},
       { label: { en: 'Aroma lymph', jp: 'アロマリンパ', cn: '精油淋巴' }, items: [
         { value: 'Back Aroma Lymph 60 min', dur: 60, price: 11000, en: 'Body & back aroma lymph', jp: '体背面アロマリンパ60分', cn: '体背精油淋巴 60分钟' },
@@ -494,20 +504,21 @@
         { value: 'Aroma Lymph 180 min', dur: 180, price: 22000, en: 'Full-body aroma lymph — half-day care', jp: '全身アロマリンパ180分・至福の半日ケア', cn: '全身精油淋巴 180分钟・半日护理' }
       ]},
       { label: { en: 'Bali cream head spa', jp: 'バリ式クリームヘッド', cn: '巴厘奶油头疗' }, items: [
-        { value: 'Bali Cream Head 45 min', dur: 45, price: 8800, en: 'Bali-style cream head spa', jp: 'バリ式クリームヘッドスパ45分', cn: '巴厘奶油头疗 45分钟' },
-        { value: 'Bali Cream Head 60 min', dur: 60, price: 11800, en: 'Bali-style cream head spa', jp: 'バリ式クリームヘッドスパ60分', cn: '巴厘奶油头疗 60分钟' }
+        { value: 'Bali Cream Head 45 min', dur: 45, price: 7800, en: 'Bali-style cream head spa', jp: 'バリ式クリームヘッドスパ45分', cn: '巴厘奶油头疗 45分钟' },
+        { value: 'Bali Cream Head 60 min', dur: 60, price: 10800, en: 'Bali-style cream head spa', jp: 'バリ式クリームヘッドスパ60分', cn: '巴厘奶油头疗 60分钟' }
       ]},
       { label: { en: 'Facial', jp: 'フェイシャル', cn: '面部护理' }, items: [
-        { value: 'Pore CICA Pack 60 min', dur: 60, price: 7800, en: 'Pore cleanse + CICA serum pack', jp: '毛穴洗浄＋CICA美容液パック60分', cn: '毛孔清洁＋CICA精华面膜 60分钟' },
-        { value: 'Small Face Pack 40 min', dur: 40, price: 7800, en: 'Small-face facial + moisture pack', jp: '小顔フェイシャル＋保湿パック40分', cn: '小脸护理＋保湿面膜 40分钟' },
-        { value: 'Small Face Decollete 60 min', dur: 60, price: 10800, en: 'Small-face facial with décolleté + modeling pack', jp: '小顔フェイシャル（デコルテ）＋モデリングパック60分', cn: '小脸护理（含颈胸）＋塑形面膜 60分钟' }
+        { value: 'Small Face Lift 40 min', dur: 40, price: 7800, en: 'Facial contouring — lift, sagging & puffiness', jp: '小顔フェイシャル40分・リフトUP・たるみ・むくみ', cn: '小脸护理40分钟・提升・松弛・浮肿' },
+        { value: 'Face Cream Head 80 min', dur: 80, price: 12500, en: '40min facial + 40min cream head spa', jp: '40分フェイシャル＋40分クリームヘッドスパ', cn: '面部护理40分钟＋奶油头疗40分钟' },
+        { value: 'Facial 60 min', dur: 60, price: 10800, en: 'Facial 60 min', jp: 'フェイシャル60分', cn: '面部护理 60分钟' }
       ]},
       { label: { en: 'Seitai · shiatsu · kneading', jp: '整体・指圧・もみほぐし', cn: '整体・指压・推拿' }, items: [
         { value: 'Body Shiatsu 40 min', dur: 40, price: 6050, en: 'Full Body Massage – 40 min', jp: 'ボディ指圧もみほぐし40分', cn: '身体指压按摩推拿按摩 40分钟' },
         { value: 'Dry Head Upper Body 60 min', dur: 60, price: 8800, en: 'Scalp massage 20 min + Upper-Body Massage 40 min', jp: 'ドライヘッド20分＋上半身もみほぐし40分', cn: '干式头疗20分钟＋上半身推拿按摩40分钟' },
         { value: 'Body Shiatsu 60 min', dur: 60, price: 8250, en: 'Full Body Massage – 60 min', jp: '全身指圧もみほぐし60分', cn: '全身指压按摩推拿按摩 60分钟' },
         { value: 'Body Shiatsu 90 min', dur: 90, price: 11000, en: 'Full Body Massage – 90 min', jp: 'ボディ指圧もみほぐし90分', cn: '身体指压按摩推拿按摩 90分钟' },
-        { value: 'Body Shiatsu 120 min', dur: 120, price: 13200, en: 'Full Body Massage – 120 min', jp: 'ボディ指圧もみほぐし120分', cn: '身体指压按摩推拿按摩 120分钟' }
+        { value: 'Body Shiatsu 120 min', dur: 120, price: 13200, en: 'Full Body Massage – 120 min', jp: 'ボディ指圧もみほぐし120分', cn: '身体指压按摩推拿按摩 120分钟' },
+        { value: 'Body Shiatsu Dry Head 180 min', dur: 180, price: 20000, en: 'Body shiatsu 120 min + dry head spa 60 min (eyes & hands)', jp: 'ボディ指圧120分＋ドライヘッドスパ(目・ハンド付け)60分', cn: '身体指压120分钟＋干式头疗(含眼部・手部)60分钟' }
       ]},
       { label: { en: 'Combo courses', jp: '組み合わせコース', cn: '组合套餐' }, items: [
         { value: 'Shiatsu Foot 60 min', dur: 60, price: 8800, en: 'Body shiatsu 30 min + foot massage 30 min', jp: 'ボディ指圧30分＋足マッサージ30分', cn: '身体指压30分钟＋足部按摩30分钟' },
@@ -535,87 +546,90 @@
         successMessage:'Your booking information has been prepared. You will be redirected to WhatsApp shortly...',
         labelService:'Course *', labelDate:'Date *', labelTime:'Time *', labelGuests:'Number of Guests *', labelName:'Name *',
         selectCourse:'Select a course', selectTime:'Select a time', selectGuests:'Select number of guests', namePlaceholder:'Enter your name',
-        hintTime:'',
+        hintTime:'Sun–Thu last start 1:00 next day; Fri–Sat last start 4:00 next day. A course must finish by closing (2:00 / 5:00), so longer courses stop earlier.',
+        nextDayPrefix:'Next day',
         errorService:'Please select a course', errorDate:'Please select a date', errorTime:'Please select a time',
-        errorTimeRange:'Please choose a valid time (Sun–Thu 11:00–1:00; Fri–Sat 11:00–4:00).',
+        errorTimeRange:'Please choose a start time that finishes before closing (Sun–Thu last start 1:00; Fri–Sat 4:00; longer courses earlier).',
         errorGuests:'Please select number of guests', errorName:'Please enter your name',
-        errorGuestsExact:'Please enter 5–23 guests', labelGuestsExact:'Exact number *', guestPlus:'5+',
-        errorGuestCourses:'Please choose a course for every guest', waUnselected:'Not selected',
-        nextDayLabel:'Next day',
+        errorGuestsExact:'Please enter 5–23', errorGuestCourse:'Please choose a course for every guest', labelGuestsExact:'Exact number *', guestPlus:'5+',
         samePackageText:'All guests choose the same course', additionalServicesTitle:"Additional Guests' Courses (if different)",
         disposableGownText:'Disposable gown needed (¥110 top / ¥110 bottom per guest)',
+        blowDryText:'Staff blow-dry (free)',
+        waBlowDry:'Staff blow-dry (free)',
         submitButton:'Submit & Open WhatsApp', redirecting:'Redirecting...',
         previewTitle:'WhatsApp Message Preview', previewHint:'Complete all required fields above to preview your message.',
         noticeTitle:'Before you book',
         noticeItems:[
-          'Changing gown: ¥110 top / ¥110 bottom',
-          'An additional one-time ¥110 sheet fee will be charged for the aroma oil massage and Lulur Spa.',
-          'Therapist request: ¥550 personal / ¥220 gender',
+          'Change of clothes (optional): ¥110 each for the top and bottom (disposable underwear is free of charge).',
+          'Aroma oil massage and Lulur Spa: ¥110 sheet fee per guest.',
+          'Therapist request: ¥550 personal / ¥220 gender, paid at the salon and not included in the total',
           'After 22:00: +10% late-night surcharge'
         ],
         guestUnit: function(n){ return n + (n>1?' Guests':' Guest'); },
         waIntro:'Hello, I would like to make a reservation at Ueno · Okachimachi BIG FOOT SPA (第一大島ビル4F).\n\n',
         waName:'Name', waDate:'Date', waTime:'Time', waGuests:'Number of Guests',
         waGuestCourse: function(n){ return 'Guest ' + n + ' Course'; },
-        waSameCourse:'All guests choose the same course', waSheet:'Sheet fee', waGown:'Disposable gown', waLate:'Late-night surcharge', waTotal:'Total',
+        waSameCourse:'All guests choose the same course', waSheet:'Sheet fee', waGown:'Disposable gown', waLate:'Late-night surcharge', waTotal:'Total', waUnselected:'Not selected',
         dateLocale:'en-US' },
       jp: { htmlLang:'ja', title:'ご予約 — 上野・御徒町 BIG FOOT SPA', backLink:'ホームに戻る', brandBadge:'ご予約',
         bookingSubtitle:'以下のフォームにご記入のうえ、ご予約ください',
         successMessage:'予約内容を作成しました。まもなく WhatsApp へ移動します…',
         labelService:'コース *', labelDate:'日付 *', labelTime:'時間 *', labelGuests:'人数 *', labelName:'お名前 *',
         selectCourse:'コースを選択', selectTime:'時間を選択', selectGuests:'人数を選択', namePlaceholder:'お名前を入力',
-        hintTime:'',
+        hintTime:'日～木は最終受付 翌1:00、金土は翌4:00。閉店（翌2:00／翌5:00）までに終わる時刻だけ選べます。長いコースは早めに締め切ります。',
+        nextDayPrefix:'翌日',
         errorService:'コースを選択してください', errorDate:'日付を選択してください', errorTime:'時間を選択してください',
-        errorTimeRange:'予約枠（日～木11:00〜1:00／金土11:00〜4:00）の時間を選択してください。',
+        errorTimeRange:'閉店までに終わる時間を選んでください（日～木 最終1:00／金土 最終4:00。長いコースはより早く締め切られます）。',
         errorGuests:'人数を選択してください', errorName:'お名前を入力してください',
-        errorGuestsExact:'5〜23名で入力してください', labelGuestsExact:'正確な人数 *', guestPlus:'5+',
-        errorGuestCourses:'追加ゲスト全員のコースを選択してください', waUnselected:'未選択',
-        nextDayLabel:'翌',
+        errorGuestsExact:'5〜23名で入力してください', errorGuestCourse:'全員のコースを選択してください', labelGuestsExact:'正確な人数 *', guestPlus:'5+',
         samePackageText:'全員同じコースを選択', additionalServicesTitle:'追加ゲストのコース（異なる場合）',
         disposableGownText:'着替えが必要（上下各110円／1名あたり）',
+        blowDryText:'スタッフによるブロー（無料）',
+        waBlowDry:'スタッフによるブロー（無料）',
         submitButton:'送信して WhatsApp を開く', redirecting:'移動中…',
         previewTitle:'WhatsApp メッセージプレビュー', previewHint:'送信内容を確認するため、上記の必須項目をすべてご記入ください。',
         noticeTitle:'ご予約前のご案内',
         noticeItems:[
-          '着替：上下各110円',
-          'アロマリンパマッサージ・ルルールスパの施術には、別途110円の使い捨てシーツ代がかかります。',
-          '個人指名550円／男女指名220円',
+          '着替え（任意）：上下各110円（紙パンツ無料）',
+          'アロマリンパマッサージ・ルルールスパは、1名あたり別途110円の使い捨てシーツ代がかかります。',
+          '個人指名550円／男女指名220円（店頭精算・合計に含まず）',
           '22時以降は施術料金の10％深夜料金'
         ],
         guestUnit: function(n){ return n + '名'; },
         waIntro:'こんにちは、上野・御徒町 BIG FOOT SPA（第一大島ビル4F）のご予約を希望します。\n\n',
         waName:'お名前', waDate:'日付', waTime:'時間', waGuests:'人数',
         waGuestCourse: function(n){ return 'ゲスト' + n + ' コース'; },
-        waSameCourse:'全員同じコース', waSheet:'シーツ代', waGown:'着替え代', waLate:'深夜割増', waTotal:'合計',
+        waSameCourse:'全員同じコース', waSheet:'シーツ代', waGown:'着替え代', waLate:'深夜割増', waTotal:'合計', waUnselected:'未選択',
         dateLocale:'ja-JP' },
       cn: { htmlLang:'zh-CN', title:'预约 — 上野・御徒町 BIG FOOT SPA', backLink:'返回首页', brandBadge:'在线预约',
         bookingSubtitle:'请填写以下信息完成预约',
         successMessage:'预约信息已生成，即将跳转至 WhatsApp…',
         labelService:'项目 *', labelDate:'日期 *', labelTime:'时间 *', labelGuests:'人数 *', labelName:'姓名 *',
         selectCourse:'请选择项目', selectTime:'请选择时间', selectGuests:'请选择人数', namePlaceholder:'请输入您的姓名',
-        hintTime:'',
+        hintTime:'周日～周四最晚开始为次日 1:00，周五周六为次日 4:00。疗程须在打烊（次日 2:00／5:00）前结束，时长越长，最晚开始越早。',
+        nextDayPrefix:'次日',
         errorService:'请选择项目', errorDate:'请选择日期', errorTime:'请选择时间',
-        errorTimeRange:'请选择有效预约时间（周日～周四11:00–1:00；周五周六11:00–4:00）。',
+        errorTimeRange:'请选择能在打烊前结束的时间（周日～周四最晚 1:00，周五周六最晚 4:00；长疗程会更早截止）。',
         errorGuests:'请选择人数', errorName:'请输入姓名',
-        errorGuestsExact:'请输入 5–23 人', labelGuestsExact:'准确人数 *', guestPlus:'5+',
-        errorGuestCourses:'请为每位附加客人选择项目', waUnselected:'未选',
-        nextDayLabel:'次日',
+        errorGuestsExact:'请输入5至23人', errorGuestCourse:'请为每位客人选择项目', labelGuestsExact:'准确人数 *', guestPlus:'5+',
         samePackageText:'所有客人都选择相同项目', additionalServicesTitle:'其他客人的项目（如不同）',
         disposableGownText:'需要一次性服装（上衣·下衣各 ¥110／每位客人）',
+        blowDryText:'工作人员吹干头发（免费）',
+        waBlowDry:'工作人员吹干头发（免费）',
         submitButton:'提交并打开 WhatsApp', redirecting:'跳转中…',
         previewTitle:'WhatsApp 消息预览', previewHint:'请先填写上方所有必填项，即可预览消息内容。',
         noticeTitle:'预约前提示',
         noticeItems:[
-          '更衣：上下各 ¥110',
-          '精油和Lulur全身去角质项目会另外加收110日元的一次性床单费用',
-          '个人指名 ¥550／性别指名 ¥220',
+          '更换衣物（可选）：上衣和下装各110日元（一次性纸内裤免费提供）',
+          '精油和 Lulur 全身去角质：每位客人另加 ¥110 床单费',
+          '个人指名 ¥550／性别指名 ¥220（到店另计，不进合计）',
           '22:00 以后加收施术费 10% 深夜费'
         ],
         guestUnit: function(n){ return n + ' 人'; },
         waIntro:'您好，我想预约上野・御徒町 BIG FOOT SPA（第一大島ビル4F）。\n\n',
         waName:'姓名', waDate:'日期', waTime:'时间', waGuests:'人数',
         waGuestCourse: function(n){ return '客人' + n + ' 项目'; },
-        waSameCourse:'所有客人都选择相同项目', waSheet:'床单费', waGown:'一次性服装费', waLate:'深夜加价', waTotal:'合计',
+        waSameCourse:'所有客人都选择相同项目', waSheet:'床单费', waGown:'一次性服装费', waLate:'深夜加价', waTotal:'合计', waUnselected:'未选',
         dateLocale:'zh-CN' }
     };
 
@@ -657,7 +671,7 @@
       var gv = document.getElementById('guests').value;
       if (gv === '5+') {
         var ex = parseInt(document.getElementById('guestsExact').value, 10);
-        return (!isNaN(ex) && ex >= 5 && ex <= 23) ? ex : 0;
+        return (!isNaN(ex) && ex >= 5 && ex <= MAX_PARTY) ? ex : 0;
       }
       return parseInt(gv, 10) || 0;
     }
@@ -674,101 +688,118 @@
     }
 
     function pad2(n){ return n<10 ? '0'+n : ''+n; }
-    function nthWeekdayOfMonth(year, month, weekday, nth){
-      var first = new Date(year, month - 1, 1);
-      return 1 + ((7 + weekday - first.getDay()) % 7) + (nth - 1) * 7;
-    }
-
-    function japanHolidaySet(year){
-      var holidays = {};
-      function add(month, day){ holidays[year + '-' + pad2(month) + '-' + pad2(day)] = true; }
-      add(1, 1);
-      add(1, nthWeekdayOfMonth(year, 1, 1, 2));
-      add(2, 11); add(2, 23);
-      add(3, Math.floor(20.8431 + 0.242194 * (year - 1980) - Math.floor((year - 1980) / 4)));
-      add(4, 29); add(5, 3); add(5, 4); add(5, 5);
-      add(7, nthWeekdayOfMonth(year, 7, 1, 3));
-      add(8, 11);
-      add(9, nthWeekdayOfMonth(year, 9, 1, 3));
-      add(9, Math.floor(23.2488 + 0.242194 * (year - 1980) - Math.floor((year - 1980) / 4)));
-      add(10, nthWeekdayOfMonth(year, 10, 1, 2));
-      add(11, 3); add(11, 23);
-
-      Object.keys(holidays).forEach(function(key){
-        var parts = key.split('-').map(Number);
-        var date = new Date(parts[0], parts[1] - 1, parts[2]);
-        if (date.getDay() !== 0) return;
-        do { date.setDate(date.getDate() + 1); }
-        while (holidays[date.getFullYear() + '-' + pad2(date.getMonth() + 1) + '-' + pad2(date.getDate())]);
-        holidays[date.getFullYear() + '-' + pad2(date.getMonth() + 1) + '-' + pad2(date.getDate())] = true;
-      });
-
-      for (var d = new Date(year, 0, 2); d.getFullYear() === year; d.setDate(d.getDate() + 1)) {
-        var prev = new Date(d); prev.setDate(prev.getDate() - 1);
-        var next = new Date(d); next.setDate(next.getDate() + 1);
-        var key = year + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate());
-        var prevKey = prev.getFullYear() + '-' + pad2(prev.getMonth() + 1) + '-' + pad2(prev.getDate());
-        var nextKey = next.getFullYear() + '-' + pad2(next.getMonth() + 1) + '-' + pad2(next.getDate());
-        if (!holidays[key] && holidays[prevKey] && holidays[nextKey]) holidays[key] = true;
-      }
-      return holidays;
-    }
-
     function tokyoToday(){
-      return new Intl.DateTimeFormat('en-CA', {
-        timeZone: 'Asia/Tokyo', year: 'numeric', month: '2-digit', day: '2-digit'
+      return new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Tokyo', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date());
+    }
+    function getJapanNowParts(){
+      var text = new Intl.DateTimeFormat('sv-SE', {
+        timeZone: 'Asia/Tokyo', year: 'numeric', month: '2-digit', day: '2-digit',
+        hour: '2-digit', minute: '2-digit', hourCycle: 'h23'
       }).format(new Date());
+      var m = text.match(/(\d{4})-(\d{2})-(\d{2})[ T](\d{2}):(\d{2})/);
+      var hour = m ? parseInt(m[4], 10) : 0;
+      if (hour === 24) hour = 0;
+      return {
+        dateStr: m ? (m[1] + '-' + m[2] + '-' + m[3]) : tokyoToday(),
+        hour: hour,
+        minute: m ? parseInt(m[5], 10) : 0
+      };
+    }
+    function addDaysStr(dateStr, days){
+      var p = dateStr.split('-');
+      var d = new Date(Date.UTC(parseInt(p[0], 10), parseInt(p[1], 10) - 1, parseInt(p[2], 10)));
+      d.setUTCDate(d.getUTCDate() + days);
+      return d.getUTCFullYear() + '-' + pad2(d.getUTCMonth() + 1) + '-' + pad2(d.getUTCDate());
     }
     function isFriSat(dateValue){
       if (!dateValue) return false;
       var parts = dateValue.split('-').map(Number);
-      var date = new Date(parts[0], parts[1] - 1, parts[2]);
-      var day = date.getDay();
+      var day = new Date(parts[0], parts[1] - 1, parts[2]).getDay();
       return day === 5 || day === 6;
     }
-    function serviceDur(svc){
-      var dur = 0;
-      serviceGroups.forEach(function(g){
-        g.items.forEach(function(it){ if (it.value === svc) dur = Number(it.dur) || 0; });
-      });
-      return dur;
+    function closeHourFor(dateValue){ return isFriSat(dateValue) ? 5 : 2; }
+    function scheduleMins(dateValue){
+      var fri = isFriSat(dateValue);
+      return { last: ((fri ? 4 : 1) + 24) * 60, close: ((fri ? 5 : 2) + 24) * 60 };
     }
-    function lastStartMins(dateValue){
-      var rec = isFriSat(dateValue) ? (24 + 4) * 60 : (24 + 1) * 60;
-      var close = isFriSat(dateValue) ? (24 + 5) * 60 : (24 + 2) * 60;
-      var dur = serviceDur(document.getElementById('service').value);
-      if (dur > 0) rec = Math.min(rec, close - dur);
-      return rec;
+    function isOvernightTime(timeStr){
+      return !!(timeStr && parseInt(timeStr.split(':')[0], 10) < 11);
     }
-    function slotToMins(ts){
-      var p = String(ts || '').split(':');
+    function actualJapanDateForSlot(sessionDate, timeStr){
+      return isOvernightTime(timeStr) ? addDaysStr(sessionDate, 1) : sessionDate;
+    }
+    function earliestSessionDateStr(){
+      var now = getJapanNowParts();
+      var yesterday = addDaysStr(now.dateStr, -1);
+      if (now.hour < closeHourFor(yesterday)) return yesterday;
+      return now.dateStr;
+    }
+    function timeToBusinessMin(ts){
+      if (!ts || ts.indexOf(':') < 0) return -1;
+      var p = ts.split(':');
       var h = parseInt(p[0], 10), m = parseInt(p[1], 10);
-      if (isNaN(h) || isNaN(m)) return NaN;
+      if (isNaN(h) || isNaN(m) || m % 5 !== 0 || m < 0 || m > 59 || h < 0 || h > 23) return -1;
       return (h < 11 ? h + 24 : h) * 60 + m;
     }
-    function formatTimeLabel(ts){
-      var p = String(ts || '').split(':');
-      var h = parseInt(p[0], 10);
-      if (!isNaN(h) && h < 11) return t('nextDayLabel') + ' ' + ts;
-      return ts;
+    function serviceDuration(svc){
+      for (var g = 0; g < serviceGroups.length; g++){
+        for (var i = 0; i < serviceGroups[g].items.length; i++){
+          if (serviceGroups[g].items[i].value === svc) return serviceGroups[g].items[i].dur || 0;
+        }
+      }
+      return 0;
     }
-
-    // Opening night of the selected date: Sun–Thu 11:00–翌2:00 (last start 1:00, or earlier so the course ends by close); Fri–Sat to 翌5:00 (last start 4:00).
+    function partyDuration(){
+      var dur = serviceDuration(document.getElementById('service').value);
+      var same = document.getElementById('samePackage');
+      if (same && same.checked) return dur;
+      var max = dur;
+      document.querySelectorAll('#additionalServicesContainer select').forEach(function(sel){
+        var d = serviceDuration(sel.value);
+        if (d > max) max = d;
+      });
+      return max;
+    }
+    function latestStartMin(dateValue){
+      var sch = scheduleMins(dateValue);
+      var dur = partyDuration();
+      var byClose = dur > 0 ? sch.close - dur : sch.last;
+      return Math.floor(Math.min(sch.last, byClose) / 5) * 5;
+    }
+    function isSlotNotPast(sessionDate, timeStr){
+      if (!sessionDate || !timeStr) return false;
+      var now = getJapanNowParts();
+      var actualDate = actualJapanDateForSlot(sessionDate, timeStr);
+      var tp = timeStr.split(':');
+      var h = parseInt(tp[0], 10), m = parseInt(tp[1], 10);
+      if (actualDate > now.dateStr) return true;
+      if (actualDate < now.dateStr) return false;
+      return (h * 60 + m) > (now.hour * 60 + now.minute);
+    }
+    function timeOptionLabel(timeStr){
+      return isOvernightTime(timeStr) ? (t('nextDayPrefix') + ' ' + timeStr) : timeStr;
+    }
     function buildTimeOptions(selectedValue){
       var html = '<option value="">' + t('selectTime') + '</option>';
       var dateValue = document.getElementById('date').value;
       if (!dateValue) return html;
-      var last = lastStartMins(dateValue);
-      var mins, clock, h, m, v, label;
-      for (mins = 11 * 60; mins <= last; mins += 5) {
-        clock = mins % (24 * 60);
-        h = Math.floor(clock / 60);
-        m = clock % 60;
-        v = pad2(h) + ':' + pad2(m);
-        label = mins >= 24 * 60 ? (t('nextDayLabel') + ' ' + v) : v;
-        html += '<option value="'+v+'"'+(v===selectedValue?' selected':'')+'>'+label+'</option>';
+      var latest = latestStartMin(dateValue);
+      function push(h, m){
+        var v = pad2(h) + ':' + pad2(m);
+        var mins = timeToBusinessMin(v);
+        if (mins < OPEN_MIN || mins > latest || !isSlotNotPast(dateValue, v)) return;
+        html += '<option value="'+v+'"'+(v===selectedValue?' selected':'')+'>'+timeOptionLabel(v)+'</option>';
       }
+      var h, m;
+      for (h = 11; h <= 23; h++) for (m = 0; m < 60; m += 5) push(h, m);
+      for (h = 0; h <= 5; h++) for (m = 0; m < 60; m += 5) push(h, m);
       return html;
+    }
+    function refreshTimeOptions(){
+      var time = document.getElementById('time');
+      var selected = time.value;
+      time.innerHTML = buildTimeOptions(selected);
+      if (selected && time.value !== selected) time.value = '';
     }
 
     function getInitialLang(){
@@ -785,7 +816,6 @@
       currentLang = lang; var o = i18n[lang];
       var sv = document.getElementById('service').value;
       var gv = document.getElementById('guests').value;
-      var tv = document.getElementById('time').value;
       document.documentElement.lang = o.htmlLang;
       document.title = o.title;
       document.getElementById('backLinkText').textContent = o.backLink;
@@ -807,12 +837,12 @@
       document.getElementById('errorTime').textContent = o.errorTime;
       document.getElementById('errorGuests').textContent = o.errorGuests;
       document.getElementById('errorGuestsExact').textContent = o.errorGuestsExact;
-      document.getElementById('errorGuestCourses').textContent = o.errorGuestCourses;
       document.getElementById('labelGuestsExact').textContent = o.labelGuestsExact;
       document.getElementById('errorName').textContent = o.errorName;
       document.getElementById('name').placeholder = o.namePlaceholder;
       document.getElementById('samePackageText').textContent = o.samePackageText;
       document.getElementById('disposableGownText').textContent = o.disposableGownText;
+      document.getElementById('blowDryText').textContent = o.blowDryText;
       document.getElementById('additionalServicesTitle').textContent = o.additionalServicesTitle;
       document.getElementById('submitButtonText').textContent = o.submitButton;
       document.getElementById('previewTitle').textContent = o.previewTitle;
@@ -833,30 +863,29 @@
       }
       document.getElementById('service').innerHTML = buildServiceOptionsHTML(sv);
       document.getElementById('guests').innerHTML = buildGuestsOptionsHTML(gv);
-      document.getElementById('time').innerHTML = buildTimeOptions(tv);
+      refreshTimeOptions();
       syncGuestsExactUI();
       document.querySelectorAll('.lang-switch button').forEach(function(b){ b.classList.toggle('active', b.getAttribute('data-lang')===lang); });
-      var home = lang==='en' ? 'en/index.html' : (lang==='jp' ? 'jp/index.html' : 'cn/index.html');
+      var fromLanding = new URLSearchParams(window.location.search).get('from') === 'landing';
+      var home = fromLanding ? 'landing.html' : (lang==='en' ? 'en/index.html' : (lang==='jp' ? 'jp/index.html' : 'cn/index.html'));
       document.getElementById('backLink').setAttribute('href', home);
       var url = new URL(window.location.href); url.searchParams.set('lang', lang); history.replaceState(null,'',url);
       updateAdditionalServices();
+      updateBlowDryVisibility();
       updateMessagePreview();
     }
 
     var dateInput = document.getElementById('date');
-    dateInput.setAttribute('min', tokyoToday());
-    applyLang(getInitialLang());
-    function refreshTimeOptions(){
-      var time = document.getElementById('time');
-      var selected = time.value;
-      time.innerHTML = buildTimeOptions(selected);
-      if (selected && !isTimeInHours(selected)) time.value = '';
+    function syncDateMin(){
+      var earliest = earliestSessionDateStr();
+      dateInput.setAttribute('min', earliest);
+      if (dateInput.value && dateInput.value < earliest) dateInput.value = earliest;
     }
+    syncDateMin();
+    if (!dateInput.value) dateInput.value = earliestSessionDateStr();
+    applyLang(getInitialLang());
     dateInput.addEventListener('change', function(){
-      refreshTimeOptions();
-      updateMessagePreview();
-    });
-    document.getElementById('service').addEventListener('change', function(){
+      syncDateMin();
       refreshTimeOptions();
       updateMessagePreview();
     });
@@ -877,6 +906,8 @@
     });
     document.getElementById('guestsExact').addEventListener('input', updateAdditionalServices);
     document.getElementById('samePackage').addEventListener('change', updateAdditionalServices);
+    document.getElementById('service').addEventListener('change', function(){ refreshTimeOptions(); updateBlowDryVisibility(); });
+    document.getElementById('additionalServicesContainer').addEventListener('change', function(){ refreshTimeOptions(); updateBlowDryVisibility(); });
 
     function updateAdditionalServices(){
       syncGuestsExactUI();
@@ -886,25 +917,44 @@
       var spg = document.getElementById('samePackageGroup');
       var spc = document.getElementById('samePackage');
       var guestsVal = document.getElementById('guests').value;
-      if (!guestsVal || gc <= 1){ add.classList.remove('show'); cont.innerHTML=''; spg.style.display='none'; updateMessagePreview(); return; }
+      if (!guestsVal || gc <= 1){ add.classList.remove('show'); cont.innerHTML=''; spg.style.display='none'; refreshTimeOptions(); updateMessagePreview(); return; }
       spg.style.display='block';
-      if (spc.checked){ add.classList.remove('show'); cont.innerHTML=''; updateMessagePreview(); return; }
+      if (spc.checked){ add.classList.remove('show'); cont.innerHTML=''; refreshTimeOptions(); updateMessagePreview(); return; }
       var n = gc - 1, html='';
       for (var i=1;i<=n;i++){
-        html += '<div class="guest-service-row form-group"><div class="guest-label">'+t('waGuestCourse')(i+1)+'</div>' +
-                '<select name="guest'+i+'Service" class="form-select" required>'+buildServiceOptionsHTML('')+'</select></div>';
+        html += '<div class="guest-service-row"><div class="guest-label">'+t('waGuestCourse')(i+1)+'</div>' +
+                '<select name="guest'+i+'Service" class="form-select">'+buildServiceOptionsHTML('')+'</select></div>';
       }
-      cont.innerHTML = html; add.classList.add('show'); updateMessagePreview();
+      cont.innerHTML = html; add.classList.add('show'); refreshTimeOptions(); updateBlowDryVisibility(); updateMessagePreview();
     }
 
     function servicePrice(s){ return serviceInfo[s] || 0; }
+
+    function isHeadCourse(s){
+      return /Head|ヘッド|头疗|Bali Cream/i.test(String(s || ''));
+    }
+    function anyHeadCourse(){
+      if (isHeadCourse(document.getElementById('service').value)) return true;
+      var selects = document.querySelectorAll('#additionalServicesContainer select');
+      for (var i = 0; i < selects.length; i++){
+        if (isHeadCourse(selects[i].value)) return true;
+      }
+      return false;
+    }
+    function updateBlowDryVisibility(){
+      var group = document.getElementById('blowDryGroup');
+      var box = document.getElementById('blowDry');
+      if (!group || !box) return;
+      if (anyHeadCourse()) group.style.display = '';
+      else { group.style.display = 'none'; box.checked = false; }
+    }
 
     function gownFeeForGuestCount(count){
       return count * GOWN_FEE_PER_PIECE * GOWN_PIECES_PER_GUEST;
     }
 
     function needsAromaSheetFee(svc){
-      return !!(svc && /Aroma|Lulur|Detox Legs|Neck Decollete Head/i.test(svc));
+      return !!(svc && /Aroma|Lulur/i.test(svc));
     }
 
     function sheetFeeFor(svc){
@@ -926,52 +976,60 @@
     }
 
     function isTimeInHours(ts){
-      if (!ts) return false;
       var ds = document.getElementById('date').value;
-      if (!ds) return false;
-      var mins = slotToMins(ts);
-      if (isNaN(mins) || mins % 5 !== 0) return false;
-      return mins >= 11 * 60 && mins <= lastStartMins(ds);
+      if (!ds || !ts) return false;
+      var mins = timeToBusinessMin(ts);
+      if (mins < OPEN_MIN || mins > latestStartMin(ds)) return false;
+      return isSlotNotPast(ds, ts);
     }
 
     function validateForm(){
       var ok = true;
       document.querySelectorAll('.form-group').forEach(function(g){ g.classList.remove('error'); });
       if (!document.getElementById('name').value.trim()){ document.getElementById('nameGroup').classList.add('error'); ok=false; }
-      if (!document.getElementById('date').value){ document.getElementById('dateGroup').classList.add('error'); ok=false; }
+      var dateVal = document.getElementById('date').value;
+      if (!dateVal || dateVal < earliestSessionDateStr()){ document.getElementById('dateGroup').classList.add('error'); ok=false; }
       var timeVal = document.getElementById('time').value;
       if (!timeVal){ document.getElementById('errorTime').textContent = t('errorTime'); document.getElementById('timeGroup').classList.add('error'); ok=false; }
       else if (!isTimeInHours(timeVal)){ document.getElementById('errorTime').textContent = t('errorTimeRange'); document.getElementById('timeGroup').classList.add('error'); ok=false; }
-      if (!document.getElementById('guests').value){ document.getElementById('guestsGroup').classList.add('error'); ok=false; }
-      else if (document.getElementById('guests').value === '5+') {
-        var ex = parseInt(document.getElementById('guestsExact').value, 10);
-        if (isNaN(ex) || ex < 5 || ex > 23){ document.getElementById('guestsExactGroup').classList.add('error'); ok=false; }
+      document.getElementById('errorGuests').textContent = t('errorGuests');
+      var gc = getGuestCount();
+      if (!document.getElementById('guests').value || !gc){
+        document.getElementById('guestsGroup').classList.add('error');
+        if (document.getElementById('guests').value === '5+') document.getElementById('guestsExactGroup').classList.add('error');
+        ok=false;
+      } else if (gc > 1 && !document.getElementById('samePackage').checked) {
+        var missingCourse = false;
+        document.querySelectorAll('#additionalServicesContainer select').forEach(function(sel){
+          if (!sel.value) missingCourse = true;
+        });
+        if (missingCourse) {
+          document.getElementById('errorGuests').textContent = t('errorGuestCourse');
+          document.getElementById('guestsGroup').classList.add('error');
+          ok=false;
+        }
       }
       if (!document.getElementById('service').value){ document.getElementById('serviceGroup').classList.add('error'); ok=false; }
-      var addBox = document.getElementById('additionalServices');
-      if (addBox) addBox.classList.remove('error');
-      var gcCheck = getGuestCount();
-      var sameOn = document.getElementById('samePackage').checked;
-      if (gcCheck > 1 && !sameOn) {
-        var missing = false;
-        for (var gi = 1; gi < gcCheck; gi++) {
-          var sel = document.querySelector('[name="guest'+gi+'Service"]');
-          var row = sel && sel.closest('.guest-service-row');
-          if (row) row.classList.remove('error');
-          if (!sel || !String(sel.value || '').trim()) {
-            if (row) row.classList.add('error');
-            missing = true;
-          }
-        }
-        if (missing) {
-          if (addBox) addBox.classList.add('error');
-          ok = false;
-        }
-      }
       return ok;
     }
 
-    function formatDate(ds){ var d=new Date(ds+'T00:00:00'); return d.toLocaleDateString(t('dateLocale'),{year:'numeric',month:'long',day:'numeric'}); }
+    function formatDate(ds){ var d=new Date(ds+'T12:00:00'); return d.toLocaleDateString(t('dateLocale'),{year:'numeric',month:'long',day:'numeric'}); }
+    function findItem(value){
+      for (var g=0;g<serviceGroups.length;g++){
+        for (var i=0;i<serviceGroups[g].items.length;i++){
+          if (serviceGroups[g].items[i].value===value) return serviceGroups[g].items[i];
+        }
+      }
+      return null;
+    }
+    function serviceLine(value){
+      var it = findItem(value);
+      var price = '¥' + servicePrice(value).toLocaleString();
+      if (!it) return value + ' (' + price + ')';
+      var name = it[currentLang] || value;
+      if (name === value) return name + ' (' + price + ')';
+      return name + ' (' + value + ') (' + price + ')';
+    }
 
     function isFormComplete(){
       if (!document.getElementById('name').value.trim() || !document.getElementById('date').value ||
@@ -983,19 +1041,21 @@
     }
 
     function buildWhatsAppMessage(fd){
-      var name=fd.get('name'), date=formatDate(fd.get('date')), time=fd.get('time');
+      var name=fd.get('name'), time=fd.get('time');
+      var date=formatDate(actualJapanDateForSlot(fd.get('date'), time));
       var gc=getGuestCount(), main=fd.get('service');
       var m = t('waIntro');
       m += t('waName')+': '+name+'\n';
       m += t('waDate')+': '+date+'\n';
-      m += t('waTime')+': '+formatTimeLabel(time)+'\n';
+      m += t('waTime')+': '+time+'\n';
       m += t('waGuests')+': '+gc+'\n';
-      m += t('waGuestCourse')(1)+' : '+main+' (¥'+servicePrice(main).toLocaleString()+')\n';
+      m += t('waGuestCourse')(1)+' : '+serviceLine(main)+'\n';
       var same = fd.get('samePackage')==='on';
       var total = servicePrice(main);
       var guestServices = [main];
+      var missing = false;
       if (gc>1 && same){ m += t('waSameCourse')+'\n'; total = servicePrice(main)*gc; for (var si=1;si<gc;si++) guestServices.push(main); }
-      else { for (var i=1;i<gc;i++){ var gs=fd.get('guest'+i+'Service'); if(gs&&gs.trim()){ m += t('waGuestCourse')(i+1)+' : '+gs+' (¥'+servicePrice(gs).toLocaleString()+')\n'; total += servicePrice(gs); guestServices.push(gs); } else { m += t('waGuestCourse')(i+1)+' : '+t('waUnselected')+'\n'; } } }
+      else { for (var i=1;i<gc;i++){ var gs=fd.get('guest'+i+'Service'); if(gs&&gs.trim()){ m += t('waGuestCourse')(i+1)+' : '+serviceLine(gs)+'\n'; total += servicePrice(gs); guestServices.push(gs); } else { m += t('waGuestCourse')(i+1)+' : '+t('waUnselected')+'\n'; missing = true; } } }
       var sheetFees = guestServices.map(sheetFeeFor);
       var sheetTotal = sheetFees.reduce(function(a,b){ return a+b; }, 0);
       if (sheetTotal>0){
@@ -1003,6 +1063,7 @@
         m += t('waSheet')+': ¥'+AROMA_SHEET_FEE.toLocaleString()+' ×'+sheetFeeCount+' (¥'+sheetTotal.toLocaleString()+')\n';
         total += sheetTotal;
       }
+      if (fd.get('blowDry')==='on' && anyHeadCourse()){ m += t('waBlowDry')+'\n'; }
       if (fd.get('disposableGown')==='on'){
         var gownTotal = gownFeeForGuestCount(gc);
         m += t('waGown')+': ¥'+GOWN_FEE_PER_PIECE.toLocaleString()+' ×'+GOWN_PIECES_PER_GUEST+' ×'+gc+' (¥'+gownTotal.toLocaleString()+')\n';
@@ -1013,7 +1074,7 @@
         m += t('waLate')+': ¥'+lateTotal.toLocaleString()+'\n';
         total += lateTotal;
       }
-      if (total>0){ m += '\n'+t('waTotal')+': ¥'+total.toLocaleString(); }
+      if (!missing && total>0){ m += '\n'+t('waTotal')+': ¥'+total.toLocaleString(); }
       return m;
     }
 

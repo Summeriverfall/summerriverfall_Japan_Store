@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- PV 自建统计（暂关：老板确认后再开） -->
-  <!-- <script src="/shops/pv-track.js"></script> -->
+  <!-- PV 自建统计 -->
+  <script src="/shops/pv-track.js"></script>
 
   <script>
     var BOOKING_LANG = (function () {
@@ -25,14 +25,14 @@
   </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Book BIG FOOT SPA Ryogoku — foot reflexology, aroma oil, cream head spa. Weekdays 11:00–23:30 / weekends & holidays 10:00–23:30. WhatsApp reservation.">
+  <meta name="description" content="Book 両国・錦糸町 BIG FOOT SPA — foot reflexology, aroma oil and cream head spa. Weekdays 11:00–23:30 / weekends & holidays 10:00–23:30.">
   <meta name="robots" content="noindex, follow">
   <meta name="theme-color" content="#5a6d7a">
-  <title>Book Appointment — BIG FOOT SPA</title>
+  <title>Book Appointment — 両国・錦糸町 BIG FOOT SPA</title>
   <link rel="canonical" href="https://reserveinjp.com/shops/bigfoot-ryogoku/booking.html">
   <meta property="og:type" content="website">
-  <meta property="og:site_name" content="BIG FOOT SPA">
-  <meta property="og:title" content="Book Appointment — BIG FOOT SPA">
+  <meta property="og:site_name" content="両国・錦糸町 BIG FOOT SPA">
+  <meta property="og:title" content="Book Appointment — 両国・錦糸町 BIG FOOT SPA">
   <meta property="og:description" content="Reserve foot, aroma or head spa via WhatsApp. Ryogoku, last reception 23:00.">
   <meta property="og:url" content="https://reserveinjp.com/shops/bigfoot-ryogoku/booking.html">
   <meta property="og:image" content="https://reserveinjp.com/shops/bigfoot-ryogoku/assets/images/hero.webp">
@@ -181,14 +181,14 @@
     }
     #service, .guest-service-row .form-select {
       font-size: clamp(0.85rem, 2.8vw, 0.95rem);
-      line-height: 1.4;
+      line-height: 1.45;
       padding-right: 2rem;
       max-width: 100%;
       width: 100%;
       min-width: 0;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      overflow: hidden;
+      height: auto;
+      min-height: 48px;
+      white-space: normal;
     }
     #serviceGroup, .guest-service-row {
       max-width: 100%;
@@ -322,7 +322,7 @@
 
     <div class="booking-header">
       <div class="brand-badge" id="brandBadge">Book Your Appointment</div>
-      <h1 class="booking-title">BIG FOOT SPA</h1>
+      <h1 class="booking-title">両国・錦糸町 BIG FOOT SPA</h1>
       <p class="booking-subtitle" id="bookingSubtitle">Fill in the form below to book your appointment</p>
     </div>
 
@@ -365,6 +365,13 @@
 
         <div id="addonSection" aria-hidden="true"></div>
 
+        <div class="form-group" id="gownGroup">
+          <label class="same-package-label">
+            <input type="checkbox" id="disposableGown" name="disposableGown">
+            <span id="disposableGownText">Disposable gown needed (¥110 top / ¥110 bottom)</span>
+          </label>
+        </div>
+
         <div class="form-group" id="samePackageGroup" style="display: none;">
           <label class="same-package-label">
             <input type="checkbox" id="samePackage" name="samePackage" checked>
@@ -401,15 +408,16 @@
 
   <script>
     var WHATSAPP_NUMBER = '85290744644';
-    // whatsapp-config.json is archive/reference only; number above is authoritative.
+    // Use whatsapp-config.json when available; keep the number above as a fallback.
     fetch('whatsapp-config.json', { cache: 'no-store' })
       .then(function (r) { return r.json(); })
       .then(function (c) { var num = c && c[c.use]; if (num && /^\d{8,15}$/.test(num)) WHATSAPP_NUMBER = num; })
       .catch(function () {});
 
     var currentLang = 'en';
-    var SHEET_FEE = 0;
-    var LATE_PER_30 = 0;
+    var AROMA_SHEET_FEE = 110;
+    var GOWN_FEE_PER_PIECE = 110;
+    var GOWN_PIECES_PER_GUEST = 2;
 
     var serviceInfo = {
       'Doctor Fish 10 min': 1100,
@@ -434,15 +442,15 @@
       'Aroma Lymph 180 min': 22000,
       'Bali Cream Head 45 min': 8800,
       'Bali Cream Head 60 min': 11800,
-      'Pore CICA Pack 60 min': 7800,
-      'Small Face Pack 40 min': 7800,
-      'Small Face Decollete 60 min': 10800,
+      'Pore CICA Serum Pack 60 min': 9800,
+      'Hydro Pore Lymph 70 min': 10000,
+      'Small Face Lift 40 min': 7800,
+      'Small Face Modeling 60 min': 9800,
       'Body Shiatsu 40 min': 6050,
       'Body Shiatsu 60 min': 8250,
       'Dry Head Upper Body 60 min': 8800,
       'Body Shiatsu 90 min': 11000,
       'Body Shiatsu 120 min': 13200,
-      'Body Shiatsu Head 180 min': 20000,
       'Shiatsu Dry Head 60 min': 8150,
       'Shiatsu Foot 60 min': 8800,
       'Knead Foot 90 min': 12100,
@@ -459,155 +467,163 @@
 
     var serviceGroups = [
       { label: { en: 'Popular & campaign', jp: 'オススメ・キャンペーン', cn: '推荐・活动' }, items: [
-        { value: 'Luxury Aroma Head Foot 90 min', dur: 90, price: 10800, en: 'Full-body aroma + head + soles', jp: '全身アロマ＋ヘッド＋足裏', cn: '全身精油＋头疗＋足底' },
-        { value: 'Full Body Knead Head 75 min', dur: 75, price: 8300, en: 'Full-body kneading + head', jp: '全身もみほぐし＋ヘッド75分', cn: '全身推拿＋头疗 75分钟' },
-        { value: 'Foot Neck Shoulder 90 min', dur: 90, price: 8800, en: 'Foot points + neck & shoulder care', jp: '足つぼ＋首肩ケア90分', cn: '足疗＋颈肩护理 90分钟' },
-        { value: 'Doctor Fish 10 min', dur: 10, price: 1100, en: 'Doctor fish 10 min', jp: 'ドクターフィッシュ10分', cn: '鱼疗 10分钟' },
-        { value: 'Full Body Knead 60 min', dur: 60, price: 6800, en: 'Full-body kneading massage', jp: '全身もみほぐし60分', cn: '全身推拿放松 60分钟' },
-        { value: 'Aroma Lymph Oil 60 min', dur: 60, price: 7300, en: 'Aroma lymph oil massage', jp: 'アロマリンパオイルマッサージ60分', cn: '精油淋巴按摩 60分钟' },
-        { value: 'Neck Head Foot 60 min', dur: 60, price: 6900, en: 'Neck & shoulders head 30 min + foot points 30 min', jp: '首肩ヘッド30分＋足つぼ30分', cn: '颈肩头疗30分钟＋足疗30分钟' },
-        { value: 'Back Aroma Intestine 80 min', dur: 80, price: 7800, en: 'Back aroma oil 60 min + intestine therapy 20 min', jp: '背面アロマ60分＋腸セラピ20分', cn: '背面精油60分钟＋肠疗20分钟' }
+        { value: 'Luxury Aroma Head Foot 90 min', dur: 90, price: 10800, en: 'Aroma Massage 50min + Head Spa 10min + Foot Reflexology 30min – 90 min', jp: '全身アロマ＋ヘッド＋足裏 贅沢90分', cn: '精油按摩40分钟＋指压头部按摩10分钟＋足底按摩40分钟' },
+        { value: 'Full Body Knead Head 75 min', dur: 75, price: 8300, en: 'Full Body Massage 60min + Head Spa 15min', jp: '全身もみほぐし＋ヘッド75分', cn: '全身推拿按摩＋头疗 75分钟' },
+        { value: 'Foot Neck Shoulder 90 min', dur: 90, price: 8800, en: 'Foot Reflexology 80min + Neck & Shoulder Massage 10min', jp: '足つぼ＋首肩ケア90分', cn: '足部按摩80分钟＋颈肩按摩10分钟' },
+        { value: 'Doctor Fish 10 min', dur: 10, price: 1100, en: 'Doctor fish 10min', jp: 'ドクターフィッシュ10分', cn: '鱼疗 10分钟' },
+        { value: 'Full Body Knead 60 min', dur: 60, price: 6800, en: 'Full Body Massage (no oil)', jp: '全身もみほぐし60分', cn: '全身推拿按摩 60分钟' },
+        { value: 'Aroma Lymph Oil 60 min', dur: 60, price: 7300, en: 'Aroma lymph oil massage', jp: 'アロマリンパオイルマッサージ60分', cn: '精油开背按摩 60分钟' },
+        { value: 'Neck Head Foot 60 min', dur: 60, price: 6900, en: 'Neck, Shoulder & Head Massage 30 min + Foot Reflexology 30 min', jp: '首肩ヘッド30分＋足つぼ30分', cn: '颈肩头部按摩30分钟＋足部按摩30分钟' },
+        { value: 'Back Aroma Intestine 80 min', dur: 80, price: 7800, en: 'Aroma Oil Massage 60 min + Abdominal Massage 20 min', jp: '背面アロマ60分＋腸セラピ20分', cn: '精油开背按摩60分钟＋腹部精油20分钟' }
       ]},
-      { label: { en: 'Foot massage', jp: '足マッサージ', cn: '足部按摩' }, items: [
-        { value: 'Foot Calf 60 min', dur: 60, price: 8800, en: 'Foot massage 40 min + calf 20 min', jp: '足マッサージ40分＋ふくらはぎ20分', cn: '足部按摩40分钟＋小腿20分钟' },
-        { value: 'Foot Calf 90 min', dur: 90, price: 11000, en: 'Foot points 50 min + calf 40 min', jp: '足つぼ50分＋ふくらはぎ40分', cn: '足疗50分钟＋小腿40分钟' },
-        { value: 'Callus Foot Beauty 60 min', dur: 60, price: 8800, en: 'Callus care 20 min + foot massage 40 min', jp: '足の角質ケア20分＋足マッサージ40分', cn: '足部角质20分钟＋足部按摩40分钟' },
-        { value: 'Foot Calf 40 min', dur: 40, price: 6600, en: 'Foot massage 25 min + calf 15 min', jp: '足マッサージ25分＋ふくらはぎ15分', cn: '足部按摩25分钟＋小腿15分钟' }
+      { label: { en: 'Foot + ceramic bath', jp: '足マッサージ＋セラミック足湯', cn: '足疗＋陶瓷足汤' }, items: [
+        { value: 'Foot Calf 60 min', dur: 60, price: 8800, en: 'Foot massage 40min + calf 20min', jp: '足マッサージ40分＋ふくらはぎ20分', cn: '足部按摩40分钟＋小腿按摩20分钟' },
+        { value: 'Foot Calf 90 min', dur: 90, price: 11000, en: 'Foot massage 50min + calf 40min', jp: '足つぼ50分＋ふくらはぎ40分', cn: '足部按摩50分钟＋小腿按摩40分钟' },
+        { value: 'Callus Foot Beauty 60 min', dur: 60, price: 8800, en: 'Callus care 20min + foot massage 40min', jp: '足の角質ケア20分＋足マッサージ40分', cn: '足部去角质20分钟＋足部按摩40分钟' },
+        { value: 'Foot Calf 40 min', dur: 40, price: 6600, en: 'Foot massage 25min + calf 15min', jp: '足マッサージ25分＋ふくらはぎ15分', cn: '足部按摩25分钟＋小腿按摩15分钟' }
       ]},
       { label: { en: 'Aroma lymph', jp: 'アロマリンパ', cn: '精油淋巴' }, items: [
-        { value: 'Back Aroma Lymph 60 min', dur: 60, price: 11000, en: 'Body & back aroma lymph', jp: '体背面アロマリンパ60分', cn: '体背精油淋巴 60分钟' },
-        { value: 'Aroma Intestine 90 min', dur: 90, price: 14000, en: 'Full-body aroma lymph 70 min + intestine 20 min', jp: '全身アロマリンパ70分＋腸セラピ20分', cn: '全身精油淋巴70分钟＋肠疗20分钟' },
-        { value: 'Detox Legs Intestine 120 min', dur: 120, price: 16500, en: 'Full detox + legs + intestine therapy', jp: '全身デトックス＋美脚＋腸セラピ', cn: '全身排毒＋美腿＋肠疗' },
-        { value: 'Aroma Focus 40 min', dur: 40, price: 7700, en: 'Aroma lymph 40 min — upper or lower body', jp: 'アロマリンパ40分・上半身OR下半身', cn: '精油淋巴40分钟・上半身或下半身' },
-        { value: 'Lower Body Aroma 60 min', dur: 60, price: 11000, en: 'Hips + thighs + calves aroma', jp: 'お尻＋ふともも＋ふくらはぎアロマ60分', cn: '臀＋大腿＋小腿精油60分钟' },
-        { value: 'Neck Decollete Head 60 min', dur: 60, price: 10000, en: 'Neck lymph & décolleté 30 min + dry head spa 30 min', jp: '首リンパ×デコルテ30分＋ドライヘッド30分', cn: '颈淋巴×颈胸30分钟＋干式头疗30分钟' },
-        { value: 'Dry Head Back Aroma 70 min', dur: 70, price: 12000, en: 'Dry head spa 10 min + full back aroma 60 min', jp: 'ドライヘッド10分＋全身背面アロマ60分', cn: '干式头疗10分钟＋全身背面精油60分钟' },
-        { value: 'Aroma Lymph 180 min', dur: 180, price: 22000, en: 'Full-body aroma lymph — half-day care', jp: '全身アロマリンパ180分・至福の半日ケア', cn: '全身精油淋巴 180分钟・半日护理' }
+        { value: 'Back Aroma Lymph 60 min', dur: 60, price: 11000, en: 'Full-Body Aroma Oil Massage', jp: '体+背面アロマリンパ60分', cn: '身体+背部精油淋巴按摩 60分钟' },
+        { value: 'Aroma Intestine 90 min', dur: 90, price: 14000, en: 'Full-Body Aroma Oil Massage 70 min + Abdominal Massage 20 min', jp: '全身アロマリンパ70分＋腸セラピ20分', cn: '全身精油淋巴按摩70分钟＋肠疗20分钟' },
+        { value: 'Detox Legs Intestine 120 min', dur: 120, price: 16500, en: 'Luxury Full-Body Aroma Oil Massage + Leg & Abdominal Care – 120 min', jp: '全身デトックス＋美脚＋腸セラピ 贅沢120分', cn: '全身排毒＋美腿＋肠疗 奢享120分钟' },
+        { value: 'Aroma Focus 40 min', dur: 40, price: 7700, en: 'Aroma Oil Massage – Upper or Lower Body 40 min', jp: 'アロマリンパ40分・上半身OR下半身', cn: '精油淋巴按摩40分钟・上半身或下半身' },
+        { value: 'Lower Body Aroma 60 min', dur: 60, price: 11000, en: 'Lower-Body Aroma Oil Massage – Hips, Thighs & Calves', jp: 'お尻＋ふともも＋ふくらはぎアロマ60分', cn: '臀＋大腿＋小腿精油淋巴按摩60分钟' },
+        { value: 'Neck Decollete Head 60 min', dur: 60, price: 10000, en: 'Neck & Décolleté Aroma Massage 30 min + Scalp massage 30 min', jp: '首リンパ×デコルテ付き30分＋ドライヘッド30分', cn: '颈部×锁骨淋巴按摩30分钟＋干式头疗30分钟' },
+        { value: 'Dry Head Back Aroma 70 min', dur: 70, price: 12000, en: 'Head Spa 10 min + Back-Focused Aroma Oil Massage 60 min', jp: 'ドライヘッド10分＋全身背面アロマ60分', cn: '干式头疗10分钟＋全身背部精油淋巴按摩60分钟' },
+        { value: 'Aroma Lymph 180 min', dur: 180, price: 22000, en: 'Premium Full-Body Aroma Oil Massage – 180 min', jp: '全身アロマリンパ180分・至福の半日ケア', cn: '全身精油淋巴按摩 180分钟・半日护理' }
       ]},
       { label: { en: 'Bali cream head spa', jp: 'バリ式クリームヘッド', cn: '巴厘奶油头疗' }, items: [
-        { value: 'Bali Cream Head 45 min', dur: 45, price: 8800, en: 'Bali-style cream head spa', jp: 'バリ式クリームヘッドスパ45分', cn: '巴厘奶油头疗 45分钟' },
-        { value: 'Bali Cream Head 60 min', dur: 60, price: 11800, en: 'Bali-style cream head spa', jp: 'バリ式クリームヘッドスパ60分', cn: '巴厘奶油头疗 60分钟' }
+        { value: 'Bali Cream Head 45 min', dur: 45, price: 8800, en: 'Balinese Cream Head Spa', jp: 'バリ式クリームヘッドスパ45分', cn: '巴厘式头疗' },
+        { value: 'Bali Cream Head 60 min', dur: 60, price: 11800, en: 'Balinese Cream Head Spa', jp: 'バリ式クリームヘッドスパ60分', cn: '巴厘式头疗' }
       ]},
       { label: { en: 'Facial', jp: 'フェイシャル', cn: '面部护理' }, items: [
-        { value: 'Pore CICA Pack 60 min', dur: 60, price: 7800, en: 'Pore cleanse + CICA serum pack', jp: '毛穴洗浄＋CICA美容液パック60分', cn: '毛孔清洁＋CICA精华面膜 60分钟' },
-        { value: 'Small Face Pack 40 min', dur: 40, price: 7800, en: 'Small-face facial + moisture pack', jp: '小顔フェイシャル＋保湿パック40分', cn: '小脸护理＋保湿面膜 40分钟' },
-        { value: 'Small Face Decollete 60 min', dur: 60, price: 10800, en: 'Small-face facial with décolleté + modeling pack', jp: '小顔フェイシャル（デコルテ）＋モデリングパック60分', cn: '小脸护理（含颈胸）＋塑形面膜 60分钟' }
+        { value: 'Pore CICA Serum Pack 60 min', dur: 60, price: 9800, en: 'Pore Cleansing + CICA Serum Pack', jp: '毛穴洗浄＋CICA美容液パック60分', cn: '毛孔清洁＋CICA精华面膜 60分钟' },
+        { value: 'Hydro Pore Lymph 70 min', dur: 70, price: 10000, en: 'Hydro Pore Cleansing + Facial Lymph', jp: 'ハイドロ毛穴洗浄＋小顔リンパ70分', cn: '水氧毛孔清洁＋小脸淋巴 70分钟' },
+        { value: 'Small Face Lift 40 min', dur: 40, price: 7800, en: 'Facial Contouring', jp: '小顔フェイシャル40分', cn: '小脸护理 40分钟' },
+        { value: 'Small Face Modeling 60 min', dur: 60, price: 9800, en: 'Facial Contouring + Modeling Mask', jp: '小顔フェイシャル＋モデリングパック60分', cn: '小脸护理＋塑形面膜 60分钟' }
       ]},
-      { label: { en: 'Body shiatsu', jp: 'ボディ指圧もみほぐし', cn: '身体指压推拿' }, items: [
-        { value: 'Dry Head Upper Body 60 min', dur: 60, price: 8800, en: 'Dry head spa 20 min + upper-body kneading 40 min', jp: 'ドライヘッド20分＋上半身もみほぐし40分', cn: '干式头疗20分钟＋上半身推拿40分钟' },
-        { value: 'Body Shiatsu 90 min', dur: 90, price: 11000, en: 'Body shiatsu kneading (no oil)', jp: 'ボディ指圧もみほぐし90分', cn: '身体指压推拿 90分钟' },
-        { value: 'Body Shiatsu 120 min', dur: 120, price: 13200, en: 'Body shiatsu kneading (no oil)', jp: 'ボディ指圧もみほぐし120分', cn: '身体指压推拿 120分钟' },
-        { value: 'Body Shiatsu 40 min', dur: 40, price: 6050, en: 'Body shiatsu kneading (no oil)', jp: 'ボディ指圧もみほぐし40分', cn: '身体指压推拿 40分钟' },
-        { value: 'Body Shiatsu 60 min', dur: 60, price: 8250, en: 'Full-body shiatsu kneading (no oil)', jp: '全身指圧もみほぐし60分', cn: '全身指压推拿 60分钟' },
-        { value: 'Body Shiatsu Head 180 min', dur: 180, price: 20000, en: 'Body shiatsu 120 min + dry head spa 60 min', jp: 'ボディ指圧120分＋ドライヘッド60分', cn: '身体指压120分钟＋干式头疗60分钟' }
+      { label: { en: 'Seitai · shiatsu · kneading', jp: '整体・指圧・もみほぐし', cn: '整体・指压・推拿' }, items: [
+        { value: 'Body Shiatsu 40 min', dur: 40, price: 6050, en: 'Full Body Massage – 40 min', jp: 'ボディ指圧もみほぐし40分', cn: '推拿按摩 40分钟' },
+        { value: 'Dry Head Upper Body 60 min', dur: 60, price: 8800, en: 'Scalp massage 20 min + Upper-Body Massage 40 min', jp: 'ドライヘッド20分＋上半身もみほぐし40分', cn: '头部按摩20分钟＋推拿按摩40分钟' },
+        { value: 'Body Shiatsu 60 min', dur: 60, price: 8250, en: 'Full Body Massage – 60 min', jp: '全身指圧もみほぐしマッサージ60分', cn: '全身推拿按摩 60分钟' },
+        { value: 'Body Shiatsu 90 min', dur: 90, price: 11000, en: 'Full Body Massage – 90 min', jp: 'ボディ指圧もみほぐし90分', cn: '全身推拿按摩 90分钟' },
+        { value: 'Body Shiatsu 120 min', dur: 120, price: 13200, en: 'Full Body Massage – 120 min', jp: 'ボディ指圧もみほぐし120分', cn: '全身推拿按摩 120分钟' }
       ]},
       { label: { en: 'Combo courses', jp: '組み合わせコース', cn: '组合套餐' }, items: [
-        { value: 'Shiatsu Foot 60 min', dur: 60, price: 8800, en: 'Body shiatsu 30 min + foot massage 30 min', jp: 'ボディ指圧30分＋足マッサージ30分', cn: '身体指压30分钟＋足部按摩30分钟' },
-        { value: 'Back Aroma Foot 90 min', dur: 90, price: 13200, en: 'Back aroma lymph 60 min + foot points 30 min', jp: '体背面アロマリンパ60分＋足つぼ30分', cn: '体背精油淋巴60分钟＋足疗30分钟' },
-        { value: 'Aroma Foot Head 120 min', dur: 120, price: 16400, en: 'Aroma oil 70 min + foot 40 min + dry head 10 min', jp: 'アロマオイル70分＋足40分＋ドライヘッド10分', cn: '精油70分钟＋足40分钟＋干式头疗10分钟' },
-        { value: 'Shiatsu Dry Head 60 min', dur: 60, price: 8150, en: 'Body shiatsu 40 min + dry head spa 20 min', jp: 'ボディ指圧40分＋ドライヘッド20分', cn: '身体指压40分钟＋干式头疗20分钟' },
-        { value: 'Knead Foot 90 min', dur: 90, price: 12100, en: 'Body kneading 60 min + foot massage 30 min', jp: '体もみほぐし60分＋足マッサージ30分', cn: '身体推拿60分钟＋足部按摩30分钟' },
-        { value: 'Knead Foot Focus 90 min', dur: 90, price: 13200, en: 'Body kneading 30 min + foot massage 60 min', jp: '体もみほぐし30分＋足マッサージ60分', cn: '身体推拿30分钟＋足部按摩60分钟' },
-        { value: 'Upper Aroma Foot Head 90 min', dur: 90, price: 13100, en: 'Upper aroma 40 min + foot 40 min + dry head', jp: '上半身アロマ40分＋足40分＋ドライヘッド', cn: '上半身精油40分钟＋足40分钟＋干式头疗' },
-        { value: 'Foot Body 120 min', dur: 120, price: 15300, en: 'Foot massage 60 min + body shiatsu 60 min', jp: '足マッサージ60分＋ボディ指圧60分', cn: '足部按摩60分钟＋身体指压60分钟' }
+        { value: 'Shiatsu Foot 60 min', dur: 60, price: 8800, en: 'Body Massage 30 min + Foot Reflexology 30 min', jp: 'ボディ指圧30分＋足マッサージ30分', cn: '推拿按摩30分钟＋足部按摩30分钟' },
+        { value: 'Back Aroma Foot 90 min', dur: 90, price: 13200, en: 'Back-Focused Aroma Oil Massage 60 min + Foot Reflexology 30 min', jp: '体+背面アロマリンパ60分＋足つぼ30分', cn: '精油开背按摩60分钟＋足部按摩30分钟' },
+        { value: 'Aroma Foot Head 120 min', dur: 120, price: 16400, en: 'Aroma Oil Massage 70 min + Foot Reflexology 40 min + Scalp massage 10 min', jp: 'アロマオイル70分＋足40分＋ドライヘッド10分', cn: '精油按摩70分钟＋足部按摩40分钟＋干式头疗10分钟' },
+        { value: 'Shiatsu Dry Head 60 min', dur: 60, price: 8150, en: 'Body Massage 40 min + Scalp massage 20 min', jp: 'ボディ指圧40分＋ドライヘッド20分', cn: '推拿按摩40分钟＋头部按摩20分钟' },
+        { value: 'Knead Foot 90 min', dur: 90, price: 12100, en: 'Full Body Massage 60 min + Foot Reflexology 30 min', jp: '体もみほぐし60分＋足マッサージ30分', cn: '身体推拿按摩60分钟＋足部按摩30分钟' },
+        { value: 'Knead Foot Focus 90 min', dur: 90, price: 13200, en: 'Body Massage 30 min + Foot Reflexology 60 min', jp: '体もみほぐし30分＋足マッサージ60分', cn: '身体推拿按摩30分钟＋足部按摩60分钟' },
+        { value: 'Upper Aroma Foot Head 90 min', dur: 90, price: 13100, en: 'Upper-Body Aroma Oil Massage 40 min + Foot Reflexology 40 min + Scalp massage 10 min', jp: '上半身アロマ40分＋足40分＋ドライヘッド', cn: '上半身精油按摩40分钟＋足部按摩40分钟＋干式头疗' },
+        { value: 'Foot Body 120 min', dur: 120, price: 15300, en: 'Foot Reflexology 60 min + Full Body Massage 60 min', jp: '足マッサージ60分＋ボディ指圧60分', cn: '足部按摩60分钟＋身体指压按摩60分钟' }
       ]},
-      { label: { en: 'Lulur spa', jp: 'ルルールスパ', cn: '卢鲁护肤' }, items: [
-        { value: 'Aroma Lulur 60 min', dur: 60, price: 10800, en: 'Aroma oil 40 min + lulur spa 20 min', jp: 'アロマオイル40分＋ルルールスパ20分', cn: '精油40分钟＋卢鲁护肤 20分钟' },
-        { value: 'Aroma Lulur 90 min', dur: 90, price: 12800, en: 'Aroma oil massage 70 min + lulur spa 20 min', jp: 'アロマオイル70分＋ルルールスパ20分', cn: '精油按摩70分钟＋卢鲁护肤20分钟' },
-        { value: 'Aroma Lulur 120 min', dur: 120, price: 15800, en: 'Aroma oil massage 80 min + lulur spa 40 min', jp: 'アロマオイル80分＋ルルールスパ40分', cn: '精油按摩80分钟＋卢鲁护肤40分钟' }
+      { label: { en: 'Lulur spa', jp: 'ルルールスパ', cn: 'LuLur SPA' }, items: [
+        { value: 'Aroma Lulur 60 min', dur: 60, price: 10800, en: 'Aroma Oil Massage 40 min + Lulur Spa 20 min Shower included', jp: 'アロマオイル40分＋ルルールスパ20分 シャワー無料', cn: '精油按摩40分钟＋全身去角质 LuLur SPA 20分钟 含淋浴' },
+        { value: 'Aroma Lulur 90 min', dur: 90, price: 12800, en: 'Aroma Oil Massage 70 min + Lulur Spa 20 min Shower included', jp: 'アロマオイル70分＋ルルールスパ20分 シャワー無料', cn: '精油按摩70分钟＋全身去角质 LuLur SPA 20分钟 含淋浴' },
+        { value: 'Aroma Lulur 120 min', dur: 120, price: 15800, en: 'Aroma Oil Massage 80 min + Lulur Spa 40 min Shower included', jp: 'アロマオイル80分＋ルルールスパ40分 シャワー無料', cn: '精油按摩80分钟＋全身去角质 LuLur SPA 40分钟 含淋浴' }
       ]},
       { label: { en: 'Ear esthe', jp: '耳エステ', cn: '采耳护理' }, items: [
-        { value: 'Ear Esthe 60 min', dur: 60, price: 10800, en: 'Ear cleaning + ear massage', jp: '耳掃除＋耳マッサージ60分', cn: '采耳＋耳部按摩 60分钟' }
+        { value: 'Ear Esthe 60 min', dur: 60, price: 10800, en: 'Ear Cleaning + Ear Massage', jp: '耳掃除＋耳マッサージ60分', cn: '采耳 60分钟' }
       ]}
     ];
 
     var i18n = {
-      en: { htmlLang:'en', title:'Book Appointment — BIG FOOT SPA', backLink:'Back to Home', brandBadge:'Book Your Appointment',
+      en: { htmlLang:'en', title:'Book Appointment — Ryogoku · Kinshicho BIG FOOT SPA', backLink:'Back to Home', brandBadge:'Book Your Appointment',
         bookingSubtitle:'Fill in the form below to book your appointment',
         successMessage:'Your booking information has been prepared. You will be redirected to WhatsApp shortly...',
         labelService:'Course *', labelDate:'Date *', labelTime:'Time *', labelGuests:'Number of Guests *', labelName:'Name *',
         selectCourse:'Select a course', selectTime:'Select a time', selectGuests:'Select number of guests', namePlaceholder:'Enter your name',
         hintTime:'',
         errorService:'Please select a course', errorDate:'Please select a date', errorTime:'Please select a time',
-        errorTimeRange:'Please choose a time within booking hours (10:00 – 23:00).',
+        errorTimeRange:'Please choose a valid time (weekdays 11:00–23:00; weekends and Japanese public holidays 10:00–23:00).',
         errorGuests:'Please select number of guests', errorName:'Please enter your name',
         errorGuestsExact:'Please enter 5 or more', labelGuestsExact:'Exact number *', guestPlus:'5+',
         samePackageText:'All guests choose the same course', additionalServicesTitle:"Additional Guests' Courses (if different)",
+        disposableGownText:'Disposable gown needed (¥110 top / ¥110 bottom per guest)',
         submitButton:'Submit & Open WhatsApp', redirecting:'Redirecting...',
         previewTitle:'WhatsApp Message Preview', previewHint:'Complete all required fields above to preview your message.',
         noticeTitle:'Before you book',
         noticeItems:[
-          'Changing gown: ¥110 top / ¥110 bottom',
+          'Change of clothes (optional): ¥110 each for the top and bottom (disposable underwear is free of charge).',
+          'An additional one-time ¥110 sheet fee will be charged for the aroma oil massage and Lulur Spa.',
           'Therapist request: ¥550 personal / ¥220 gender',
           'After 22:00: +10% late-night surcharge'
         ],
         guestUnit: function(n){ return n + (n>1?' Guests':' Guest'); },
-        waIntro:'Hello, I would like to make a reservation at BIG FOOT SPA (Ryogoku · Yuasa Ryogoku Bldg 1F).\n\n',
+        waIntro:'Hello, I would like to make a reservation at Ryogoku · Kinshicho BIG FOOT SPA (Yuasa Ryogoku Bldg 1F).\n\n',
         waName:'Name', waDate:'Date', waTime:'Time', waGuests:'Number of Guests',
         waGuestCourse: function(n){ return 'Guest ' + n + ' Course'; },
-        waSameCourse:'All guests choose the same course', waSheet:'Sheet fee', waLate:'Late-night surcharge', waTotal:'Total',
+        waSameCourse:'All guests choose the same course', waSheet:'Sheet fee', waGown:'Disposable gown', waLate:'Late-night surcharge', waTotal:'Total',
         dateLocale:'en-US' },
-      jp: { htmlLang:'ja', title:'ご予約 — BIG FOOT SPA', backLink:'ホームに戻る', brandBadge:'ご予約',
+      jp: { htmlLang:'ja', title:'ご予約 — 両国・錦糸町 BIG FOOT SPA', backLink:'ホームに戻る', brandBadge:'ご予約',
         bookingSubtitle:'以下のフォームにご記入のうえ、ご予約ください',
         successMessage:'予約内容を作成しました。まもなく WhatsApp へ移動します…',
         labelService:'コース *', labelDate:'日付 *', labelTime:'時間 *', labelGuests:'人数 *', labelName:'お名前 *',
         selectCourse:'コースを選択', selectTime:'時間を選択', selectGuests:'人数を選択', namePlaceholder:'お名前を入力',
         hintTime:'',
         errorService:'コースを選択してください', errorDate:'日付を選択してください', errorTime:'時間を選択してください',
-        errorTimeRange:'予約枠（10:00〜23:00）の時間を選択してください。',
+        errorTimeRange:'予約枠（平日11:00〜23:00／土日祝10:00〜23:00）の時間を選択してください。',
         errorGuests:'人数を選択してください', errorName:'お名前を入力してください',
         errorGuestsExact:'5以上の人数を入力してください', labelGuestsExact:'正確な人数 *', guestPlus:'5+',
         samePackageText:'全員同じコースを選択', additionalServicesTitle:'追加ゲストのコース（異なる場合）',
+        disposableGownText:'着替えが必要（上下各110円／1名あたり）',
         submitButton:'送信して WhatsApp を開く', redirecting:'移動中…',
         previewTitle:'WhatsApp メッセージプレビュー', previewHint:'送信内容を確認するため、上記の必須項目をすべてご記入ください。',
         noticeTitle:'ご予約前のご案内',
         noticeItems:[
-          '着替：上下各110円',
+          '着替え（任意）：上下各110円（紙パンツ無料）',
+          'アロマリンパマッサージ・ルルールスパの施術には、別途110円の使い捨てシーツ代がかかります。',
           '個人指名550円／男女指名220円',
           '22時以降は施術料金の10％深夜料金'
         ],
         guestUnit: function(n){ return n + '名'; },
-        waIntro:'こんにちは、BIG FOOT SPA（両国・ユアサ両国ビル1F）のご予約を希望します。\n\n',
+        waIntro:'こんにちは、両国・錦糸町 BIG FOOT SPA（ユアサ両国ビル1F）のご予約を希望します。\n\n',
         waName:'お名前', waDate:'日付', waTime:'時間', waGuests:'人数',
         waGuestCourse: function(n){ return 'ゲスト' + n + ' コース'; },
-        waSameCourse:'全員同じコース', waSheet:'シーツ代', waLate:'深夜割増', waTotal:'合計',
+        waSameCourse:'全員同じコース', waSheet:'シーツ代', waGown:'着替え代', waLate:'深夜割増', waTotal:'合計',
         dateLocale:'ja-JP' },
-      cn: { htmlLang:'zh-CN', title:'预约 — BIG FOOT SPA', backLink:'返回首页', brandBadge:'在线预约',
+      cn: { htmlLang:'zh-CN', title:'预约 — 両国・錦糸町 BIG FOOT SPA', backLink:'返回首页', brandBadge:'在线预约',
         bookingSubtitle:'请填写以下信息完成预约',
         successMessage:'预约信息已生成，即将跳转至 WhatsApp…',
         labelService:'项目 *', labelDate:'日期 *', labelTime:'时间 *', labelGuests:'人数 *', labelName:'姓名 *',
         selectCourse:'请选择项目', selectTime:'请选择时间', selectGuests:'请选择人数', namePlaceholder:'请输入您的姓名',
         hintTime:'',
         errorService:'请选择项目', errorDate:'请选择日期', errorTime:'请选择时间',
-        errorTimeRange:'请选择预约时段内的时间（10:00–23:00）。',
+        errorTimeRange:'请选择有效预约时间（工作日11:00–23:00；周末及日本法定节假日10:00–23:00）。',
         errorGuests:'请选择人数', errorName:'请输入姓名',
         errorGuestsExact:'请输入5人或以上', labelGuestsExact:'准确人数 *', guestPlus:'5+',
         samePackageText:'所有客人都选择相同项目', additionalServicesTitle:'其他客人的项目（如不同）',
+        disposableGownText:'需要一次性服装（上衣·下衣各 ¥110／每位客人）',
         submitButton:'提交并打开 WhatsApp', redirecting:'跳转中…',
         previewTitle:'WhatsApp 消息预览', previewHint:'请先填写上方所有必填项，即可预览消息内容。',
         noticeTitle:'预约前提示',
         noticeItems:[
-          '更衣：上下各 ¥110',
+          '更换衣物（可选）：上衣和下装各110日元（一次性纸内裤免费提供）',
+          '精油和Lulur全身去角质项目会另外加收110日元的一次性床单费用',
           '个人指名 ¥550／性别指名 ¥220',
           '22:00 以后加收施术费 10% 深夜费'
         ],
         guestUnit: function(n){ return n + ' 人'; },
-        waIntro:'您好，我想预约 BIG FOOT SPA（両国・ユアサ両国ビル1F）。\n\n',
+        waIntro:'您好，我想预约両国・錦糸町 BIG FOOT SPA（ユアサ両国ビル1F）。\n\n',
         waName:'姓名', waDate:'日期', waTime:'时间', waGuests:'人数',
         waGuestCourse: function(n){ return '客人' + n + ' 项目'; },
-        waSameCourse:'所有客人都选择相同项目', waSheet:'床单费', waLate:'深夜加价', waTotal:'合计',
+        waSameCourse:'所有客人都选择相同项目', waSheet:'床单费', waGown:'一次性服装费', waLate:'深夜加价', waTotal:'合计',
         dateLocale:'zh-CN' }
     };
 
     function t(k){ return i18n[currentLang][k]; }
-    function shortOptLabel(s, maxLen){
-      s = String(s || '').replace(/\s+/g, ' ').trim();
-      maxLen = maxLen || 34;
-      if (s.length > maxLen) {
-        s = s.replace(/[（(][^）)]*[）)]\s*$/, '').trim();
-      }
-      if (s.length > maxLen) s = s.slice(0, maxLen - 1) + '…';
-      return s;
+    function serviceLabel(value){
+      var found = value;
+      serviceGroups.some(function(g){
+        return g.items.some(function(it){
+          if (it.value !== value) return false;
+          found = it[currentLang] || value;
+          return true;
+        });
+      });
+      return found;
     }
     function buildServiceOptionsHTML(selectedValue){
       var html = '<option value="">' + t('selectCourse') + '</option>';
@@ -615,8 +631,8 @@
         html += '<optgroup label="' + g.label[currentLang] + '">';
         g.items.forEach(function(it){
           var sel = it.value === selectedValue ? ' selected' : '';
-          var label = shortOptLabel(it[currentLang], 34) + ' — ¥' + it.price.toLocaleString();
-          html += '<option value="' + it.value + '"' + sel + '>' + label + '</option>';
+          var label = it[currentLang] + ' — ¥' + it.price.toLocaleString();
+          html += '<option value="' + it.value + '"' + sel + ' title="' + label.replace(/"/g, '&quot;') + '">' + label.replace(/&/g, '&amp;').replace(/</g, '&lt;') + '</option>';
         });
         html += '</optgroup>';
       });
@@ -654,11 +670,61 @@
     }
 
     function pad2(n){ return n<10 ? '0'+n : ''+n; }
-    // BIG FOOT: slots 10:00–23:00 in 30-min steps
+    function nthWeekdayOfMonth(year, month, weekday, nth){
+      var first = new Date(year, month - 1, 1);
+      return 1 + ((7 + weekday - first.getDay()) % 7) + (nth - 1) * 7;
+    }
+
+    function japanHolidaySet(year){
+      var holidays = {};
+      function add(month, day){ holidays[year + '-' + pad2(month) + '-' + pad2(day)] = true; }
+      add(1, 1);
+      add(1, nthWeekdayOfMonth(year, 1, 1, 2));
+      add(2, 11); add(2, 23);
+      add(3, Math.floor(20.8431 + 0.242194 * (year - 1980) - Math.floor((year - 1980) / 4)));
+      add(4, 29); add(5, 3); add(5, 4); add(5, 5);
+      add(7, nthWeekdayOfMonth(year, 7, 1, 3));
+      add(8, 11);
+      add(9, nthWeekdayOfMonth(year, 9, 1, 3));
+      add(9, Math.floor(23.2488 + 0.242194 * (year - 1980) - Math.floor((year - 1980) / 4)));
+      add(10, nthWeekdayOfMonth(year, 10, 1, 2));
+      add(11, 3); add(11, 23);
+
+      Object.keys(holidays).forEach(function(key){
+        var parts = key.split('-').map(Number);
+        var date = new Date(parts[0], parts[1] - 1, parts[2]);
+        if (date.getDay() !== 0) return;
+        do { date.setDate(date.getDate() + 1); }
+        while (holidays[date.getFullYear() + '-' + pad2(date.getMonth() + 1) + '-' + pad2(date.getDate())]);
+        holidays[date.getFullYear() + '-' + pad2(date.getMonth() + 1) + '-' + pad2(date.getDate())] = true;
+      });
+
+      for (var d = new Date(year, 0, 2); d.getFullYear() === year; d.setDate(d.getDate() + 1)) {
+        var prev = new Date(d); prev.setDate(prev.getDate() - 1);
+        var next = new Date(d); next.setDate(next.getDate() + 1);
+        var key = year + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate());
+        var prevKey = prev.getFullYear() + '-' + pad2(prev.getMonth() + 1) + '-' + pad2(prev.getDate());
+        var nextKey = next.getFullYear() + '-' + pad2(next.getMonth() + 1) + '-' + pad2(next.getDate());
+        if (!holidays[key] && holidays[prevKey] && holidays[nextKey]) holidays[key] = true;
+      }
+      return holidays;
+    }
+
+    function isWeekendOrJapanHoliday(dateValue){
+      if (!dateValue) return false;
+      var parts = dateValue.split('-').map(Number);
+      var date = new Date(parts[0], parts[1] - 1, parts[2]);
+      var day = date.getDay();
+      return day === 0 || day === 6 || !!japanHolidaySet(parts[0])[dateValue];
+    }
+
+    // BIG FOOT: weekdays 11:00–23:00; weekends/public holidays 10:00–23:00, in 5-minute steps
     function buildTimeOptions(selectedValue){
       var html = '<option value="">' + t('selectTime') + '</option>';
-      for (var h = 10; h <= 23; h++) {
-        for (var m = 0; m < 60; m += 30) {
+      var dateValue = document.getElementById('date').value;
+      var startHour = isWeekendOrJapanHoliday(dateValue) ? 10 : 11;
+      for (var h = startHour; h <= 23; h++) {
+        for (var m = 0; m < 60; m += 5) {
           if (h === 23 && m > 0) continue;
           var v = pad2(h) + ':' + pad2(m);
           html += '<option value="'+v+'"'+(v===selectedValue?' selected':'')+'>'+v+'</option>';
@@ -707,6 +773,7 @@
       document.getElementById('errorName').textContent = o.errorName;
       document.getElementById('name').placeholder = o.namePlaceholder;
       document.getElementById('samePackageText').textContent = o.samePackageText;
+      document.getElementById('disposableGownText').textContent = o.disposableGownText;
       document.getElementById('additionalServicesTitle').textContent = o.additionalServicesTitle;
       document.getElementById('submitButtonText').textContent = o.submitButton;
       document.getElementById('previewTitle').textContent = o.previewTitle;
@@ -740,6 +807,13 @@
     var dateInput = document.getElementById('date');
     dateInput.setAttribute('min', new Date().toISOString().split('T')[0]);
     applyLang(getInitialLang());
+    dateInput.addEventListener('change', function(){
+      var time = document.getElementById('time');
+      var selected = time.value;
+      time.innerHTML = buildTimeOptions(selected);
+      if (selected && !isTimeInHours(selected)) time.value = '';
+      updateMessagePreview();
+    });
 
     document.querySelectorAll('.lang-switch button').forEach(function(btn){
       btn.addEventListener('click', function(){ applyLang(this.getAttribute('data-lang')); });
@@ -779,34 +853,37 @@
 
     function servicePrice(s){ return serviceInfo[s] || 0; }
 
-    function serviceDuration(svc){
-      var m = String(svc || '').match(/(\d+)\s*min\b/i);
-      return m ? parseInt(m[1], 10) : 0;
+    function gownFeeForGuestCount(count){
+      return count * GOWN_FEE_PER_PIECE * GOWN_PIECES_PER_GUEST;
+    }
+
+    function needsAromaSheetFee(svc){
+      return !!(svc && /Aroma|Lulur/i.test(svc));
     }
 
     function sheetFeeFor(svc){
-      if (!svc || !SHEET_FEE) return 0;
-      return SHEET_FEE;
+      return needsAromaSheetFee(svc) ? AROMA_SHEET_FEE : 0;
     }
 
     function isLateNightStart(ts){
       if (!ts) return false;
-      var h = parseInt(ts.split(':')[0], 10);
-      return !isNaN(h) && h >= 0 && h < 8;
+      var p = ts.split(':');
+      var h = parseInt(p[0], 10), m = parseInt(p[1], 10);
+      return !isNaN(h) && !isNaN(m) && h >= 22;
     }
 
     function lateSurchargeFor(svc, timeStr){
       if (!isLateNightStart(timeStr)) return 0;
-      var dur = serviceDuration(svc);
-      if (!dur) return 0;
-      return Math.ceil(dur / 30) * LATE_PER_30;
+      var price = servicePrice(svc);
+      return price > 0 ? Math.round(price * 0.1) : 0;
     }
 
     function isTimeInHours(ts){
       if (!ts) return false;
       var p = ts.split(':'); var h = parseInt(p[0],10), m = parseInt(p[1],10);
-      if (isNaN(h) || isNaN(m) || m % 30 !== 0) return false;
-      if (h < 10 || h > 23) return false;
+      if (isNaN(h) || isNaN(m) || m % 5 !== 0) return false;
+      var startHour = isWeekendOrJapanHoliday(document.getElementById('date').value) ? 10 : 11;
+      if (h < startHour || h > 23) return false;
       if (h === 23 && m > 0) return false;
       return true;
     }
@@ -847,17 +924,23 @@
       m += t('waDate')+': '+date+'\n';
       m += t('waTime')+': '+time+'\n';
       m += t('waGuests')+': '+gc+'\n';
-      m += t('waGuestCourse')(1)+' : '+main+' (¥'+servicePrice(main).toLocaleString()+')\n';
+      m += t('waGuestCourse')(1)+' : '+serviceLabel(main)+' (¥'+servicePrice(main).toLocaleString()+')\n';
       var same = fd.get('samePackage')==='on';
       var total = servicePrice(main);
       var guestServices = [main];
       if (gc>1 && same){ m += t('waSameCourse')+'\n'; total = servicePrice(main)*gc; for (var si=1;si<gc;si++) guestServices.push(main); }
-      else { for (var i=1;i<gc;i++){ var gs=fd.get('guest'+i+'Service'); if(gs&&gs.trim()){ m += t('waGuestCourse')(i+1)+' : '+gs+' (¥'+servicePrice(gs).toLocaleString()+')\n'; total += servicePrice(gs); guestServices.push(gs); } } }
+      else { for (var i=1;i<gc;i++){ var gs=fd.get('guest'+i+'Service'); if(gs&&gs.trim()){ m += t('waGuestCourse')(i+1)+' : '+serviceLabel(gs)+' (¥'+servicePrice(gs).toLocaleString()+')\n'; total += servicePrice(gs); guestServices.push(gs); } } }
       var sheetFees = guestServices.map(sheetFeeFor);
       var sheetTotal = sheetFees.reduce(function(a,b){ return a+b; }, 0);
       if (sheetTotal>0){
-        m += t('waSheet')+': ¥'+SHEET_FEE.toLocaleString()+' ×'+sheetFees.length+' (¥'+sheetTotal.toLocaleString()+')\n';
+        var sheetFeeCount = sheetFees.filter(function(f){ return f > 0; }).length;
+        m += t('waSheet')+': ¥'+AROMA_SHEET_FEE.toLocaleString()+' ×'+sheetFeeCount+' (¥'+sheetTotal.toLocaleString()+')\n';
         total += sheetTotal;
+      }
+      if (fd.get('disposableGown')==='on'){
+        var gownTotal = gownFeeForGuestCount(gc);
+        m += t('waGown')+': ¥'+GOWN_FEE_PER_PIECE.toLocaleString()+' ×'+GOWN_PIECES_PER_GUEST+' ×'+gc+' (¥'+gownTotal.toLocaleString()+')\n';
+        total += gownTotal;
       }
       var lateTotal = guestServices.reduce(function(sum, svc){ return sum + lateSurchargeFor(svc, time); }, 0);
       if (lateTotal>0){

@@ -1,6 +1,4 @@
-/* BIG FOOT SPA 上野 — aligned to Hoshishu layout/fonts */
-/* ============================================================
-   Hoshishu 星洲 — Shinbashi massage & relaxation
+/* BIG FOOT SPA 上野・御徒町
    Palette: charcoal / slate teal / soft stone / champagne gold
    ============================================================ */
 
@@ -32,6 +30,7 @@
 }
 
 :lang(zh-CN) {
+  /* 中文标题用宋体回退 */
   --font-display: "Playfair Display", "Noto Serif SC", "Songti SC", "SimSun", serif;
   --font-body: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
 }
@@ -56,6 +55,7 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* 中日正文用 400，菜单数字更稳 */
 html[lang="ja"] body,
 html[lang="zh-CN"] body {
   font-weight: 400;
@@ -456,6 +456,7 @@ ul { list-style: none; }
   display: block;
 }
 .ogh-name {
+  /* 分组标题 */
   font-family: var(--font-body);
   font-size: 1.02rem;
   font-weight: 600;
@@ -552,9 +553,9 @@ ul { list-style: none; }
   align-self: center;
   justify-self: end;
 }
-/* 可展开菜单：长名称独占上行，时长+价格靠左并排（英文组合名尤其需要） */
+/* 可展开菜单：名称独占上行，时长靠左，价格靠右 */
 .opt-group[data-fold] .opt-choice.has-desc {
-  grid-template-columns: 1.35rem max-content minmax(0, 1fr);
+  grid-template-columns: 1.35rem minmax(0, 1fr) max-content;
   grid-template-areas:
     "radio name name"
     ". desc price";
@@ -570,9 +571,9 @@ ul { list-style: none; }
   justify-self: start;
 }
 .opt-group[data-fold] .opt-choice.has-desc .opt-price {
-  justify-self: start;
-  text-align: left;
-  min-width: 0;
+  justify-self: end;
+  text-align: right;
+  min-width: 4.5rem;
 }
 .opt-choice .opt-desc {
   grid-area: desc;
@@ -628,6 +629,7 @@ ul { list-style: none; }
   overflow: hidden;
 }
 .opt-name {
+  /* 项目名 500 / 1rem */
   font-family: var(--font-body);
   font-weight: 500;
   font-size: 1rem;
@@ -670,6 +672,7 @@ ul { list-style: none; }
 .opt-price-solo,
 .opt-price-now,
 .opt-price-was {
+  /* 价格用无衬线数字 */
   font-family: "Inter", "Noto Sans JP", "Noto Sans SC", sans-serif;
   font-weight: 500;
   font-style: normal;
@@ -934,31 +937,19 @@ ul { list-style: none; }
   gap: 1rem;
   min-width: 0;
 }
-.access-storefront {
-  width: 100%;
-  border-radius: var(--radius);
-  overflow: hidden;
-  border: 1px solid var(--gold-pale);
-  background: var(--white);
-}
-.access-storefront img {
-  width: 100%;
-  height: auto;
-  display: block;
-  aspect-ratio: 16 / 10;
-  object-fit: cover;
-}
 .access-map {
   position: relative;
   border-radius: var(--radius);
   overflow: hidden;
-  min-height: 360px;
+  aspect-ratio: 1 / 1;
+  min-height: 300px;
   border: 1px solid var(--gold-pale);
 }
 .access-map iframe {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
-  min-height: 360px;
   border: 0;
   pointer-events: none;
 }
@@ -1441,6 +1432,10 @@ ul { list-style: none; }
   .menu-card-grid {
     grid-template-columns: 1fr;
   }
+  .access-map {
+    aspect-ratio: 4 / 5;
+    min-height: 0;
+  }
   .features {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -1514,7 +1509,7 @@ ul { list-style: none; }
     font-size: 1rem;
   }
   .opt-group[data-fold] .opt-choice.has-desc {
-    grid-template-columns: 1.35rem max-content minmax(0, 1fr);
+    grid-template-columns: 1.35rem minmax(0, 1fr) max-content;
     grid-template-areas:
       "radio name name"
       ". desc price";
@@ -1527,11 +1522,11 @@ ul { list-style: none; }
     overflow-wrap: break-word;
   }
   .opt-group[data-fold] .opt-choice.has-desc .opt-price {
-    text-align: left;
-    justify-self: start;
+    text-align: right;
+    justify-self: end;
     align-self: center;
     margin-top: 0;
-    min-width: 0;
+    min-width: 4.5rem;
   }
   .opt-group-foot {
     justify-content: stretch;
