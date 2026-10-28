@@ -284,6 +284,30 @@
     font-family: inherit;
   }
   .add-cell-btn:hover { border-color: #888; color: #555; }
+  .del-last-btn { margin-left: 8px; }
+  .del-last-btn:hover { border-color: #c55; color: #c55; }
+
+  .cell-wrap { position: relative; }
+  .del-cell-btn {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    width: 20px;
+    height: 20px;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.5);
+    color: #fff;
+    font-size: 13px;
+    line-height: 1;
+    cursor: pointer;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 6;
+  }
+  .cell-wrap:hover .del-cell-btn { display: flex; }
+  .del-cell-btn:hover { background: rgba(220,50,50,0.85); }
 
   @media (max-width: 600px) {
     .table-container { padding: 16px 12px; }
@@ -602,6 +626,7 @@
   <div class="grid" id="grid1"></div>
   <div style="text-align:center; margin-top:16px;">
     <button class="add-cell-btn" data-grid="1">+ 添加格子</button>
+    <button class="add-cell-btn del-last-btn" data-grid="1" data-act="del">− 删除格子</button>
   </div>
 </div>
 
@@ -617,6 +642,7 @@
   <div class="grid" id="grid3"></div>
   <div style="text-align:center; margin-top:16px;">
     <button class="add-cell-btn" data-grid="3">+ 添加格子</button>
+    <button class="add-cell-btn del-last-btn" data-grid="3" data-act="del">− 删除格子</button>
   </div>
 </div>
 
@@ -632,6 +658,7 @@
   <div class="grid" id="grid2"></div>
   <div style="text-align:center; margin-top:16px;">
     <button class="add-cell-btn" data-grid="2">+ 添加格子</button>
+    <button class="add-cell-btn del-last-btn" data-grid="2" data-act="del">− 删除格子</button>
   </div>
 </div>
 
@@ -1222,8 +1249,19 @@ function attachCaption(g, cell) {
   cap.addEventListener('click', e => { e.stopPropagation(); cap.focus(); });
   cap.addEventListener('mousedown', e => e.stopPropagation());
   cap.addEventListener('pointerdown', e => { e.stopPropagation(); cap.focus(); });
+  const del = document.createElement('button');
+  del.type = 'button';
+  del.className = 'del-cell-btn';
+  del.textContent = '×';
+  del.title = '删除格子';
+  del.addEventListener('pointerdown', e => e.stopPropagation());
+  del.addEventListener('click', e => {
+    e.stopPropagation();
+    removeCellWrap(g, wrap);
+  });
   wrap.appendChild(cell);
   wrap.appendChild(cap);
+  wrap.appendChild(del);
   g.appendChild(wrap);
 }
 
@@ -1253,11 +1291,23 @@ document.querySelectorAll('.add-cell-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     const t = parseInt(btn.dataset.grid);
     const g = gridEl(t);
-    const idx = g.children.length;
-    cellFactory(t)(g, idx);
+    if (btn.dataset.act === 'del') {
+      const wraps = g.querySelectorAll('.cell-wrap');
+      if (wraps.length <= 1) return;
+      wraps[wraps.length - 1].remove();
+      updateCellNumbers(g);
+      return;
+    }
+    cellFactory(t)(g, g.children.length);
     updateCellNumbers(g);
   });
 });
+
+function removeCellWrap(g, wrap) {
+  if (g.querySelectorAll('.cell-wrap').length <= 1) return;
+  wrap.remove();
+  updateCellNumbers(g);
+}
 
 function updateCellNumbers(g) {
   g.querySelectorAll('.cell-number').forEach((n, i) => { n.textContent = i + 1; });
