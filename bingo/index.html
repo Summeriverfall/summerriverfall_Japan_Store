@@ -105,6 +105,27 @@
     grid-template-columns: repeat(4, 1fr);
     gap: 12px;
   }
+  .cell-wrap {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+  .cell-caption {
+    margin-top: 6px;
+    width: 100%;
+    border: none;
+    border-bottom: 1px dashed transparent;
+    background: transparent;
+    text-align: center;
+    font-size: 13px;
+    color: #444;
+    outline: none;
+    font-family: inherit;
+    padding: 2px 4px;
+  }
+  .cell-caption:hover, .cell-caption:focus { border-bottom-color: #999; }
+  .cell-caption::placeholder { color: #ccc; }
+  .grid.hide-captions .cell-caption { display: none; }
 
   /* ===== 单元格通用 ===== */
   .cell {
@@ -614,7 +635,8 @@ const tableSettings = {
     labelStrokeWidth: 0,
     cellGap: 12,
     borderRadius: 8,
-    columnsCount: 4
+    columnsCount: 4,
+    showCaptions: 'on'
   },
   2: {
     textFontSize: 18,
@@ -627,14 +649,16 @@ const tableSettings = {
     cellBorderColor: '#dddddd',
     cellGap: 12,
     borderRadius: 8,
-    columnsCount: 4
+    columnsCount: 4,
+    showCaptions: 'on'
   },
   3: {
     cellBgColor: '#ffffff',
     cellBorderColor: '#dddddd',
     cellGap: 12,
     borderRadius: 8,
-    columnsCount: 4
+    columnsCount: 4,
+    showCaptions: 'on'
   }
 };
 
@@ -808,6 +832,13 @@ function renderSettingsPanel() {
       <label class="setting-label">每行列数</label>
       <input type="number" class="setting-input" id="sColumnsCount" value="${s.columnsCount}" min="1" max="10">
     </div>
+    <div class="setting-group">
+      <label class="setting-label">格子下方文字</label>
+      <div class="setting-row">
+        <div class="setting-radio${s.showCaptions!=='off'?' active':''}" data-key="showCaptions" data-val="on">显示</div>
+        <div class="setting-radio${s.showCaptions==='off'?' active':''}" data-key="showCaptions" data-val="off">不显示</div>
+      </div>
+    </div>
   `;
 
   settingsPanel.innerHTML = html;
@@ -906,6 +937,10 @@ function bindSettingsEvents() {
 // ==============================
 function applySetting(key, value) {
   const t = activeTable;
+  if (key === 'showCaptions') {
+    gridEl(t).classList.toggle('hide-captions', value === 'off');
+    return;
+  }
   if (t === 1) {
     switch (key) {
       case 'labelFontSize':
@@ -1062,6 +1097,7 @@ function createTable1Cell(g, index) {
   cell.appendChild(removeBtn);
   cell.appendChild(fileInput);
   cell.appendChild(num);
+  attachCaption(g, cell);
 
   cell.addEventListener('click', (e) => {
     if (e.target === label || e.target === removeBtn) return;
@@ -1078,8 +1114,6 @@ function createTable1Cell(g, index) {
     e.stopPropagation();
     img.src = ''; img.classList.remove('visible'); cell.classList.remove('has-image'); fileInput.value = '';
   });
-
-  g.appendChild(cell);
 }
 
 // -- Table 2: 纯文字 --
@@ -1123,7 +1157,7 @@ function createTable2Cell(g, index) {
 
   cell.appendChild(textDiv);
   cell.appendChild(num);
-  g.appendChild(cell);
+  attachCaption(g, cell);
 }
 
 // -- Table 3: 空白格子 --
@@ -1140,7 +1174,22 @@ function createTable3Cell(g, index) {
   num.textContent = index + 1;
 
   cell.appendChild(num);
-  g.appendChild(cell);
+  attachCaption(g, cell);
+}
+
+function attachCaption(g, cell) {
+  const wrap = document.createElement('div');
+  wrap.className = 'cell-wrap';
+  const cap = document.createElement('input');
+  cap.className = 'cell-caption';
+  cap.type = 'text';
+  cap.placeholder = '点击添加文字';
+  cap.addEventListener('click', e => e.stopPropagation());
+  cap.addEventListener('mousedown', e => e.stopPropagation());
+  cap.addEventListener('pointerdown', e => e.stopPropagation());
+  wrap.appendChild(cell);
+  wrap.appendChild(cap);
+  g.appendChild(wrap);
 }
 
 // ==============================
