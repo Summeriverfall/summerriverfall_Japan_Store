@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bingo Card</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+    background: #f5f5f5;
+    min-height: 100vh;
+    padding: 20px;
+  }
+
+  /* ===== Tab 切换 ===== */
+  .tab-bar {
+    display: flex;
+    justify-content: center;
+    gap: 0;
+    margin-bottom: 24px;
+  }
+
+  .tab-btn {
+    padding: 10px 32px;
+    font-size: 15px;
+    border: 2px solid #ddd;
+    background: #fff;
+    color: #888;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+  }
+  .tab-btn:first-child { border-radius: 8px 0 0 8px; }
+  .tab-btn:last-child { border-radius: 0 8px 8px 0; }
+  .tab-btn.active {
+    background: #4a90e2;
+    color: #fff;
+    border-color: #4a90e2;
+  }
+  .tab-btn:hover:not(.active) { background: #f0f0f0; }
+
+  /* ===== 容器 ===== */
+  .table-container {
+    max-width: 900px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    padding: 30px 24px;
+  }
+  .table-container.hidden { display: none; }
+
+  .title-area { text-align: center; margin-bottom: 24px; }
+
+  .main-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: #222;
+    outline: none;
+    border: none;
+    border-bottom: 2px dashed transparent;
+    padding: 4px 12px;
+    text-align: center;
+    width: 100%;
+    max-width: 800px;
+    transition: border-color 0.2s;
+    background: transparent;
+  }
+  .main-title:hover, .main-title:focus { border-bottom-color: #999; }
+  .main-title::placeholder { color: #bbb; }
+
+  .subtitle-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 32px;
+    margin-top: 8px;
+    flex-wrap: wrap;
+    width: 100%;
+  }
+
+  .subtitle {
+    font-size: 15px;
+    color: #555;
+    outline: none;
+    border: none;
+    border-bottom: 1px dashed transparent;
+    padding: 2px 6px;
+    text-align: center;
+    background: transparent;
+    transition: border-color 0.2s;
+    min-width: 60px;
+    width: auto;
+    max-width: 100%;
+    flex: 1;
+  }
+  .subtitle:hover, .subtitle:focus { border-bottom-color: #999; }
+  .subtitle::placeholder { color: #ccc; }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+
+  /* ===== 单元格通用 ===== */
+  .cell {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #fafafa;
+    cursor: pointer;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .cell:hover {
+    border-color: #888;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+
+  /* ===== Table1: 图片表格的标签 ===== */
+  .cell-label {
+    position: absolute;
+    top: 6px;
+    left: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #555;
+    background: transparent;
+    padding: 0;
+    z-index: 2;
+    cursor: text;
+    max-width: calc(100% - 16px);
+    outline: none;
+    border: none;
+    transition: none;
+  }
+
+  .cell-number {
+    position: absolute;
+    bottom: 6px;
+    right: 8px;
+    font-size: 11px;
+    color: #ccc;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .cell-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: none;
+  }
+  .cell-image.visible { display: block; }
+
+  .cell-placeholder {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ccc;
+    font-size: 36px;
+    pointer-events: none;
+    transition: color 0.2s;
+  }
+  .cell:hover .cell-placeholder { color: #aaa; }
+  .cell.has-image .cell-placeholder { display: none; }
+
+  .cell input[type="file"] { display: none; }
+
+  .remove-btn {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 22px;
+    height: 22px;
+    background: rgba(0,0,0,0.5);
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    font-size: 14px;
+    cursor: pointer;
+    z-index: 3;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.2s, background 0.2s;
+  }
+  .remove-btn:hover { background: rgba(220,50,50,0.8); }
+  .cell.has-image .remove-btn { display: flex; }
+  .cell:hover .remove-btn { opacity: 1; }
+
+  /* ===== Table2: 文字表格的文本 ===== */
+  .cell-text {
+    position: absolute;
+    inset: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    z-index: 2;
+    outline: none;
+    border: none;
+    background: transparent;
+    text-align: center;
+    overflow: hidden;
+    word-break: break-word;
+    white-space: pre-wrap;
+    cursor: text;
+    font-family: inherit;
+    line-height: 1.3;
+  }
+  .cell-text:empty::before {
+    content: attr(data-placeholder);
+    color: #ccc;
+    font-weight: 400;
+  }
+
+  /* ===== 添加按钮 ===== */
+  .add-cell-btn {
+    font-size: 16px;
+    padding: 8px 24px;
+    border: 2px dashed #ccc;
+    border-radius: 8px;
+    background: transparent;
+    color: #999;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+  }
+  .add-cell-btn:hover { border-color: #888; color: #555; }
+
+  @media (max-width: 600px) {
+    .table-container { padding: 16px 12px; }
+    .main-title { font-size: 22px; }
+    .grid { gap: 8px; }
+    .cell-label { font-size: 11px; }
+    .cell-text { font-size: 14px; }
+    .tab-btn { padding: 8px 20px; font-size: 14px; }
+  }
+
+  /* ===== 设置面板 ===== */
+  .settings-panel {
+    position: fixed;
+    right: 0;
+    top: 0;
+    width: 290px;
+    height: 100vh;
+    background: #fff;
+    box-shadow: -2px 0 12px rgba(0,0,0,0.1);
+    padding: 20px;
+    z-index: 1000;
+    overflow-y: auto;
+    transition: transform 0.3s ease;
+  }
+  .settings-panel.collapsed { transform: translateX(100%); }
+
+  .settings-toggle {
+    position: fixed;
+    right: 290px;
+    top: 20px;
+    width: 40px;
+    height: 40px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    z-index: 1001;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transition: right 0.3s ease, background 0.2s;
+  }
+  .settings-toggle:hover { background: #f5f5f5; }
+  .settings-panel.collapsed + .settings-toggle { right: 20px; }
+
+  .settings-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #222;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #eee;
+  }
+
+  .setting-group { margin-bottom: 18px; }
+
+  .setting-label {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 8px;
+    display: block;
+    font-weight: 500;
+  }
+
+  .setting-input {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+    font-family: inherit;
+  }
+  .setting-input:focus { border-color: #888; }
+
+  .setting-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+
+  .setting-radio {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    text-align: center;
+    cursor: pointer;
+    font-size: 13px;
+    transition: all 0.2s;
+    background: #fff;
+    user-select: none;
+  }
+  .setting-radio.active {
+    background: #4a90e2;
+    color: #fff;
+    border-color: #4a90e2;
+  }
+  .setting-radio:hover:not(.active) { background: #f5f5f5; }
+
+  /* 3x3 位置选择器 */
+  .position-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 3px;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    max-width: 200px;
+    margin: 0 auto;
+  }
+  .position-cell {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.15s;
+    background: #fff;
+  }
+  .position-cell:hover { background: #e8f0fe; border-color: #4a90e2; }
+  .position-cell.active { background: #4a90e2; border-color: #4a90e2; }
+
+  .color-picker-wrapper {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+  .color-input {
+    width: 44px;
+    height: 36px;
+    padding: 2px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+
+  .range-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: #999;
+    margin-top: 4px;
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== Tab 切换 ===== -->
+<div class="tab-bar">
+  <button class="tab-btn active" data-table="1">图片表格</button>
+  <button class="tab-btn" data-table="2">文字表格</button>
+</div>
+
+<!-- ===== 表格1：图片表格 ===== -->
+<div class="table-container" id="container1">
+  <div class="title-area">
+    <input class="main-title" type="text" placeholder="点击输入标题">
+    <div class="subtitle-row">
+      <input class="subtitle" type="text" placeholder="点击输入副标题">
+      <input class="subtitle" type="text" placeholder="点击输入署名">
+    </div>
+  </div>
+  <div class="grid" id="grid1"></div>
+  <div style="text-align:center; margin-top:16px;">
+    <button class="add-cell-btn" data-grid="1">+ 添加格子</button>
+  </div>
+</div>
+
+<!-- ===== 表格2：文字表格 ===== -->
+<div class="table-container hidden" id="container2">
+  <div class="title-area">
+    <input class="main-title" type="text" placeholder="点击输入标题">
+    <div class="subtitle-row">
+      <input class="subtitle" type="text" placeholder="点击输入副标题">
+      <input class="subtitle" type="text" placeholder="点击输入署名">
+    </div>
+  </div>
+  <div class="grid" id="grid2"></div>
+  <div style="text-align:center; margin-top:16px;">
+    <button class="add-cell-btn" data-grid="2">+ 添加格子</button>
+  </div>
+</div>
+
+<!-- ===== 设置面板 ===== -->
+<div class="settings-panel" id="settingsPanel"></div>
+<button class="settings-toggle" id="settingsToggle">⚙️</button>
+
+<script>
+// ==============================
+// 状态
+// ==============================
+let activeTable = 1;
+
+const tableSettings = {
+  1: {
+    labelFontSize: 13,
+    horizontalAlign: 'left',
+    verticalAlign: 'top',
+    cellBgColor: '#fafafa',
+    cellBorderColor: '#dddddd',
+    labelColor: '#555555',
+    labelStrokeColor: '#ffffff',
+    labelStrokeWidth: 0,
+    cellGap: 12,
+    borderRadius: 8,
+    columnsCount: 4
+  },
+  2: {
+    textFontSize: 18,
+    textHAlign: 'center',
+    textVAlign: 'middle',
+    textColor: '#333333',
+    textStrokeColor: '#ffffff',
+    textStrokeWidth: 0,
+    cellBgColor: '#fafafa',
+    cellBorderColor: '#dddddd',
+    cellGap: 12,
+    borderRadius: 8,
+    columnsCount: 4
+  }
+};
+
+// ==============================
+// 快捷 DOM 访问
+// ==============================
+function gridEl(n) { return document.getElementById('grid' + n); }
+function containerEl(n) { return document.getElementById('container' + n); }
+
+// ==============================
+// 设置面板
+// ==============================
+const settingsPanel = document.getElementById('settingsPanel');
+const settingsToggle = document.getElementById('settingsToggle');
+
+settingsToggle.addEventListener('click', () => {
+  settingsPanel.classList.toggle('collapsed');
+});
+
+// ==============================
+// Tab 切换
+// ==============================
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const t = parseInt(btn.dataset.table);
+    if (t === activeTable) return;
+    activeTable = t;
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    containerEl(1).classList.toggle('hidden', t !== 1);
+    containerEl(2).classList.toggle('hidden', t !== 2);
+    renderSettingsPanel();
+  });
+});
+
+// ==============================
+// 渲染设置面板
+// ==============================
+function renderSettingsPanel() {
+  const s = tableSettings[activeTable];
+  let html = '<div class="settings-title">⚙️ 表格设置</div>';
+
+  if (activeTable === 1) {
+    html += `
+      <div class="setting-group">
+        <label class="setting-label">标题字体大小</label>
+        <input type="number" class="setting-input" id="sLabelFontSize" value="${s.labelFontSize}" min="8" max="48">
+      </div>
+      <div class="setting-group">
+        <label class="setting-label">水平对齐</label>
+        <div class="setting-row">
+          <div class="setting-radio${s.horizontalAlign==='left'?' active':''}" data-key="horizontalAlign" data-val="left">居左</div>
+          <div class="setting-radio${s.horizontalAlign==='center'?' active':''}" data-key="horizontalAlign" data-val="center">居中</div>
+        </div>
+      </div>
+      <div class="setting-group">
+        <label class="setting-label">垂直对齐</label>
+        <div class="setting-row">
+          <div class="setting-radio${s.verticalAlign==='top'?' active':''}" data-key="verticalAlign" data-val="top">居上</div>
+          <div class="setting-radio${s.verticalAlign==='bottom'?' active':''}" data-key="verticalAlign" data-val="bottom">居下</div>
+        </div>
+      </div>
+      <div class="setting-group">
+        <label class="setting-label">单元格背景色</label>
+        <div class="color-picker-wrapper">
+          <input type="color" class="color-input" id="sCellBgColor" value="${s.cellBgColor}">
+          <input type="text" class="setting-input" id="sCellBgColorText" value="${s.cellBgColor}" style="flex:1;">
+        </div>
+      </div>
+      <div class="setting-group">
+        <label class="setting-label">单元格边框色</label>
+        <div class="color-picker-wrapper">
+          <input type="color" class="color-input" id="sCellBorderColor" value="${s.cellBorderColor}">
+          <input type="text" class="setting-input" id="sCellBorderColorText" value="${s.cellBorderColor}" style="flex:1;">
+        </div>
+      </div>
+      <div class="setting-group">
+        <label class="setting-label">标题文字颜色</label>
+        <div class="color-picker-wrapper">
+          <input type="color" class="color-input" id="sLabelColor" value="${s.labelColor}">
+          <input type="text" class="setting-input" id="sLabelColorText" value="${s.labelColor}" style="flex:1;">
+        </div>
+      </div>
+      <div class="setting-group">
+        <label class="setting-label">文字描边颜色</label>
+        <div class="color-picker-wrapper">
+          <input type="color" class="color-input" id="sLabelStrokeColor" value="${s.labelStrokeColor}">
+          <input type="text" class="setting-input" id="sLabelStrokeColorText" value="${s.labelStrokeColor}" style="flex:1;">
+        </div>
+      </div>
+      <div class="setting-group">
+        <label class="setting-label">文字描边宽度</label>
+        <input type="range" class="setting-input" id="sLabelStrokeWidth" value="${s.labelStrokeWidth}" min="0" max="10" style="padding:0;">
+        <div class="range-labels"><span>0px (无)</span><span id="sLabelStrokeWidthVal">${s.labelStrokeWidth}px</span><span>10px</span></div>
+      </div>
+    `;
+  } else {
+    html += `
+      <div class="setting-group">
+        <label class="setting-label">文字大小</label>
+        <input type="number" class="setting-input" id="sTextFontSize" value="${s.textFontSize}" min="8" max="120">
+      </div>
+      <div class="setting-group">
+        <label class="setting-label">文字位置</label>
+        <div class="position-grid" id="positionGrid"></div>
+      </div>
+      <div class="setting-group">
+        <label class="setting-label">文字颜色</label>
+        <div class="color-picker-wrapper">
+          <input type="color" class="color-input" id="sTextColor" value="${s.textColor}">
+          <input type="text" class="setting-input" id="sTextColorText" value="${s.textColor}" style="flex:1;">
+        </div>
+      </div>
+      <div class="setting-group">
+        <label class="setting-label">文字描边颜色</label>
+        <div class="color-picker-wrapper">
+          <input type="color" class="color-input" id="sTextStrokeColor" value="${s.textStrokeColor}">
+          <input type="text" class="setting-input" id="sTextStrokeColorText" value="${s.textStrokeColor}" style="flex:1;">
+        </div>
+      </div>
+      <div class="setting-group">
+        <label class="setting-label">文字描边宽度</label>
+        <input type="range" class="setting-input" id="sTextStrokeWidth" value="${s.textStrokeWidth}" min="0" max="10" style="padding:0;">
+        <div class="range-labels"><span>0px (无)</span><span id="sTextStrokeWidthVal">${s.textStrokeWidth}px</span><span>10px</span></div>
+      </div>
+      <div class="setting-group">
+        <label class="setting-label">单元格背景色</label>
+        <div class="color-picker-wrapper">
+          <input type="color" class="color-input" id="sCellBgColor" value="${s.cellBgColor}">
+          <input type="text" class="setting-input" id="sCellBgColorText" value="${s.cellBgColor}" style="flex:1;">
+        </div>
+      </div>
+      <div class="setting-group">
+        <label class="setting-label">单元格边框色</label>
+        <div class="color-picker-wrapper">
+          <input type="color" class="color-input" id="sCellBorderColor" value="${s.cellBorderColor}">
+          <input type="text" class="setting-input" id="sCellBorderColorText" value="${s.cellBorderColor}" style="flex:1;">
+        </div>
+      </div>
+    `;
+  }
+
+  html += `
+    <div class="setting-group">
+      <label class="setting-label">单元格间距</label>
+      <input type="range" class="setting-input" id="sCellGap" value="${s.cellGap}" min="0" max="40" style="padding:0;">
+      <div class="range-labels"><span>0px</span><span id="sCellGapVal">${s.cellGap}px</span><span>40px</span></div>
+    </div>
+    <div class="setting-group">
+      <label class="setting-label">边框圆角</label>
+      <input type="range" class="setting-input" id="sBorderRadius" value="${s.borderRadius}" min="0" max="50" style="padding:0;">
+      <div class="range-labels"><span>0px (直角)</span><span id="sBorderRadiusVal">${s.borderRadius}px</span><span>50px (圆润)</span></div>
+    </div>
+    <div class="setting-group">
+      <label class="setting-label">每行列数</label>
+      <input type="number" class="setting-input" id="sColumnsCount" value="${s.columnsCount}" min="1" max="10">
+    </div>
+  `;
+
+  settingsPanel.innerHTML = html;
+  bindSettingsEvents();
+  if (activeTable === 2) renderPositionGrid();
+}
+
+function renderPositionGrid() {
+  const pg = document.getElementById('positionGrid');
+  if (!pg) return;
+  const s = tableSettings[2];
+  const hLabels = ['left', 'center', 'right'];
+  const vLabels = ['top', 'middle', 'bottom'];
+  const hMap = { left: 0, center: 1, right: 2 };
+  const vMap = { top: 0, middle: 1, bottom: 2 };
+  const ar = vMap[s.textVAlign], ac = hMap[s.textHAlign];
+
+  pg.innerHTML = '';
+  for (let r = 0; r < 3; r++) {
+    for (let c = 0; c < 3; c++) {
+      const d = document.createElement('div');
+      d.className = 'position-cell' + (r === ar && c === ac ? ' active' : '');
+      d.dataset.h = hLabels[c];
+      d.dataset.v = vLabels[r];
+      d.addEventListener('click', () => {
+        s.textHAlign = d.dataset.h;
+        s.textVAlign = d.dataset.v;
+        updateAllText2Positions();
+        renderPositionGrid();
+      });
+      pg.appendChild(d);
+    }
+  }
+}
+
+// ==============================
+// 设置事件绑定
+// ==============================
+function bindSettingsEvents() {
+  const s = tableSettings[activeTable];
+
+  function bindColor(cid, tid, key) {
+    const ce = document.getElementById(cid), te = document.getElementById(tid);
+    if (!ce || !te) return;
+    ce.addEventListener('input', e => { s[key] = e.target.value; te.value = e.target.value; applySetting(key, e.target.value); });
+    te.addEventListener('input', e => { if (/^#[0-9A-Fa-f]{6}$/.test(e.target.value)) { s[key] = e.target.value; ce.value = e.target.value; applySetting(key, e.target.value); } });
+  }
+
+  function bindRange(rid, vid, key, unit) {
+    const re = document.getElementById(rid), ve = document.getElementById(vid);
+    if (!re || !ve) return;
+    re.addEventListener('input', e => { const v = e.target.value; s[key] = parseInt(v); ve.textContent = v + unit; applySetting(key, v); });
+  }
+
+  function bindNum(iid, key) {
+    const ie = document.getElementById(iid);
+    if (!ie) return;
+    ie.addEventListener('input', e => { const v = parseInt(e.target.value); if (!isNaN(v)) { s[key] = v; applySetting(key, v); } });
+  }
+
+  settingsPanel.querySelectorAll('.setting-radio').forEach(radio => {
+    radio.addEventListener('click', () => {
+      const p = radio.parentElement;
+      p.querySelectorAll('.setting-radio').forEach(r => r.classList.remove('active'));
+      radio.classList.add('active');
+      s[radio.dataset.key] = radio.dataset.val;
+      applySetting(radio.dataset.key, radio.dataset.val);
+    });
+  });
+
+  if (activeTable === 1) {
+    bindNum('sLabelFontSize', 'labelFontSize');
+    bindColor('sCellBgColor', 'sCellBgColorText', 'cellBgColor');
+    bindColor('sCellBorderColor', 'sCellBorderColorText', 'cellBorderColor');
+    bindColor('sLabelColor', 'sLabelColorText', 'labelColor');
+    bindColor('sLabelStrokeColor', 'sLabelStrokeColorText', 'labelStrokeColor');
+    bindRange('sLabelStrokeWidth', 'sLabelStrokeWidthVal', 'labelStrokeWidth', 'px');
+  } else {
+    bindNum('sTextFontSize', 'textFontSize');
+    bindColor('sTextColor', 'sTextColorText', 'textColor');
+    bindColor('sTextStrokeColor', 'sTextStrokeColorText', 'textStrokeColor');
+    bindColor('sCellBgColor', 'sCellBgColorText', 'cellBgColor');
+    bindColor('sCellBorderColor', 'sCellBorderColorText', 'cellBorderColor');
+    bindRange('sTextStrokeWidth', 'sTextStrokeWidthVal', 'textStrokeWidth', 'px');
+  }
+  bindRange('sCellGap', 'sCellGapVal', 'cellGap', 'px');
+  bindRange('sBorderRadius', 'sBorderRadiusVal', 'borderRadius', 'px');
+  bindNum('sColumnsCount', 'columnsCount');
+}
+
+// ==============================
+// 应用设置到 DOM
+// ==============================
+function applySetting(key, value) {
+  const t = activeTable;
+  if (t === 1) {
+    switch (key) {
+      case 'labelFontSize':
+        gridEl(1).querySelectorAll('.cell-label').forEach(el => el.style.fontSize = value + 'px');
+        break;
+      case 'horizontalAlign': case 'verticalAlign': updateAllTable1Labels(); break;
+      case 'cellBgColor':
+        gridEl(1).querySelectorAll('.cell').forEach(el => el.style.background = value);
+        break;
+      case 'cellBorderColor':
+        gridEl(1).querySelectorAll('.cell').forEach(el => el.style.borderColor = value);
+        break;
+      case 'labelColor':
+        gridEl(1).querySelectorAll('.cell-label').forEach(el => el.style.color = value);
+        break;
+      case 'labelStrokeColor': case 'labelStrokeWidth': updateAllTable1Stroke(); break;
+      case 'cellGap': gridEl(1).style.gap = value + 'px'; break;
+      case 'borderRadius':
+        gridEl(1).querySelectorAll('.cell').forEach(el => el.style.borderRadius = value + 'px');
+        break;
+      case 'columnsCount': gridEl(1).style.gridTemplateColumns = `repeat(${value}, 1fr)`; break;
+    }
+  } else {
+    switch (key) {
+      case 'textFontSize':
+        gridEl(2).querySelectorAll('.cell-text').forEach(el => el.style.fontSize = value + 'px');
+        break;
+      case 'textHAlign': case 'textVAlign': updateAllText2Positions(); break;
+      case 'textColor':
+        gridEl(2).querySelectorAll('.cell-text').forEach(el => el.style.color = value);
+        break;
+      case 'textStrokeColor': case 'textStrokeWidth': updateAllText2Strokes(); break;
+      case 'cellBgColor':
+        gridEl(2).querySelectorAll('.cell').forEach(el => el.style.background = value);
+        break;
+      case 'cellBorderColor':
+        gridEl(2).querySelectorAll('.cell').forEach(el => el.style.borderColor = value);
+        break;
+      case 'cellGap': gridEl(2).style.gap = value + 'px'; break;
+      case 'borderRadius':
+        gridEl(2).querySelectorAll('.cell').forEach(el => el.style.borderRadius = value + 'px');
+        break;
+      case 'columnsCount': gridEl(2).style.gridTemplateColumns = `repeat(${value}, 1fr)`; break;
+    }
+  }
+}
+
+function updateAllTable1Labels() {
+  const s = tableSettings[1];
+  gridEl(1).querySelectorAll('.cell-label').forEach(label => {
+    label.style.textAlign = s.horizontalAlign;
+    label.style.left = s.horizontalAlign === 'center' ? '50%' : '8px';
+    label.style.transform = s.horizontalAlign === 'center' ? 'translateX(-50%)' : 'none';
+    if (s.verticalAlign === 'top') { label.style.top = '6px'; label.style.bottom = 'auto'; }
+    else { label.style.top = 'auto'; label.style.bottom = '6px'; }
+  });
+}
+
+function updateAllTable1Stroke() {
+  const s = tableSettings[1];
+  gridEl(1).querySelectorAll('.cell-label').forEach(label => {
+    label.style.textShadow = s.labelStrokeWidth > 0
+      ? `0 0 ${s.labelStrokeWidth}px ${s.labelStrokeColor}, 0 0 ${s.labelStrokeWidth}px ${s.labelStrokeColor}, 0 0 ${s.labelStrokeWidth}px ${s.labelStrokeColor}`
+      : 'none';
+  });
+}
+
+function updateAllText2Positions() {
+  const s = tableSettings[2];
+  gridEl(2).querySelectorAll('.cell-text').forEach(el => {
+    if (s.textHAlign === 'left') { el.style.textAlign = 'left'; el.style.alignItems = 'flex-start'; }
+    else if (s.textHAlign === 'right') { el.style.textAlign = 'right'; el.style.alignItems = 'flex-end'; }
+    else { el.style.textAlign = 'center'; el.style.alignItems = 'center'; }
+    if (s.textVAlign === 'top') el.style.justifyContent = 'flex-start';
+    else if (s.textVAlign === 'bottom') el.style.justifyContent = 'flex-end';
+    else el.style.justifyContent = 'center';
+  });
+}
+
+function updateAllText2Strokes() {
+  const s = tableSettings[2];
+  gridEl(2).querySelectorAll('.cell-text').forEach(el => {
+    el.style.textShadow = s.textStrokeWidth > 0
+      ? `0 0 ${s.textStrokeWidth}px ${s.textStrokeColor}, 0 0 ${s.textStrokeWidth}px ${s.textStrokeColor}, 0 0 ${s.textStrokeWidth}px ${s.textStrokeColor}`
+      : 'none';
+  });
+}
+
+// ==============================
+// 创建格子
+// ==============================
+
+// -- Table 1: 图片+标签 --
+function createTable1Cell(g, index) {
+  const s = tableSettings[1];
+  const cell = document.createElement('div');
+  cell.className = 'cell';
+  cell.style.background = s.cellBgColor;
+  cell.style.borderColor = s.cellBorderColor;
+  cell.style.borderRadius = s.borderRadius + 'px';
+
+  const label = document.createElement('input');
+  label.className = 'cell-label';
+  label.type = 'text';
+  label.placeholder = '标题';
+  label.style.fontSize = s.labelFontSize + 'px';
+  label.style.color = s.labelColor;
+  label.style.textAlign = s.horizontalAlign;
+  label.style.left = s.horizontalAlign === 'center' ? '50%' : '8px';
+  label.style.transform = s.horizontalAlign === 'center' ? 'translateX(-50%)' : 'none';
+  if (s.verticalAlign === 'top') { label.style.top = '6px'; } else { label.style.top = 'auto'; label.style.bottom = '6px'; }
+  label.style.textShadow = s.labelStrokeWidth > 0
+    ? `0 0 ${s.labelStrokeWidth}px ${s.labelStrokeColor}, 0 0 ${s.labelStrokeWidth}px ${s.labelStrokeColor}, 0 0 ${s.labelStrokeWidth}px ${s.labelStrokeColor}`
+    : 'none';
+  label.addEventListener('click', e => e.stopPropagation());
+  label.addEventListener('mousedown', e => e.stopPropagation());
+
+  const img = document.createElement('img');
+  img.className = 'cell-image';
+
+  const placeholder = document.createElement('div');
+  placeholder.className = 'cell-placeholder';
+  placeholder.textContent = '+';
+
+  const removeBtn = document.createElement('button');
+  removeBtn.className = 'remove-btn';
+  removeBtn.textContent = '×';
+
+  const fileInput = document.createElement('input');
+  fileInput.type = 'file';
+  fileInput.accept = 'image/*';
+
+  const num = document.createElement('span');
+  num.className = 'cell-number';
+  num.textContent = index + 1;
+
+  cell.appendChild(label);
+  cell.appendChild(img);
+  cell.appendChild(placeholder);
+  cell.appendChild(removeBtn);
+  cell.appendChild(fileInput);
+  cell.appendChild(num);
+
+  cell.addEventListener('click', (e) => {
+    if (e.target === label || e.target === removeBtn) return;
+    fileInput.click();
+  });
+  fileInput.addEventListener('change', () => {
+    const file = fileInput.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = ev => { img.src = ev.target.result; img.classList.add('visible'); cell.classList.add('has-image'); };
+    reader.readAsDataURL(file);
+  });
+  removeBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    img.src = ''; img.classList.remove('visible'); cell.classList.remove('has-image'); fileInput.value = '';
+  });
+
+  g.appendChild(cell);
+}
+
+// -- Table 2: 纯文字 --
+function createTable2Cell(g, index) {
+  const s = tableSettings[2];
+  const cell = document.createElement('div');
+  cell.className = 'cell';
+  cell.style.background = s.cellBgColor;
+  cell.style.borderColor = s.cellBorderColor;
+  cell.style.borderRadius = s.borderRadius + 'px';
+
+  const textDiv = document.createElement('div');
+  textDiv.className = 'cell-text';
+  textDiv.contentEditable = 'true';
+  textDiv.setAttribute('data-placeholder', '点击输入文字');
+  textDiv.style.fontSize = s.textFontSize + 'px';
+  textDiv.style.color = s.textColor;
+  textDiv.style.textShadow = s.textStrokeWidth > 0
+    ? `0 0 ${s.textStrokeWidth}px ${s.textStrokeColor}, 0 0 ${s.textStrokeWidth}px ${s.textStrokeColor}, 0 0 ${s.textStrokeWidth}px ${s.textStrokeColor}`
+    : 'none';
+  textDiv.style.display = 'flex';
+  textDiv.style.flexDirection = 'column';
+  if (s.textHAlign === 'left') { textDiv.style.textAlign = 'left'; textDiv.style.alignItems = 'flex-start'; }
+  else if (s.textHAlign === 'right') { textDiv.style.textAlign = 'right'; textDiv.style.alignItems = 'flex-end'; }
+  else { textDiv.style.textAlign = 'center'; textDiv.style.alignItems = 'center'; }
+  if (s.textVAlign === 'top') textDiv.style.justifyContent = 'flex-start';
+  else if (s.textVAlign === 'bottom') textDiv.style.justifyContent = 'flex-end';
+  else textDiv.style.justifyContent = 'center';
+
+  textDiv.addEventListener('click', e => e.stopPropagation());
+  textDiv.addEventListener('mousedown', e => e.stopPropagation());
+  textDiv.addEventListener('paste', e => {
+    e.preventDefault();
+    document.execCommand('insertText', false, (e.clipboardData || window.clipboardData).getData('text/plain'));
+  });
+  textDiv.addEventListener('drop', e => e.preventDefault());
+
+  const num = document.createElement('span');
+  num.className = 'cell-number';
+  num.textContent = index + 1;
+
+  cell.appendChild(textDiv);
+  cell.appendChild(num);
+  g.appendChild(cell);
+}
+
+// ==============================
+// 初始化两个表格的格子
+// ==============================
+function initGrid(tableNum, count) {
+  const g = gridEl(tableNum);
+  const fn = tableNum === 1 ? createTable1Cell : createTable2Cell;
+  for (let i = 0; i < count; i++) fn(g, i);
+}
+
+initGrid(1, 16);
+initGrid(2, 16);
+
+// ==============================
+// 添加格子按钮
+// ==============================
+document.querySelectorAll('.add-cell-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const t = parseInt(btn.dataset.grid);
+    const g = gridEl(t);
+    const idx = g.children.length;
+    if (t === 1) createTable1Cell(g, idx); else createTable2Cell(g, idx);
+    // 更新序号
+    updateCellNumbers(g);
+  });
+});
+
+function updateCellNumbers(g) {
+  g.querySelectorAll('.cell-number').forEach((n, i) => { n.textContent = i + 1; });
+}
+
+// ==============================
+// 初始化设置面板
+// ==============================
+renderSettingsPanel();
+</script>
+
+</body>
+</html>
