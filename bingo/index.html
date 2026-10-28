@@ -11,7 +11,8 @@
     font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
     background: #f5f5f5;
     min-height: 100vh;
-    padding: 20px;
+    padding: 20px 20px 20px 232px;
+    position: relative;
   }
 
   /* ===== Tab 切换 ===== */
@@ -383,13 +384,163 @@
     color: #999;
     margin-top: 4px;
   }
+
+  /* ===== 左侧 Emoji ===== */
+  .emoji-dock {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 212px;
+    height: 100vh;
+    background: #fff;
+    border-right: 1px solid #e6e6e6;
+    box-shadow: 2px 0 12px rgba(0,0,0,0.04);
+    z-index: 900;
+    display: flex;
+    flex-direction: column;
+  }
+  .emoji-dock h2 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+    padding: 14px 12px 8px;
+  }
+  .emoji-search {
+    margin: 0 12px 8px;
+    padding: 7px 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 13px;
+    outline: none;
+    font-family: inherit;
+  }
+  .emoji-search:focus { border-color: #4a90e2; }
+  .emoji-cats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    padding: 0 10px 8px;
+  }
+  .emoji-cat {
+    border: 1px solid #eee;
+    background: #fafafa;
+    border-radius: 999px;
+    padding: 2px 8px;
+    font-size: 11px;
+    color: #666;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .emoji-cat.active { background: #4a90e2; color: #fff; border-color: #4a90e2; }
+  .emoji-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 4px 8px 16px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 2px;
+    align-content: start;
+  }
+  .emoji-item {
+    width: 100%;
+    aspect-ratio: 1;
+    border: 0;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: grab;
+    border-radius: 6px;
+    padding: 0;
+  }
+  .emoji-item:hover { background: #f0f4ff; }
+  .emoji-item:active { cursor: grabbing; }
+  .emoji-sprite {
+    display: block;
+    pointer-events: none;
+    flex: 0 0 auto;
+  }
+  .emoji-hint {
+    font-size: 11px;
+    color: #999;
+    padding: 0 12px 10px;
+    line-height: 1.4;
+  }
+  .emoji-sticker {
+    position: absolute;
+    z-index: 500;
+    line-height: 0;
+    cursor: pointer;
+    user-select: none;
+    touch-action: none;
+    filter: drop-shadow(0 1px 2px rgba(0,0,0,0.12));
+    box-sizing: content-box;
+  }
+  .emoji-sticker.is-selected {
+    z-index: 620;
+    outline: 2px solid #4a90e2;
+    outline-offset: 3px;
+    cursor: grab;
+  }
+  .emoji-sticker.is-selected:active { cursor: grabbing; }
+  .emoji-sticker .sticker-x {
+    position: absolute;
+    top: -12px;
+    right: -12px;
+    width: 18px;
+    height: 18px;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.55);
+    color: #fff;
+    font-size: 12px;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    line-height: 1;
+    z-index: 2;
+  }
+  .emoji-sticker.is-selected .sticker-x { display: flex; }
+  .sticker-handle {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: #fff;
+    border: 2px solid #4a90e2;
+    border-radius: 2px;
+    display: none;
+    z-index: 2;
+    box-sizing: border-box;
+  }
+  .emoji-sticker.is-selected .sticker-handle { display: block; }
+  .sticker-handle.nw { top: -6px; left: -6px; cursor: nwse-resize; }
+  .sticker-handle.ne { top: -6px; right: -6px; cursor: nesw-resize; }
+  .sticker-handle.sw { bottom: -6px; left: -6px; cursor: nesw-resize; }
+  .sticker-handle.se { bottom: -6px; right: -6px; cursor: nwse-resize; }
+  .cell.blank { cursor: default; }
+  .cell.blank:hover { box-shadow: none; }
+
+  @media (max-width: 720px) {
+    body { padding-left: 20px; }
+    .emoji-dock { width: 100%; height: 42vh; border-right: 0; border-bottom: 1px solid #e6e6e6; }
+  }
 </style>
 </head>
 <body>
 
+<aside class="emoji-dock">
+  <h2>Emoji</h2>
+  <input class="emoji-search" id="emojiSearch" type="search" placeholder="搜索 笑/哭/爱 或英文">
+  <div class="emoji-cats" id="emojiCats"></div>
+  <p class="emoji-hint">从左边拖到页面。先点选贴纸，再拖动或拉角缩放，点 × 删除。</p>
+  <div class="emoji-list" id="emojiList"></div>
+</aside>
+
 <!-- ===== Tab 切换 ===== -->
 <div class="tab-bar">
   <button class="tab-btn active" data-table="1">图片表格</button>
+  <button class="tab-btn" data-table="3">空白表格</button>
   <button class="tab-btn" data-table="2">文字表格</button>
 </div>
 
@@ -405,6 +556,21 @@
   <div class="grid" id="grid1"></div>
   <div style="text-align:center; margin-top:16px;">
     <button class="add-cell-btn" data-grid="1">+ 添加格子</button>
+  </div>
+</div>
+
+<!-- ===== 表格3：空白表格 ===== -->
+<div class="table-container hidden" id="container3">
+  <div class="title-area">
+    <input class="main-title" type="text" placeholder="点击输入标题">
+    <div class="subtitle-row">
+      <input class="subtitle" type="text" placeholder="点击输入副标题">
+      <input class="subtitle" type="text" placeholder="点击输入署名">
+    </div>
+  </div>
+  <div class="grid" id="grid3"></div>
+  <div style="text-align:center; margin-top:16px;">
+    <button class="add-cell-btn" data-grid="3">+ 添加格子</button>
   </div>
 </div>
 
@@ -427,6 +593,7 @@
 <div class="settings-panel" id="settingsPanel"></div>
 <button class="settings-toggle" id="settingsToggle">⚙️</button>
 
+<script src="emoji-data.js"></script>
 <script>
 // ==============================
 // 状态
@@ -455,6 +622,13 @@ const tableSettings = {
     textStrokeColor: '#ffffff',
     textStrokeWidth: 0,
     cellBgColor: '#fafafa',
+    cellBorderColor: '#dddddd',
+    cellGap: 12,
+    borderRadius: 8,
+    columnsCount: 4
+  },
+  3: {
+    cellBgColor: '#ffffff',
     cellBorderColor: '#dddddd',
     cellGap: 12,
     borderRadius: 8,
@@ -488,8 +662,7 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
     activeTable = t;
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
-    containerEl(1).classList.toggle('hidden', t !== 1);
-    containerEl(2).classList.toggle('hidden', t !== 2);
+    [1, 2, 3].forEach(n => containerEl(n).classList.toggle('hidden', t !== n));
     renderSettingsPanel();
   });
 });
@@ -555,7 +728,7 @@ function renderSettingsPanel() {
         <div class="range-labels"><span>0px (无)</span><span id="sLabelStrokeWidthVal">${s.labelStrokeWidth}px</span><span>10px</span></div>
       </div>
     `;
-  } else {
+  } else if (activeTable === 2) {
     html += `
       <div class="setting-group">
         <label class="setting-label">文字大小</label>
@@ -584,6 +757,23 @@ function renderSettingsPanel() {
         <input type="range" class="setting-input" id="sTextStrokeWidth" value="${s.textStrokeWidth}" min="0" max="10" style="padding:0;">
         <div class="range-labels"><span>0px (无)</span><span id="sTextStrokeWidthVal">${s.textStrokeWidth}px</span><span>10px</span></div>
       </div>
+      <div class="setting-group">
+        <label class="setting-label">单元格背景色</label>
+        <div class="color-picker-wrapper">
+          <input type="color" class="color-input" id="sCellBgColor" value="${s.cellBgColor}">
+          <input type="text" class="setting-input" id="sCellBgColorText" value="${s.cellBgColor}" style="flex:1;">
+        </div>
+      </div>
+      <div class="setting-group">
+        <label class="setting-label">单元格边框色</label>
+        <div class="color-picker-wrapper">
+          <input type="color" class="color-input" id="sCellBorderColor" value="${s.cellBorderColor}">
+          <input type="text" class="setting-input" id="sCellBorderColorText" value="${s.cellBorderColor}" style="flex:1;">
+        </div>
+      </div>
+    `;
+  } else {
+    html += `
       <div class="setting-group">
         <label class="setting-label">单元格背景色</label>
         <div class="color-picker-wrapper">
@@ -693,13 +883,16 @@ function bindSettingsEvents() {
     bindColor('sLabelColor', 'sLabelColorText', 'labelColor');
     bindColor('sLabelStrokeColor', 'sLabelStrokeColorText', 'labelStrokeColor');
     bindRange('sLabelStrokeWidth', 'sLabelStrokeWidthVal', 'labelStrokeWidth', 'px');
-  } else {
+  } else if (activeTable === 2) {
     bindNum('sTextFontSize', 'textFontSize');
     bindColor('sTextColor', 'sTextColorText', 'textColor');
     bindColor('sTextStrokeColor', 'sTextStrokeColorText', 'textStrokeColor');
     bindColor('sCellBgColor', 'sCellBgColorText', 'cellBgColor');
     bindColor('sCellBorderColor', 'sCellBorderColorText', 'cellBorderColor');
     bindRange('sTextStrokeWidth', 'sTextStrokeWidthVal', 'textStrokeWidth', 'px');
+  } else {
+    bindColor('sCellBgColor', 'sCellBgColorText', 'cellBgColor');
+    bindColor('sCellBorderColor', 'sCellBorderColorText', 'cellBorderColor');
   }
   bindRange('sCellGap', 'sCellGapVal', 'cellGap', 'px');
   bindRange('sBorderRadius', 'sBorderRadiusVal', 'borderRadius', 'px');
@@ -733,7 +926,7 @@ function applySetting(key, value) {
         break;
       case 'columnsCount': gridEl(1).style.gridTemplateColumns = `repeat(${value}, 1fr)`; break;
     }
-  } else {
+  } else if (t === 2) {
     switch (key) {
       case 'textFontSize':
         gridEl(2).querySelectorAll('.cell-text').forEach(el => el.style.fontSize = value + 'px');
@@ -754,6 +947,20 @@ function applySetting(key, value) {
         gridEl(2).querySelectorAll('.cell').forEach(el => el.style.borderRadius = value + 'px');
         break;
       case 'columnsCount': gridEl(2).style.gridTemplateColumns = `repeat(${value}, 1fr)`; break;
+    }
+  } else {
+    switch (key) {
+      case 'cellBgColor':
+        gridEl(3).querySelectorAll('.cell').forEach(el => el.style.background = value);
+        break;
+      case 'cellBorderColor':
+        gridEl(3).querySelectorAll('.cell').forEach(el => el.style.borderColor = value);
+        break;
+      case 'cellGap': gridEl(3).style.gap = value + 'px'; break;
+      case 'borderRadius':
+        gridEl(3).querySelectorAll('.cell').forEach(el => el.style.borderRadius = value + 'px');
+        break;
+      case 'columnsCount': gridEl(3).style.gridTemplateColumns = `repeat(${value}, 1fr)`; break;
     }
   }
 }
@@ -917,17 +1124,41 @@ function createTable2Cell(g, index) {
   g.appendChild(cell);
 }
 
+// -- Table 3: 空白格子 --
+function createTable3Cell(g, index) {
+  const s = tableSettings[3];
+  const cell = document.createElement('div');
+  cell.className = 'cell blank';
+  cell.style.background = s.cellBgColor;
+  cell.style.borderColor = s.cellBorderColor;
+  cell.style.borderRadius = s.borderRadius + 'px';
+
+  const num = document.createElement('span');
+  num.className = 'cell-number';
+  num.textContent = index + 1;
+
+  cell.appendChild(num);
+  g.appendChild(cell);
+}
+
 // ==============================
-// 初始化两个表格的格子
+// 初始化三个表格的格子
 // ==============================
+function cellFactory(tableNum) {
+  if (tableNum === 1) return createTable1Cell;
+  if (tableNum === 2) return createTable2Cell;
+  return createTable3Cell;
+}
+
 function initGrid(tableNum, count) {
   const g = gridEl(tableNum);
-  const fn = tableNum === 1 ? createTable1Cell : createTable2Cell;
+  const fn = cellFactory(tableNum);
   for (let i = 0; i < count; i++) fn(g, i);
 }
 
 initGrid(1, 16);
 initGrid(2, 16);
+initGrid(3, 16);
 
 // ==============================
 // 添加格子按钮
@@ -937,8 +1168,7 @@ document.querySelectorAll('.add-cell-btn').forEach(btn => {
     const t = parseInt(btn.dataset.grid);
     const g = gridEl(t);
     const idx = g.children.length;
-    if (t === 1) createTable1Cell(g, idx); else createTable2Cell(g, idx);
-    // 更新序号
+    cellFactory(t)(g, idx);
     updateCellNumbers(g);
   });
 });
@@ -946,6 +1176,261 @@ document.querySelectorAll('.add-cell-btn').forEach(btn => {
 function updateCellNumbers(g) {
   g.querySelectorAll('.cell-number').forEach((n, i) => { n.textContent = i + 1; });
 }
+
+// ==============================
+// Emoji 列表 + 拖到任意位置（安卓 Google 黄豆）
+// ==============================
+const EMOJI_CATS = [
+  { id: 'face', name: '黄豆' },
+  { id: 'people', name: '人物' },
+  { id: 'animal', name: '动物' },
+  { id: 'food', name: '食物' },
+  { id: 'travel', name: '旅行' },
+  { id: 'activity', name: '活动' },
+  { id: 'object', name: '物品' },
+  { id: 'symbol', name: '符号' },
+  { id: 'flag', name: '旗帜' },
+  { id: 'all', name: '全部' }
+];
+
+const emojiPack = window.EMOJI_PACK;
+const emojiAll = (emojiPack && emojiPack.items) || [];
+let emojiCat = 'face';
+let emojiQuery = '';
+
+function applySprite(el, item, draw) {
+  if (!emojiPack || !item) return;
+  const cell = emojiPack.size + emojiPack.pad;
+  const scale = draw / emojiPack.size;
+  el.style.width = draw + 'px';
+  el.style.height = draw + 'px';
+  el.style.backgroundImage = 'url(' + emojiPack.url + ')';
+  el.style.backgroundRepeat = 'no-repeat';
+  el.style.backgroundSize = (emojiPack.w * scale) + 'px ' + (emojiPack.h * scale) + 'px';
+  el.style.backgroundPosition = '-' + ((item.x * cell + 1) * scale) + 'px -' + ((item.y * cell + 1) * scale) + 'px';
+}
+
+function makeSprite(item, draw) {
+  const d = document.createElement('i');
+  d.className = 'emoji-sprite';
+  applySprite(d, item, draw);
+  return d;
+}
+
+function visibleEmojis() {
+  const q = emojiQuery.toLowerCase();
+  return emojiAll.filter(item => {
+    if (emojiCat !== 'all' && item.cat !== emojiCat) return false;
+    if (!q) return true;
+    return (item.q && item.q.indexOf(q) !== -1) || (item.ch && item.ch.indexOf(emojiQuery) !== -1);
+  });
+}
+
+function renderEmojiCats() {
+  const box = document.getElementById('emojiCats');
+  box.innerHTML = '';
+  EMOJI_CATS.forEach(c => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'emoji-cat' + (emojiCat === c.id ? ' active' : '');
+    b.textContent = c.name;
+    b.addEventListener('click', () => { emojiCat = c.id; renderEmojiCats(); renderEmojiList(); });
+    box.appendChild(b);
+  });
+}
+
+function renderEmojiList() {
+  const box = document.getElementById('emojiList');
+  box.innerHTML = '';
+  const list = visibleEmojis();
+  if (!emojiPack) {
+    box.textContent = '表情资源未加载';
+    return;
+  }
+  const frag = document.createDocumentFragment();
+  const limit = Math.min(list.length, 400);
+  for (let i = 0; i < limit; i++) {
+    const item = list[i];
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'emoji-item';
+    b.title = item.ch;
+    b.appendChild(makeSprite(item, 32));
+    b.addEventListener('pointerdown', ev => startEmojiDrag(item, ev));
+    frag.appendChild(b);
+  }
+  box.appendChild(frag);
+  if (list.length > limit) {
+    const more = document.createElement('button');
+    more.type = 'button';
+    more.className = 'emoji-cat';
+    more.style.gridColumn = '1 / -1';
+    more.textContent = '还有 ' + (list.length - limit) + ' 个，点这里继续加载';
+    more.addEventListener('click', () => {
+      const extra = document.createDocumentFragment();
+      list.slice(limit).forEach(item => {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'emoji-item';
+        b.title = item.ch;
+        b.appendChild(makeSprite(item, 32));
+        b.addEventListener('pointerdown', ev => startEmojiDrag(item, ev));
+        extra.appendChild(b);
+      });
+      more.remove();
+      box.appendChild(extra);
+    });
+    box.appendChild(more);
+  }
+}
+
+const STICKER_MIN = 24;
+const STICKER_MAX = 320;
+let selectedSticker = null;
+
+function selectSticker(el) {
+  if (selectedSticker === el) return;
+  if (selectedSticker) selectedSticker.classList.remove('is-selected');
+  selectedSticker = el || null;
+  if (selectedSticker) selectedSticker.classList.add('is-selected');
+}
+
+function setStickerSize(el, size, anchor) {
+  const next = Math.max(STICKER_MIN, Math.min(STICKER_MAX, Math.round(size)));
+  const prev = el._size || 48;
+  if (anchor === 'br') {
+    el.style.left = (el.offsetLeft + (prev - next)) + 'px';
+    el.style.top = (el.offsetTop + (prev - next)) + 'px';
+  } else if (anchor === 'bl') {
+    el.style.top = (el.offsetTop + (prev - next)) + 'px';
+  } else if (anchor === 'tr') {
+    el.style.left = (el.offsetLeft + (prev - next)) + 'px';
+  }
+  el._size = next;
+  applySprite(el.querySelector('.emoji-sprite'), el._item, next);
+}
+
+function placeSticker(item, x, y) {
+  const el = document.createElement('div');
+  el.className = 'emoji-sticker';
+  el.style.left = x + 'px';
+  el.style.top = y + 'px';
+  el._item = item;
+  el._size = 48;
+  el.appendChild(makeSprite(item, 48));
+
+  const xbtn = document.createElement('button');
+  xbtn.type = 'button';
+  xbtn.className = 'sticker-x';
+  xbtn.textContent = '×';
+  xbtn.addEventListener('pointerdown', ev => ev.stopPropagation());
+  xbtn.addEventListener('click', ev => {
+    ev.stopPropagation();
+    if (selectedSticker === el) selectedSticker = null;
+    el.remove();
+  });
+  el.appendChild(xbtn);
+
+  [['nw', 'br'], ['ne', 'bl'], ['sw', 'tr'], ['se', 'tl']].forEach(([cls, anchor]) => {
+    const h = document.createElement('i');
+    h.className = 'sticker-handle ' + cls;
+    h.setAttribute('role', 'button');
+    h.setAttribute('aria-label', '缩放');
+    h.addEventListener('pointerdown', ev => {
+      ev.preventDefault();
+      ev.stopPropagation();
+      if (!el.classList.contains('is-selected')) return;
+      const startX = ev.pageX;
+      const startY = ev.pageY;
+      const startSize = el._size;
+      function move(e) {
+        const dx = e.pageX - startX;
+        const dy = e.pageY - startY;
+        const along = cls === 'nw' || cls === 'se' ? (dx + dy) / 2 : (dx - dy) / 2;
+        const sign = (cls === 'se' || cls === 'ne') ? 1 : -1;
+        setStickerSize(el, startSize + along * sign, anchor === 'tl' ? null : anchor);
+      }
+      function up() {
+        document.removeEventListener('pointermove', move);
+        document.removeEventListener('pointerup', up);
+      }
+      document.addEventListener('pointermove', move);
+      document.addEventListener('pointerup', up);
+    });
+    el.appendChild(h);
+  });
+
+  el.addEventListener('pointerdown', ev => {
+    if (ev.target === xbtn || ev.target.classList.contains('sticker-handle')) return;
+    ev.preventDefault();
+    ev.stopPropagation();
+    if (!el.classList.contains('is-selected')) {
+      selectSticker(el);
+      return;
+    }
+    const ox = ev.pageX - el.offsetLeft;
+    const oy = ev.pageY - el.offsetTop;
+    function move(e) {
+      el.style.left = (e.pageX - ox) + 'px';
+      el.style.top = (e.pageY - oy) + 'px';
+    }
+    function up() {
+      document.removeEventListener('pointermove', move);
+      document.removeEventListener('pointerup', up);
+    }
+    document.addEventListener('pointermove', move);
+    document.addEventListener('pointerup', up);
+  });
+
+  el.addEventListener('wheel', ev => {
+    if (!el.classList.contains('is-selected')) return;
+    ev.preventDefault();
+    setStickerSize(el, el._size + (ev.deltaY > 0 ? -10 : 10), null);
+  }, { passive: false });
+
+  document.body.appendChild(el);
+  selectSticker(el);
+}
+
+document.addEventListener('pointerdown', ev => {
+  if (ev.target.closest('.emoji-sticker')) return;
+  selectSticker(null);
+});
+
+function startEmojiDrag(item, ev) {
+  ev.preventDefault();
+  const ghost = document.createElement('div');
+  ghost.className = 'emoji-sticker';
+  ghost.style.opacity = '0.88';
+  ghost.style.pointerEvents = 'none';
+  ghost.style.left = (ev.pageX - 24) + 'px';
+  ghost.style.top = (ev.pageY - 24) + 'px';
+  ghost.appendChild(makeSprite(item, 48));
+  document.body.appendChild(ghost);
+  function move(e) {
+    ghost.style.left = (e.pageX - 24) + 'px';
+    ghost.style.top = (e.pageY - 24) + 'px';
+  }
+  function up(e) {
+    document.removeEventListener('pointermove', move);
+    document.removeEventListener('pointerup', up);
+    ghost.remove();
+    const under = document.elementFromPoint(e.clientX, e.clientY);
+    const dock = document.querySelector('.emoji-dock');
+    if (under && dock && dock.contains(under)) return;
+    placeSticker(item, e.pageX - 24, e.pageY - 24);
+  }
+  document.addEventListener('pointermove', move);
+  document.addEventListener('pointerup', up);
+}
+
+document.getElementById('emojiSearch').addEventListener('input', e => {
+  emojiQuery = e.target.value.trim();
+  renderEmojiList();
+});
+
+renderEmojiCats();
+renderEmojiList();
 
 // ==============================
 // 初始化设置面板
