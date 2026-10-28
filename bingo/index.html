@@ -460,6 +460,7 @@
     pointer-events: none;
     flex: 0 0 auto;
   }
+  img.emoji-sprite { object-fit: contain; }
   .emoji-hint {
     font-size: 11px;
     color: #999;
@@ -533,7 +534,7 @@
   <h2>Emoji</h2>
   <input class="emoji-search" id="emojiSearch" type="search" placeholder="搜索 笑/哭/爱 或英文">
   <div class="emoji-cats" id="emojiCats"></div>
-  <p class="emoji-hint">从左边拖到页面。先点选贴纸，再拖动或拉角缩放，点 × 删除。</p>
+  <p class="emoji-hint">黄豆含安卓厨房组合。拖到页面后先点选，再拖或拉角缩放。</p>
   <div class="emoji-list" id="emojiList"></div>
 </aside>
 
@@ -594,6 +595,7 @@
 <button class="settings-toggle" id="settingsToggle">⚙️</button>
 
 <script src="emoji-data.js"></script>
+<script src="kitchen-data.js"></script>
 <script>
 // ==============================
 // 状态
@@ -1182,6 +1184,7 @@ function updateCellNumbers(g) {
 // ==============================
 const EMOJI_CATS = [
   { id: 'face', name: '黄豆' },
+  { id: 'kitchen', name: '厨房' },
   { id: 'people', name: '人物' },
   { id: 'animal', name: '动物' },
   { id: 'food', name: '食物' },
@@ -1194,9 +1197,37 @@ const EMOJI_CATS = [
 ];
 
 const emojiPack = window.EMOJI_PACK;
-const emojiAll = (emojiPack && emojiPack.items) || [];
+const emojiAll = ((emojiPack && emojiPack.items) || []).slice();
 let emojiCat = 'face';
 let emojiQuery = '';
+
+function kitchenPath(cp) {
+  return String(cp).split('-').map(p => 'u' + p).join('-');
+}
+function kitchenUrl(d, a, b) {
+  const A = kitchenPath(a), B = kitchenPath(b);
+  return 'https://www.gstatic.com/android/keyboard/emojikitchen/' + d + '/' + A + '/' + A + '_' + B + '.png';
+}
+function cpToCh(cp) {
+  try {
+    return String(cp).split('-').filter(Boolean).map(p => String.fromCodePoint(parseInt(p, 16))).join('');
+  } catch (e) { return ''; }
+}
+function faceRank(cp) {
+  const n = parseInt(String(cp).split('-')[0], 16);
+  if (n >= 0x1F600 && n <= 0x1F64F) return 0;
+  if (n >= 0x1F900 && n <= 0x1F9FF) return 1;
+  if (n >= 0x1FA70 && n <= 0x1FAFF) return 2;
+  return 3;
+}
+(((window.EMOJI_KITCHEN && window.EMOJI_KITCHEN.pairs) || []).slice().sort((x, y) => {
+  if (x[0] !== y[0]) return x[0] === 'face' ? -1 : 1;
+  return (faceRank(x[2]) - faceRank(y[2])) || (faceRank(x[3]) - faceRank(y[3])) || String(x[2]).localeCompare(y[2]) || String(x[3]).localeCompare(y[3]);
+})).forEach(row => {
+  const cat = row[0], d = row[1], a = row[2], b = row[3];
+  const ca = cpToCh(a), cb = cpToCh(b);
+  emojiAll.push({ cat: cat, ch: ca + cb, q: (ca + ' ' + cb).toLowerCase(), url: kitchenUrl(d, a, b) });
+});
 
 function applySprite(el, item, draw) {
   if (!emojiPack || !item) return;
@@ -1211,6 +1242,16 @@ function applySprite(el, item, draw) {
 }
 
 function makeSprite(item, draw) {
+  if (item && item.url) {
+    const img = document.createElement('img');
+    img.className = 'emoji-sprite';
+    img.src = item.url;
+    img.alt = item.ch || '';
+    img.draggable = false;
+    img.style.width = draw + 'px';
+    img.style.height = draw + 'px';
+    return img;
+  }
   const d = document.createElement('i');
   d.className = 'emoji-sprite';
   applySprite(d, item, draw);
@@ -1243,45 +1284,40 @@ function renderEmojiList() {
   const box = document.getElementById('emojiList');
   box.innerHTML = '';
   const list = visibleEmojis();
-  if (!emojiPack) {
-    box.textContent = '表情资源未加载';
+  if (!list.length) {
+    box.textContent = emojiPack ? '没有匹配的表情' : '表情资源未加载';
     return;
   }
-  const frag = document.createDocumentFragment();
-  const limit = Math.min(list.length, 400);
-  for (let i = 0; i < limit; i++) {
-    const item = list[i];
-    const b = document.createElement('button');
-    b.type = 'button';
-    b.className = 'emoji-item';
-    b.title = item.ch;
-    b.appendChild(makeSprite(item, 32));
-    b.addEventListener('pointerdown', ev => startEmojiDrag(item, ev));
-    frag.appendChild(b);
+  let shown = 0;
+  const STEP = 400;
+  function appendBatch() {
+    const frag = document.createDocumentFragment();
+    const end = Math.min(list.length, shown + STEP);
+    for (let i = shown; i < end; i++) {
+      const item = list[i];
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'emoji-item';
+      b.title = item.ch;
+      b.appendChild(makeSprite(item, 32));
+      b.addEventListener('pointerdown', ev => startEmojiDrag(item, ev));
+      frag.appendChild(b);
+    }
+    shown = end;
+    const more = box.querySelector('.emoji-more');
+    if (more) more.remove();
+    box.appendChild(frag);
+    if (shown < list.length) {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'emoji-cat emoji-more';
+      btn.style.gridColumn = '1 / -1';
+      btn.textContent = '还有 ' + (list.length - shown) + ' 个，再加载 ' + Math.min(STEP, list.length - shown) + ' 个';
+      btn.addEventListener('click', appendBatch);
+      box.appendChild(btn);
+    }
   }
-  box.appendChild(frag);
-  if (list.length > limit) {
-    const more = document.createElement('button');
-    more.type = 'button';
-    more.className = 'emoji-cat';
-    more.style.gridColumn = '1 / -1';
-    more.textContent = '还有 ' + (list.length - limit) + ' 个，点这里继续加载';
-    more.addEventListener('click', () => {
-      const extra = document.createDocumentFragment();
-      list.slice(limit).forEach(item => {
-        const b = document.createElement('button');
-        b.type = 'button';
-        b.className = 'emoji-item';
-        b.title = item.ch;
-        b.appendChild(makeSprite(item, 32));
-        b.addEventListener('pointerdown', ev => startEmojiDrag(item, ev));
-        extra.appendChild(b);
-      });
-      more.remove();
-      box.appendChild(extra);
-    });
-    box.appendChild(more);
-  }
+  appendBatch();
 }
 
 const STICKER_MIN = 24;
@@ -1307,7 +1343,13 @@ function setStickerSize(el, size, anchor) {
     el.style.left = (el.offsetLeft + (prev - next)) + 'px';
   }
   el._size = next;
-  applySprite(el.querySelector('.emoji-sprite'), el._item, next);
+  const face = el.querySelector('.emoji-sprite');
+  if (el._item && el._item.url && face) {
+    face.style.width = next + 'px';
+    face.style.height = next + 'px';
+  } else {
+    applySprite(face, el._item, next);
+  }
 }
 
 function placeSticker(item, x, y) {
