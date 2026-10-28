@@ -248,6 +248,28 @@
     font-weight: 400;
   }
 
+  .cell-blank-input {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    resize: none;
+    background: transparent;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    font-family: inherit;
+    line-height: 1.3;
+    padding: 22% 10px 10px;
+    outline: none;
+    z-index: 4;
+    overflow: hidden;
+    cursor: text;
+  }
+  .cell-blank-input::placeholder { color: #ccc; font-weight: 400; }
+
   /* ===== 添加按钮 ===== */
   .add-cell-btn {
     font-size: 16px;
@@ -1170,32 +1192,22 @@ function createTable3Cell(g, index) {
   cell.style.borderColor = s.cellBorderColor;
   cell.style.borderRadius = s.borderRadius + 'px';
 
-  const textDiv = document.createElement('div');
-  textDiv.className = 'cell-text';
-  textDiv.contentEditable = 'true';
-  textDiv.setAttribute('data-placeholder', '点击输入文字');
-  textDiv.style.fontSize = '18px';
-  textDiv.style.color = '#333';
-  textDiv.style.display = 'flex';
-  textDiv.style.flexDirection = 'column';
-  textDiv.style.textAlign = 'center';
-  textDiv.style.alignItems = 'center';
-  textDiv.style.justifyContent = 'center';
-  textDiv.addEventListener('click', e => e.stopPropagation());
-  textDiv.addEventListener('mousedown', e => e.stopPropagation());
-  textDiv.addEventListener('pointerdown', e => e.stopPropagation());
-  textDiv.addEventListener('paste', e => {
-    e.preventDefault();
-    document.execCommand('insertText', false, (e.clipboardData || window.clipboardData).getData('text/plain'));
-  });
+  const input = document.createElement('textarea');
+  input.className = 'cell-blank-input';
+  input.rows = 3;
+  input.placeholder = '点击输入文字';
+  input.spellcheck = false;
+  input.addEventListener('pointerdown', e => e.stopPropagation());
+  input.addEventListener('mousedown', e => e.stopPropagation());
+  input.addEventListener('click', e => { e.stopPropagation(); input.focus(); });
 
   const num = document.createElement('span');
   num.className = 'cell-number';
   num.textContent = index + 1;
 
-  cell.appendChild(textDiv);
+  cell.appendChild(input);
   cell.appendChild(num);
-  cell.addEventListener('click', () => textDiv.focus());
+  cell.addEventListener('click', () => input.focus());
   attachCaption(g, cell);
 }
 
