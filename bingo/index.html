@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache">
 <title>Bingo Card</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -1195,7 +1196,7 @@ function createTable3Cell(g, index) {
   const input = document.createElement('textarea');
   input.className = 'cell-blank-input';
   input.rows = 3;
-  input.placeholder = '点击输入文字';
+  input.placeholder = '';
   input.spellcheck = false;
   input.addEventListener('pointerdown', e => e.stopPropagation());
   input.addEventListener('mousedown', e => e.stopPropagation());
