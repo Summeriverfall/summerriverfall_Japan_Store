@@ -113,18 +113,19 @@
   .cell-caption {
     margin-top: 6px;
     width: 100%;
+    min-height: 28px;
     border: none;
-    border-bottom: 1px dashed transparent;
+    border-bottom: 1px dashed #ccc;
     background: transparent;
     text-align: center;
     font-size: 13px;
     color: #444;
     outline: none;
     font-family: inherit;
-    padding: 2px 4px;
+    padding: 4px 4px 2px;
   }
-  .cell-caption:hover, .cell-caption:focus { border-bottom-color: #999; }
-  .cell-caption::placeholder { color: #ccc; }
+  .cell-caption:hover, .cell-caption:focus { border-bottom-color: #666; }
+  .cell-caption::placeholder { color: #bbb; }
   .grid.hide-captions .cell-caption { display: none; }
 
   /* ===== 单元格通用 ===== */
@@ -540,7 +541,7 @@
   .sticker-handle.ne { top: -6px; right: -6px; cursor: nesw-resize; }
   .sticker-handle.sw { bottom: -6px; left: -6px; cursor: nesw-resize; }
   .sticker-handle.se { bottom: -6px; right: -6px; cursor: nwse-resize; }
-  .cell.blank { cursor: default; }
+  .cell.blank { cursor: text; }
   .cell.blank:hover { box-shadow: none; }
 
   @media (max-width: 720px) {
@@ -1169,11 +1170,32 @@ function createTable3Cell(g, index) {
   cell.style.borderColor = s.cellBorderColor;
   cell.style.borderRadius = s.borderRadius + 'px';
 
+  const textDiv = document.createElement('div');
+  textDiv.className = 'cell-text';
+  textDiv.contentEditable = 'true';
+  textDiv.setAttribute('data-placeholder', '点击输入文字');
+  textDiv.style.fontSize = '18px';
+  textDiv.style.color = '#333';
+  textDiv.style.display = 'flex';
+  textDiv.style.flexDirection = 'column';
+  textDiv.style.textAlign = 'center';
+  textDiv.style.alignItems = 'center';
+  textDiv.style.justifyContent = 'center';
+  textDiv.addEventListener('click', e => e.stopPropagation());
+  textDiv.addEventListener('mousedown', e => e.stopPropagation());
+  textDiv.addEventListener('pointerdown', e => e.stopPropagation());
+  textDiv.addEventListener('paste', e => {
+    e.preventDefault();
+    document.execCommand('insertText', false, (e.clipboardData || window.clipboardData).getData('text/plain'));
+  });
+
   const num = document.createElement('span');
   num.className = 'cell-number';
   num.textContent = index + 1;
 
+  cell.appendChild(textDiv);
   cell.appendChild(num);
+  cell.addEventListener('click', () => textDiv.focus());
   attachCaption(g, cell);
 }
 
@@ -1184,9 +1206,9 @@ function attachCaption(g, cell) {
   cap.className = 'cell-caption';
   cap.type = 'text';
   cap.placeholder = '点击添加文字';
-  cap.addEventListener('click', e => e.stopPropagation());
+  cap.addEventListener('click', e => { e.stopPropagation(); cap.focus(); });
   cap.addEventListener('mousedown', e => e.stopPropagation());
-  cap.addEventListener('pointerdown', e => e.stopPropagation());
+  cap.addEventListener('pointerdown', e => { e.stopPropagation(); cap.focus(); });
   wrap.appendChild(cell);
   wrap.appendChild(cap);
   g.appendChild(wrap);
