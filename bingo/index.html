@@ -547,7 +547,6 @@
     box-sizing: content-box;
   }
   .emoji-sticker.is-selected {
-    z-index: 620;
     outline: 2px solid #4a90e2;
     outline-offset: 3px;
     cursor: grab;
@@ -555,23 +554,60 @@
   .emoji-sticker.is-selected:active { cursor: grabbing; }
   .emoji-sticker .sticker-x {
     position: absolute;
-    top: -12px;
-    right: -12px;
-    width: 18px;
-    height: 18px;
+    top: -14px;
+    right: -14px;
+    width: 22px;
+    height: 22px;
     border: 0;
     border-radius: 50%;
-    background: rgba(0,0,0,0.55);
+    background: #d64545;
     color: #fff;
-    font-size: 12px;
+    font-size: 14px;
     display: none;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     line-height: 1;
-    z-index: 2;
+    z-index: 3;
   }
   .emoji-sticker.is-selected .sticker-x { display: flex; }
+  .sticker-tools {
+    position: absolute;
+    left: 50%;
+    bottom: -34px;
+    transform: translateX(-50%);
+    display: none;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 4px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+    z-index: 4;
+    white-space: nowrap;
+  }
+  .emoji-sticker.is-selected .sticker-tools { display: flex; }
+  .sticker-tool {
+    border: 1px solid #ddd;
+    background: #f7f7f7;
+    border-radius: 4px;
+    padding: 2px 7px;
+    font-size: 11px;
+    color: #333;
+    cursor: pointer;
+    font-family: inherit;
+    line-height: 1.4;
+  }
+  .sticker-tool:hover { background: #e8f0fe; border-color: #4a90e2; }
+  .sticker-tool.danger { color: #fff; background: #d64545; border-color: #d64545; }
+  .sticker-tool.danger:hover { background: #b53a3a; }
+  .sticker-layer-n {
+    min-width: 1.2em;
+    text-align: center;
+    font-size: 11px;
+    color: #666;
+  }
   .sticker-handle {
     position: absolute;
     width: 10px;
@@ -603,7 +639,7 @@
   <h2>Emoji</h2>
   <input class="emoji-search" id="emojiSearch" type="search" placeholder="搜索 笑/哭/爱 或英文">
   <div class="emoji-cats" id="emojiCats"></div>
-  <p class="emoji-hint">黄豆含安卓厨房组合。拖到页面后先点选，再拖或拉角缩放。</p>
+  <p class="emoji-hint">拖到页面后先点选，再拖、拉角缩放、调图层或删除。</p>
   <div class="emoji-list" id="emojiList"></div>
 </aside>
 
@@ -1456,6 +1492,7 @@ function renderEmojiList() {
 
 const STICKER_MIN = 24;
 const STICKER_MAX = 320;
+const STICKER_Z0 = 400;
 let selectedSticker = null;
 
 function selectSticker(el) {
@@ -1463,6 +1500,31 @@ function selectSticker(el) {
   if (selectedSticker) selectedSticker.classList.remove('is-selected');
   selectedSticker = el || null;
   if (selectedSticker) selectedSticker.classList.add('is-selected');
+}
+
+function nextStickerLayer() {
+  let max = 0;
+  document.querySelectorAll('.emoji-sticker').forEach(s => {
+    if ((s._layer || 0) > max) max = s._layer;
+  });
+  return Math.min(99, max + 1 || 1);
+}
+
+function applyStickerLayer(el) {
+  el._layer = Math.max(1, Math.min(99, el._layer || 1));
+  el.style.zIndex = String(STICKER_Z0 + el._layer);
+  const lab = el.querySelector('.sticker-layer-n');
+  if (lab) lab.textContent = String(el._layer);
+}
+
+function bumpStickerLayer(el, delta) {
+  el._layer = (el._layer || 1) + delta;
+  applyStickerLayer(el);
+}
+
+function removeSticker(el) {
+  if (selectedSticker === el) selectedSticker = null;
+  el.remove();
 }
 
 function setStickerSize(el, size, anchor) {
@@ -1493,19 +1555,47 @@ function placeSticker(item, x, y) {
   el.style.top = y + 'px';
   el._item = item;
   el._size = 48;
+  el._layer = nextStickerLayer();
   el.appendChild(makeSprite(item, 48));
 
   const xbtn = document.createElement('button');
   xbtn.type = 'button';
   xbtn.className = 'sticker-x';
   xbtn.textContent = '×';
+  xbtn.title = '删除表情';
   xbtn.addEventListener('pointerdown', ev => ev.stopPropagation());
   xbtn.addEventListener('click', ev => {
     ev.stopPropagation();
-    if (selectedSticker === el) selectedSticker = null;
-    el.remove();
+    removeSticker(el);
   });
   el.appendChild(xbtn);
+
+  const tools = document.createElement('div');
+  tools.className = 'sticker-tools';
+  const btnDown = document.createElement('button');
+  btnDown.type = 'button';
+  btnDown.className = 'sticker-tool';
+  btnDown.textContent = '图层-1';
+  const layerN = document.createElement('span');
+  layerN.className = 'sticker-layer-n';
+  const btnUp = document.createElement('button');
+  btnUp.type = 'button';
+  btnUp.className = 'sticker-tool';
+  btnUp.textContent = '图层+1';
+  const btnDel = document.createElement('button');
+  btnDel.type = 'button';
+  btnDel.className = 'sticker-tool danger';
+  btnDel.textContent = '删除';
+  btnDown.addEventListener('click', ev => { ev.stopPropagation(); bumpStickerLayer(el, -1); });
+  btnUp.addEventListener('click', ev => { ev.stopPropagation(); bumpStickerLayer(el, 1); });
+  btnDel.addEventListener('click', ev => { ev.stopPropagation(); removeSticker(el); });
+  tools.appendChild(btnDown);
+  tools.appendChild(layerN);
+  tools.appendChild(btnUp);
+  tools.appendChild(btnDel);
+  tools.addEventListener('pointerdown', ev => ev.stopPropagation());
+  el.appendChild(tools);
+  applyStickerLayer(el);
 
   [['nw', 'br'], ['ne', 'bl'], ['sw', 'tr'], ['se', 'tl']].forEach(([cls, anchor]) => {
     const h = document.createElement('i');
@@ -1537,7 +1627,7 @@ function placeSticker(item, x, y) {
   });
 
   el.addEventListener('pointerdown', ev => {
-    if (ev.target === xbtn || ev.target.classList.contains('sticker-handle')) return;
+    if (ev.target === xbtn || ev.target.classList.contains('sticker-handle') || ev.target.closest('.sticker-tools')) return;
     ev.preventDefault();
     ev.stopPropagation();
     if (!el.classList.contains('is-selected')) {
