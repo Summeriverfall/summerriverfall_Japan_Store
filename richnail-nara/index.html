@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Rich Nail · リッチネイル｜奈良・新大宮</title>
+  <meta name="description" content="奈良市大宮町のネイル・まつげサロン Rich Nail。近鉄新大宮駅徒歩約4分。ジェル・スカルプ・マツエク・同時施術。20年以上の信頼。" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #1a1216;
+      --bg-soft: #24191f;
+      --ink: #f7efe8;
+      --ink-soft: rgba(247, 239, 232, 0.72);
+      --rose: #c48b8b;
+      --gold: #d4b896;
+      --line: rgba(212, 184, 150, 0.28);
+      --font-display: "Cormorant Garamond", Georgia, serif;
+      --font-body: "Noto Sans JP", sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.7;
+      font-weight: 400;
+    }
+    img { display: block; max-width: 100%; height: auto; }
+    a { color: inherit; text-decoration: none; }
+    .wrap { width: min(1080px, calc(100% - 2.4rem)); margin: 0 auto; }
+
+    .hero {
+      position: relative;
+      min-height: 100svh;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      isolation: isolate;
+    }
+    .hero-media {
+      position: absolute;
+      inset: 0;
+      z-index: -2;
+    }
+    .hero-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 30%;
+      transform: scale(1.02);
+      animation: ken 18s ease-in-out infinite alternate;
+    }
+    @keyframes ken {
+      from { transform: scale(1.02); }
+      to { transform: scale(1.08); }
+    }
+    .hero-media::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg, rgba(18,13,16,0.55) 0%, rgba(18,13,16,0.35) 40%, rgba(18,13,16,0.82) 100%),
+        radial-gradient(ellipse at 70% 20%, rgba(196,139,139,0.25), transparent 50%);
+    }
+    .hero-inner {
+      text-align: center;
+      padding: 5rem 0 4rem;
+      animation: rise 1s ease both;
+    }
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(18px); }
+      to { opacity: 1; transform: none; }
+    }
+    .brand-en {
+      font-family: var(--font-display);
+      font-size: clamp(3rem, 10vw, 5.2rem);
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      line-height: 1.05;
+      text-shadow: 0 2px 24px rgba(0,0,0,0.35);
+    }
+    .brand-ja {
+      margin-top: 0.55rem;
+      font-size: 1.05rem;
+      letter-spacing: 0.42em;
+      color: var(--gold);
+      font-weight: 500;
+      margin-right: -0.42em;
+    }
+    .hero-sub {
+      margin: 1.6rem auto 0;
+      max-width: 28rem;
+      font-size: 0.88rem;
+      color: var(--ink-soft);
+      letter-spacing: 0.04em;
+      text-wrap: wrap;
+    }
+    .hero-cta {
+      margin-top: 2.2rem;
+      display: flex;
+      gap: 0.8rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 2.85rem;
+      padding: 0 1.4rem;
+      border: 1px solid var(--gold);
+      font-size: 0.82rem;
+      letter-spacing: 0.12em;
+      transition: background .25s, color .25s, border-color .25s;
+    }
+    .btn-gold { background: var(--gold); color: #1a1216; font-weight: 500; }
+    .btn-gold:hover { background: #e2c9a8; }
+    .btn-ghost { background: transparent; color: var(--ink); backdrop-filter: blur(4px); }
+    .btn-ghost:hover { border-color: var(--ink); }
+
+    nav {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      z-index: 5;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.1rem 1.2rem;
+      font-size: 0.75rem;
+      letter-spacing: 0.14em;
+      color: var(--ink-soft);
+    }
+    nav .nav-links { display: flex; gap: 1.1rem; }
+    nav a:hover { color: var(--ink); }
+
+    section { padding: 4.5rem 0; }
+    .section-label {
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      letter-spacing: 0.28em;
+      color: var(--rose);
+      text-transform: uppercase;
+    }
+    h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      margin: 0.35rem 0 1.2rem;
+    }
+    .lead {
+      color: var(--ink-soft);
+      font-size: 0.92rem;
+      max-width: 38rem;
+      text-wrap: wrap;
+    }
+
+    .about-grid {
+      display: grid;
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+    @media (min-width: 800px) {
+      .about-grid { grid-template-columns: 1fr 1.05fr; align-items: center; }
+    }
+    .about-media {
+      overflow: hidden;
+      aspect-ratio: 4 / 5;
+      max-height: 520px;
+    }
+    .about-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .about-copy p + p { margin-top: 1rem; color: var(--ink-soft); font-size: 0.92rem; }
+    .about-points {
+      border-top: 1px solid var(--line);
+      margin-top: 1.4rem;
+      padding-top: 1.4rem;
+      display: grid;
+      gap: 1rem;
+    }
+    .point {
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--line);
+    }
+    .point strong {
+      display: block;
+      font-weight: 500;
+      font-size: 0.92rem;
+      letter-spacing: 0.06em;
+      margin-bottom: 0.25rem;
+    }
+    .point span { color: var(--ink-soft); font-size: 0.85rem; }
+
+    .gallery-grid {
+      margin-top: 2rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.55rem;
+    }
+    @media (min-width: 720px) {
+      .gallery-grid { grid-template-columns: repeat(3, 1fr); gap: 0.7rem; }
+    }
+    .gallery-grid figure {
+      overflow: hidden;
+      aspect-ratio: 1;
+      background: #000;
+    }
+    .gallery-grid figure.wide {
+      grid-column: span 2;
+      aspect-ratio: 16 / 9;
+    }
+    @media (max-width: 719px) {
+      .gallery-grid figure.wide { grid-column: span 2; aspect-ratio: 4 / 3; }
+    }
+    .gallery-grid img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform .6s ease;
+    }
+    .gallery-grid figure:hover img { transform: scale(1.05); }
+
+    .menu-list { margin-top: 2rem; display: grid; gap: 0; border-top: 1px solid var(--line); }
+    .menu-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 1rem;
+      padding: 1.15rem 0;
+      border-bottom: 1px solid var(--line);
+      align-items: baseline;
+    }
+    .menu-row .name { font-size: 0.95rem; font-weight: 500; }
+    .menu-row .desc { display: block; margin-top: 0.25rem; color: var(--ink-soft); font-size: 0.8rem; }
+    .menu-row .price {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      color: var(--gold);
+      white-space: nowrap;
+    }
+    .tax-note { margin-top: 1rem; font-size: 0.8rem; color: var(--ink-soft); }
+
+    .info-block {
+      margin-top: 1.5rem;
+      display: grid;
+      gap: 1.2rem;
+    }
+    @media (min-width: 720px) {
+      .info-block { grid-template-columns: 1fr 1fr; }
+    }
+    .info-card {
+      padding: 1.3rem 0;
+      border-top: 1px solid var(--line);
+    }
+    .info-card h3 {
+      font-size: 0.78rem;
+      letter-spacing: 0.18em;
+      color: var(--rose);
+      font-weight: 500;
+      margin-bottom: 0.55rem;
+    }
+    .info-card p, .info-card a {
+      font-size: 0.9rem;
+      color: var(--ink-soft);
+    }
+    .info-card a { border-bottom: 1px solid var(--line); }
+    .addr { color: var(--ink) !important; line-height: 1.65; }
+
+    footer {
+      border-top: 1px solid var(--line);
+      padding: 2rem 0 3.4rem;
+      text-align: center;
+      color: var(--ink-soft);
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+    }
+    .draft-banner {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      z-index: 20;
+      background: rgba(154, 95, 102, 0.95);
+      color: #fff;
+      text-align: center;
+      font-size: 0.78rem;
+      letter-spacing: 0.06em;
+      padding: 0.55rem 1rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="draft-banner">草稿预览 · 图片来自 Hot Pepper / rich-nail.com · 待确认方向</div>
+
+  <header class="hero">
+    <div class="hero-media" aria-hidden="true">
+      <img src="assets/images/hp-02.jpg" alt="" />
+    </div>
+    <nav class="wrap">
+      <span>RICH NAIL</span>
+      <div class="nav-links">
+        <a href="#about">About</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#menu">Menu</a>
+        <a href="#access">Access</a>
+      </div>
+    </nav>
+    <div class="hero-inner wrap">
+      <p class="brand-en">Rich Nail</p>
+      <p class="brand-ja">リッチネイル</p>
+      <p class="hero-sub">奈良・新大宮。<br>ネイルとまつげを、丁寧に、長く美しく。</p>
+      <div class="hero-cta">
+        <a class="btn btn-gold" href="https://beauty.hotpepper.jp/kr/slnH000234000/" target="_blank" rel="noopener">ホットペッパーで予約</a>
+        <a class="btn btn-ghost" href="#gallery">作品を見る</a>
+      </div>
+    </div>
+  </header>
+
+  <section id="about">
+    <div class="wrap">
+      <p class="section-label">About</p>
+      <h2>About the salon</h2>
+      <div class="about-grid">
+        <div class="about-media">
+          <img src="assets/images/hp-06.jpg" alt="サロンでのカウンセリング" loading="lazy" />
+        </div>
+        <div class="about-copy">
+          <p>忙しい毎日のなかで、きれいになる時間を大切に。Rich Nail（リッチネイル）は奈良市大宮町で20年以上、地域のお客様に通い続けていただいているネイル・まつげサロンです。</p>
+          <p>フォルムと持ちのよさはもちろん、爪への負担を抑えた丁寧な施術を心がけています。ハンド・フット・マツエクの同時施術も人気で、限られた時間でもしっかり整えて帰れます。</p>
+          <div class="about-points">
+            <div class="point">
+              <strong>同時施術</strong>
+              <span>ネイル × まつげ × フット。リクライニングで贅沢な時短ケア。</span>
+            </div>
+            <div class="point">
+              <strong>個室あり</strong>
+              <span>プライベート空間でまつ毛や同時施術も落ち着いて。</span>
+            </div>
+            <div class="point">
+              <strong>駐車場完備</strong>
+              <span>近隣パーキング案内あり。お車でも通いやすい立地。</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="gallery" style="background: var(--bg-soft);">
+    <div class="wrap">
+      <p class="section-label">Gallery</p>
+      <h2>Works &amp; space</h2>
+      <p class="lead">ホットペッパー掲載写真より。ジェル・スカルプ・サンプルボード・店内の雰囲気。</p>
+      <div class="gallery-grid">
+        <figure class="wide"><img src="assets/images/about.jpg" alt="ネイル＆まつげ作品コラージュ" loading="lazy" /></figure>
+        <figure><img src="assets/images/hp-09.jpg" alt="フラワーアートネイル" loading="lazy" /></figure>
+        <figure><img src="assets/images/hp-11.jpg" alt="ストーン付きミルキーネイル" loading="lazy" /></figure>
+        <figure><img src="assets/images/hp-14.jpg" alt="デザインサンプル各種" loading="lazy" /></figure>
+        <figure><img src="assets/images/hp-12.jpg" alt="サンプルボード" loading="lazy" /></figure>
+        <figure><img src="assets/images/top4.png" alt="グリッターネイル" loading="lazy" /></figure>
+        <figure><img src="assets/images/hp-04.jpg" alt="まつげサロン" loading="lazy" /></figure>
+      </div>
+    </div>
+  </section>
+
+  <section id="menu">
+    <div class="wrap">
+      <p class="section-label">Menu</p>
+      <h2>Pick up</h2>
+      <p class="lead">ホットペッパー掲載の人気メニューから抜粋（税込）。正式メニューは予約時に最新をご確認ください。</p>
+      <div class="menu-list">
+        <div class="menu-row">
+          <div>
+            <span class="name">選べるベース＋アート2本（他店オフ込）</span>
+            <span class="desc">新規様向け。グラデ・フレンチなども選択可</span>
+          </div>
+          <span class="price">¥6,600</span>
+        </div>
+        <div class="menu-row">
+          <div>
+            <span class="name">ワンカラー（他店オフ込）</span>
+            <span class="desc">438色から。丁寧な自爪ケア重視</span>
+          </div>
+          <span class="price">¥6,600</span>
+        </div>
+        <div class="menu-row">
+          <div>
+            <span class="name">ラメグラデーション（他店オフ込）</span>
+            <span class="desc">253色から選べる定番</span>
+          </div>
+          <span class="price">¥5,500</span>
+        </div>
+        <div class="menu-row">
+          <div>
+            <span class="name">スカルプ／ジェルチップ 長さ出し S</span>
+            <span class="desc">ショート目安。アートは別途</span>
+          </div>
+          <span class="price">¥8,800〜</span>
+        </div>
+        <div class="menu-row">
+          <div>
+            <span class="name">フラットマットラッシュ 100本</span>
+            <span class="desc">軽さ・持続重視のまつエク</span>
+          </div>
+          <span class="price">¥6,490</span>
+        </div>
+        <div class="menu-row">
+          <div>
+            <span class="name">まつげパーマ（コーティング・シャンプー込）</span>
+            <span class="desc">ラッシュリフト系。根元から立ち上げ</span>
+          </div>
+          <span class="price">¥6,050</span>
+        </div>
+        <div class="menu-row">
+          <div>
+            <span class="name">フットワンカラー＋角質除去セット</span>
+            <span class="desc">他店オフ込。かかとケア付き</span>
+          </div>
+          <span class="price">¥9,500</span>
+        </div>
+      </div>
+      <p class="tax-note">価格は税込。クーポンは予告なく変更される場合があります。</p>
+    </div>
+  </section>
+
+  <section id="access" style="background: var(--bg-soft);">
+    <div class="wrap">
+      <p class="section-label">Access</p>
+      <h2>店舗情報</h2>
+      <div class="info-block">
+        <div class="info-card">
+          <h3>ADDRESS</h3>
+          <p class="addr">〒630-8115<br>奈良県奈良市大宮町4-295-9 川口ビル1階</p>
+          <p style="margin-top:0.7rem">近鉄「新大宮駅」南口から徒歩約4分<br>大宮通りを右手（大阪方面）へ進み、交差点を渡って右手約2分。ビル1階が本店です。</p>
+          <p style="margin-top:0.8rem"><a href="https://maps.app.goo.gl/naMUUpNtc2qSQbm1A" target="_blank" rel="noopener">Google マップで開く</a></p>
+        </div>
+        <div class="info-card">
+          <h3>HOURS</h3>
+          <p>平日（木以外）10:00–20:00<br>水・土・日 10:00–18:00<br>定休日：木曜日</p>
+          <p style="margin-top:0.7rem">TEL <a href="tel:0742937499">0742-93-7499</a><br>（つながらない場合 090-6678-9371）</p>
+          <p style="margin-top:0.7rem">カード・PayPay可 / Visa・Mastercard・JCB・Amex・銀聯</p>
+        </div>
+      </div>
+      <p class="lead" style="margin-top:1.8rem">※エステ専門の2号店 Rich Salon（大宮町6丁目）は別住所です。ご予約時は店舗をご確認ください。</p>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      Rich Nail · リッチネイル — Nara Shin-Omiya<br>
+      Draft · photos from Hot Pepper Beauty / rich-nail.com
+    </div>
+  </footer>
+</body>
+</html>
